@@ -1,11 +1,21 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+st.set_page_config(layout="wide")
 
 # Webpage Title
-st.title("Streamlit으로 만드는 데이터 웨ㅔㅔㅔㅔㅔ")
+st.title("정신건강, 수도권만의 권리인가요?")
 
-st.header("Streamlit이란?")
+st.info(
+"""
+우리나라 국민의 1/3은 '중간 수준 이상의 우울감'을 경험하고 있다.
+그럼에도, 우리 사회에서 정신건강은 늘 뒷전이다. 지방, 농어촌 지역의 정신건강은 더더욱 뒷전이다. 점점 흔해지는 우울과 불안에 대응할 적절한 인프라가 갖추어져 있는지, 아무도 관심을 갖지 않는다.
+본 프로젝트의 목표는 정신건강증진시설의 지역격차를 시각화하는 것이다. 
+
+"""
+)
+
+st.header("I. 정신건강증진시설의 지역격차")
 
 st.write("Streamlit은 데이터분석 결과를 가장 빠르게 웹기반 리포트를 작성하고 공유할 수 있는 플랫폼이다.")
 st.write("간단한 파이썬 코드를 이용해 데이터기반 홈페이지를 손쉽게 만들 수 있다. 현재 깃허브(github)에서 가장 인기있는 프로젝트중 하나이며 정보시각화(visualization)을 손쉽게 포함시킬 수 있다.")
@@ -17,9 +27,76 @@ st.info(
 * Examples: https://github.com/MarcSkovMadsen/awesome-streamlit
 """
 )
+import streamlit as st
+import pydeck as pdk
+import pandas as pd
 
-st.subheader("Streamlit 설치")
-st.code("pip install streamlit 혹은  \nconda install streamlit")
+# Example data: cities in Korea
+data = pd.DataFrame({
+    "city": ["Seoul", "Busan", "Daegu"],
+    "lat": [37.5665, 35.1796, 35.8714],
+    "lon": [126.9780, 129.0756, 128.6014]
+})
+
+st.title("🗺️ Interactive Map of South Korea (Pydeck)")
+
+# Define Pydeck layer
+layer = pdk.Layer(
+    "ScatterplotLayer",
+    data,
+    get_position='[lon, lat]',
+    get_radius=50000,
+    get_fill_color='[255, 0, 0, 160]',
+    pickable=True,
+)
+
+# Set the viewport location
+view_state = pdk.ViewState(
+    longitude=127.7669,
+    latitude=35.9078,
+    zoom=6,
+    pitch=0,
+)
+
+# Render map
+st.pydeck_chart(pdk.Deck(layers=[layer], initial_view_state=view_state, tooltip={"text": "{city}"}))
+
+import streamlit as st
+import folium
+from streamlit_folium import st_folium
+import requests
+
+# 페이지 설정
+st.title("🗺️ 대한민국 행정동 경계 지도")
+
+# GeoJSON URL
+geojson_url = "https://raw.githubusercontent.com/raqoon886/Local_HangJeongDong/main/hangjeongdong.geojson"
+
+# 지도 초기화 (중심은 서울)
+m = folium.Map(location=[37.5665, 126.9780], zoom_start=10)
+
+# GeoJSON 데이터 불러오기 및 지도에 추가
+geojson_data = requests.get(geojson_url).json()
+folium.GeoJson(geojson_data, name="행정동").add_to(m)
+
+# 지도 표시
+st_data = st_folium(m, width=1000, height=700)
+
+import requests
+
+geojson_url = "https://raw.githubusercontent.com/raqoon886/Local_HangJeongDong/main/hangjeongdong.geojson"
+response = requests.get(geojson_url)
+
+# 응답 내용을 출력해보자
+print(response.text[:500])  # 처음 500글자만 미리보기
+
+# 혹시라도 이상한 내용이 있다면 확인 가능
+
+
+
+
+st.subheader("정신건강증진시설의 지역격차 지도")
+st.code("pip install streamlit 혹은  \nconda instalel streamlit")
 
 st.subheader("Streamlit 실행")
 st.code("streamlit run tutorial.py")
