@@ -67,47 +67,57 @@ from streamlit_folium import st_folium
 import requests
 
 # 페이지 설정
-st.title("🗺️ 대한민국 행정동 경계 지도")
-
-# GeoJSON URL
-geojson_url = "https://raw.githubusercontent.com/raqoon886/Local_HangJeongDong/main/hangjeongdong.geojson"
-
-# 지도 초기화 (중심은 서울)
-m = folium.Map(location=[37.5665, 126.9780], zoom_start=10)
-
-# GeoJSON 데이터 불러오기 및 지도에 추가
-geojson_data = requests.get(geojson_url).json()
-folium.GeoJson(geojson_data, name="행정동").add_to(m)
-
-# 지도 표시
-st_data = st_folium(m, width=1000, height=700)
-
+import streamlit as st
+import folium
 import requests
+from streamlit_folium import st_folium
 
-geojson_url = "https://raw.githubusercontent.com/raqoon886/Local_HangJeongDong/main/hangjeongdong.geojson"
-response = requests.get(geojson_url)
+API_KEY = "YOUR_API_KEY"
+sigungu_list = ["강남구", "서초구", "송파구", "용산구"]
 
-# 응답 내용을 출력해보자
-print(response.text[:500])  # 처음 500글자만 미리보기
+m = folium.Map(location=[37.5665, 126.9780], zoom_start=11, tiles='CartoDB Dark_Matter')
 
-# 혹시라도 이상한 내용이 있다면 확인 가능
+for gu in sigungu_list:
+    params = {
+        "service": "data",
+        "request": "GetFeature",
+        "data": "LT_C_ADSIGG_INFO",
+        "key": API_KEY,
+        "format": "json",
+        "attrFilter": f"sig_kor_nm:like:{gu}",
+        "geometry": "true"
+    }
+    try:
+        response = requests.get("https://api.vworld.kr/req/data", params=params)
+        res_json = response.json()
 
+        if res_json["response"]["status"] == "OK":
+            geojson = res_json["response"]["result"]["featureCollection"]
 
+            folium.GeoJson(
+                geojson,
+                name=gu,
+                style_function=lambda x: {
+                    "fillOpacity": 0,
+                    "color": "white",
+                    "weight": 1
+                },
+                tooltip=folium.GeoJsonTooltip(
+                    fields=["sig_kor_nm"],
+                    aliases=["구명"],
+                    sticky=True
+                )
+            ).add_to(m)
+        else:
+            st.warning(f"❗ {gu} 요청 실패: {res_json['response']['status']}")
 
+    except Exception as e:
+        st.error(f"❌ {gu} 처리 중 오류: {e}")
 
-st.subheader("정신건강증진시설의 지역격차 지도")
-st.code("pip install streamlit 혹은  \nconda instalel streamlit")
+st.title("🗺️ 시군구 경계만 표시한 Dark 지도")
+st_folium(m, width=1000, height=700)
 
-st.subheader("Streamlit 실행")
-st.code("streamlit run tutorial.py")
-
-st.header("인터페이스 위젯 만들기")
-
-st.subheader("텍스트 입력")
-st.write("텍스트의 입력은 `st.write()` 함수를 사용한다.")
-
-st.subheader("Markdown")
-st.markdown(
+st.json(response.json())
 """
 Markdown 문법으로 텍스트를 입력하려면 `st.markdown()`을 사용한다. Markdown에서 활용가능한 모든 문법을 사용할 수 있다.
 
@@ -140,7 +150,6 @@ Markdown 문법으로 텍스트를 입력하려면 `st.markdown()`을 사용한�
 | Deceased |      |        |
 
 """
-)
 
 st.markdown("***")
 
