@@ -7,11 +7,19 @@ import json
 st.set_page_config(layout="wide")
 
 # 🔹 제목/설명
-st.markdown("<h1 style='text-align: center;'>정신건강, 수도권만의 권리인가요?</h1>", unsafe_allow_html=True)
+st.markdown("""
+<h1 style='text-align: center; font-size: 72px; font-weight: bold; margin-top: 20px; margin-bottom: 40px;'>
+    정신건강, 수도권만의 권리인가요?
+</h1>
+""", unsafe_allow_html=True)
+
 
 st.markdown("""
 <div style="background-color: #1e1e1e; padding: 30px; border-radius: 12px; text-align: center; font-size: 20px; line-height: 2; color: white;">
     <strong>우리나라 국민의 1/3은</strong> ‘중간 수준 이상의 우울감’을 경험하고 있습니다.  
+    <div style="font-size: 12px; color: #bbbbbb; margin-top: 0;">
+        출처: ‘정신건강 증진과 위기 대비를 위한 일반인 조사’ (서울대 보건대학원 BK21 건강재난 통합대응을 위한 교육연구단, 2025-05-07)
+    </div>
     <br><br>
     그럼에도, 우리 사회에서 정신건강은 늘 뒷전입니다.  
     <br><br>
@@ -20,6 +28,7 @@ st.markdown("""
     <strong>본 프로젝트의 목표는</strong> 정신건강증진시설의 지역 격차를 시각화하는 것입니다.
 </div>
 """, unsafe_allow_html=True)
+
 st.markdown("<h2 style='text-align: center;'>I. 정신건강증진시설의 개념과 기본 통계</h2>", unsafe_allow_html=True)
 
 st.markdown("<h2 style='text-align: center;'>II. 정신건강증진시설의 지역격차 지도</h2>", unsafe_allow_html=True)
