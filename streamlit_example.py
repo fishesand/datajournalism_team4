@@ -4,10 +4,30 @@ from streamlit_folium import st_folium
 import json
 import pandas as pd
 
-# 전체화면 모드
+# set_page_config는 항상 가장 먼저
 st.set_page_config(layout="wide")
 
-# (중략) 제목/설명 부분...
+# 간단한 Streamlit 마크다운 제목으로 먼저 확인
+st.title("정신건강, 수도권만의 권리인가요?")
+
+# HTML 렌더링은 줄이거나 검증된 구조만 사용
+st.markdown("""
+<div style="background-color: #1e1e1e; padding: 20px; border-radius: 12px; text-align: center; font-size: 18px; line-height: 1.8; color: white;">
+    <strong>우리나라 국민의 1/3은</strong> ‘중간 수준 이상의 우울감’을 경험하고 있습니다.  
+    <div style="font-size: 12px; color: #bbbbbb; margin-top: 0;">
+        출처: ‘정신건강 증진과 위기 대비를 위한 일반인 조사’ (서울대 보건대학원 BK21 건강재난 통합대응을 위한 교육연구단, 2025-05-07)</div>
+    <br><br>
+    그럼에도, 우리 사회에서 정신건강은 늘 뒷전입니다.  
+    <br><br>
+    <strong>지방, 농어촌 지역의 정신건강은</strong> 더더욱 방치되어 있습니다.  
+    <br><br>
+    <strong>본 프로젝트의 목표는</strong> 정신건강증진시설의 지역 격차를 시각화하는 것입니다.
+</div>
+""", unsafe_allow_html=True)
+
+# 소제목 출력
+st.subheader("I. 정신건강증진시설의 개념과 기본 통계")
+st.subheader("II. 정신건강증진시설의 지역격차 지도")
 
 # GeoJSON 불러오기
 with open("data/sgg_merged.geojson", encoding="utf-8") as f:
@@ -122,3 +142,5 @@ m.fit_bounds(geo_layer.get_bounds())
 
 # 한 번만 지도 출력
 st_folium(m, width=1600, height=1400)
+
+st.subheader("III. 보건복지부 의료개혁 실행방안을 '정신병원' 중심으로 분석")
