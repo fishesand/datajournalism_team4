@@ -86,9 +86,6 @@ def style_function(feature):
         'fillColor': hex_color
     }
 
-
-
-
 # 하이라이트 함수
 def highlight_function(feature):
     return {
@@ -109,9 +106,6 @@ popup = folium.GeoJsonPopup(
     fields=["sidonm", "sggnm", "sgg", "population_str"],
     aliases=["시도명:", "시군구명:", "시군구코드:", "인구 수:"]
 )
-
-
-
 
 # GeoJSON 레이어 추가 (한 번만)
 geo_layer = folium.GeoJson(
