@@ -22,13 +22,22 @@ options = {
         'excel': 'data/jeonnam_juso.xlsx',
         'target_regions': ['순천시', '담양군', '곡성군', '구례군', '고흥군', '보성군', '화순군']
     },
+
     '강원도 (원주시, 횡성군, 홍천군, 평창군, 영월군)': {
         'center': [37.5, 127.9],  
         'geojson': 'data/hangjeongdong_강원도.geojson', 
         'excel': 'data/gangwon_juso.xlsx',  
         'target_regions': ['원주시', '횡성군', '홍천군', '평창군', '영월군']
+    },
+    '서울특별시 (강남구)': {
+    'center': [37.498, 127.028],
+    'geojson': 'data/hangjeongdong_강남구.geojson',
+    'excel': 'data/gangnam_juso.xlsx',
+    'target_regions': ['강남구']
     }
 }
+
+
 
 
 # 화면을 좌우 분할
@@ -60,7 +69,10 @@ def render_map(selection, col):
     ).add_to(m)
 
     # 강조 지역 필터링
-    target_features = [f for f in geo_data['features'] if f['properties']['sggnm'] in target_regions]
+    target_features = [
+    f for f in geo_data['features']
+    if any(region in f['properties'].get('adm_nm', '') for region in target_regions)
+    or f['properties'].get('sggnm') in target_regions]
     target_geojson = {
         "type": "FeatureCollection",
         "features": target_features
