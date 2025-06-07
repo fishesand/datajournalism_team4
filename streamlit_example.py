@@ -21,8 +21,15 @@ options = {
         'geojson': 'data/hangjeongdong_전라남도.geojson',
         'excel': 'data/jeonnam_juso.xlsx',
         'target_regions': ['순천시', '담양군', '곡성군', '구례군', '고흥군', '보성군', '화순군']
+    },
+    '강원도 (원주시, 횡성군, 홍천군, 평창군, 영월군)': {
+        'center': [37.5, 127.9],  
+        'geojson': 'data/hangjeongdong_강원도.geojson', 
+        'excel': 'data/gangwon_juso.xlsx',  
+        'target_regions': ['원주시', '횡성군', '홍천군', '평창군', '영월군']
     }
 }
+
 
 # 화면을 좌우 분할
 col1, col2 = st.columns(2)
