@@ -222,6 +222,19 @@ def render_map(selection, col):
             ).add_to(m)
         except Exception as e:
             col.error(f"정신재활시설 표시 오류: {e}")
+    elif '강남구' in selection:
+        try:
+            # 정신재활시설 한 곳만 수동으로 추가
+            folium.Marker(
+                location=[37.4855441, 127.0758442],  # 위도, 경도
+                popup=folium.Popup(
+                    "<div style='font-size:14px'>서울특별시 강남구 광평로 185</div>",
+                    max_width=300
+                ),
+                icon=folium.Icon(color='orange', icon='heart')
+            ).add_to(m)
+        except Exception as e:
+            col.error(f"정신재활시설 표시 오류: {e}")
 
     m.get_root().add_child(legend)
     m.fit_bounds([[min_lat, min_lon], [max_lat, max_lon]])
