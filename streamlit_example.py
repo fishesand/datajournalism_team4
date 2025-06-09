@@ -490,6 +490,11 @@ if "zoom_enabled" not in st.session_state:
 
 # ✅ 지도 설정 정보
 options = {
+    '서울특별시 (강남구)': {
+        'geojson': 'data/hangjeongdong_강남구.geojson',
+        'excel': 'data/gangnam_juso.xlsx',
+        'target_regions': ['강남구']
+    },
     '경상남도 (김해시)': {
         'geojson': 'data/hangjeongdong_경상남도.geojson',
         'excel': 'data/gimhae_juso.xlsx',
@@ -504,11 +509,6 @@ options = {
         'geojson': 'data/hangjeongdong_강원도.geojson',
         'excel': 'data/gangwon_juso.xlsx',
         'target_regions': ['원주시', '횡성군', '홍천군', '평창군', '영월군']
-    },
-    '서울특별시 (강남구)': {
-        'geojson': 'data/hangjeongdong_강남구.geojson',
-        'excel': 'data/gangnam_juso.xlsx',
-        'target_regions': ['강남구']
     }
 }
 
@@ -615,7 +615,7 @@ def render_map(selection, col):
                         icon=folium.Icon(color='orange', icon='heart')
                     ).add_to(m)
         except Exception as e:
-            col.error(f"정신재활시설 파일 로딩 오류: {e}")
+            col.error(f"정신재활시설 표시 오류: {e}")
     elif '강원도' in selection:
         try:
             # 정신재활시설 한 곳만 수동으로 추가
@@ -652,6 +652,8 @@ def render_map(selection, col):
     font_path = os.path.abspath('data/NanumGothic.ttf')
     font_prop = fm.FontProperties(fname=font_path)
 
+# [중략: 기존 코드 동일, 생략 없이 이어짐]
+
     # ✅ 전라남도 설명 및 그래프 표시
     if '전라남도' in selection:
         with col:
@@ -676,6 +678,33 @@ def render_map(selection, col):
             ax.set_xticklabels(labels, fontproperties=font_prop)
             ax.set_ylabel("기관 수", fontproperties=font_prop)
             ax.set_title("전라남도 지역별 정신의료 인프라 분포", fontproperties=font_prop)
+            ax.legend(prop=font_prop)
+            st.pyplot(fig)
+
+    # ✅ 김해시 설명 및 그래프 표시
+    elif '김해시' in selection:
+        with col:
+            st.markdown("""
+            **대상 지역:** 경상남도 김해시  
+            **지역 총면적:** 463.3 km²  
+            **지역 총인구:** 556,505명  
+            
+            **지역별 정신병원 및 정신재활센터 수:**
+            """)
+
+            labels = ['김해시 동부', '김해시 서부']  # 예시 구분
+            hospital_counts = [6, 3]  # 예시 데이터
+            rehab_counts = [1, 0]     # 예시 데이터
+            x = range(len(labels))
+            width = 0.35
+
+            fig, ax = plt.subplots(figsize=(6, 4))
+            ax.bar([i - width/2 for i in x], hospital_counts, width, label='정신병원', color='lightblue')
+            ax.bar([i + width/2 for i in x], rehab_counts, width, label='정신재활센터', color='orange')
+            ax.set_xticks(list(x))
+            ax.set_xticklabels(labels, fontproperties=font_prop)
+            ax.set_ylabel("기관 수", fontproperties=font_prop)
+            ax.set_title("김해시 지역별 정신의료 인프라 분포", fontproperties=font_prop)
             ax.legend(prop=font_prop)
             st.pyplot(fig)
 
