@@ -76,6 +76,65 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
+import pandas as pd
+import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
+import streamlit as st
+import os
+
+# 한글 폰트 설정
+font_path = os.path.abspath('data/NanumGothic.ttf')
+font_prop = fm.FontProperties(fname=font_path)
+
+# 파일 로딩
+facility_df = pd.read_excel('data/facility.xlsx', skiprows=3)  # 앞부분 설명행 3줄 스킵
+pop_df = pd.read_excel('data/인구통계.xlsx', header=None)
+pop_df.columns = ['지역', '인구']
+
+# 지역명 정리 (인덱스 맞추기용)
+regions = ['서울특별시','부산광역시','대구광역시','인천광역시', '광주광역시', '대전광역시','울산광역시','세종특별자치시',
+           '경기도','강원특별자치도','충청북도','충청남도','전북특별자치도', '전라남도','경상북도','경상남도','제주특별자치도']
+
+# 필요한 행 필터링
+facility_df = facility_df[facility_df.iloc[:, 0].isin(regions)]
+facility_df = facility_df.set_index(facility_df.columns[0])
+pop_df = pop_df[pop_df['지역'].isin(regions)]
+pop_df = pop_df.set_index('지역')
+
+# 정신재활시설 데이터
+rehab = facility_df.iloc[:, 5]  # 6번째 컬럼
+rehab.name = '정신재활시설'
+
+# 의료기관 전체 (합산)
+medical = facility_df.iloc[:, 7:16].sum(axis=1)
+medical.name = '의료기관'
+
+# 인구수 추출 (숫자 변환)
+population = pop_df['인구'].astype(float)
+
+# 비율 계산 (개수 / 인구)
+rehab_ratio = (rehab / population).reindex(regions)
+medical_ratio = (medical / population).reindex(regions)
+
+# 데이터프레임 병합
+ratio_df = pd.DataFrame({
+    '정신재활시설': rehab_ratio,
+    '의료기관': medical_ratio
+}, index=regions)
+
+# 시각화
+fig, ax = plt.subplots(figsize=(12, 6))
+ratio_df.plot(kind='bar', ax=ax, color=['#66c2a5', '#fc8d62'])
+
+ax.set_title('시도별 정신재활시설 및 의료기관 비율 (개수/인구)', fontproperties=font_prop)
+ax.set_ylabel('시설 수 / 인구 수', fontproperties=font_prop)
+ax.set_xlabel('지역', fontproperties=font_prop)
+ax.legend(prop=font_prop)
+plt.xticks(rotation=45, ha='right', fontproperties=font_prop)
+
+st.pyplot(fig)
+
+
 
 
 # II. 정신건강증진시설의 지역격차 지도
