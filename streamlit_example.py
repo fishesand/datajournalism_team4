@@ -54,7 +54,13 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.markdown("""
-<h2 style='text-align: center; margin-top: 40px;'>정신건강증진시설 소개</h2>
+<h2 style='text-align: center; margin-top: 40px;'>정신건강증진시설이란?</h2>
+
+<div style="background-color: #e3f2fd; padding: 20px; border-left: 6px solid #1976d2; border-radius: 8px; margin-bottom: 25px; font-size: 16px;">
+    「정신건강증진 및 정신질환자 복지서비스 지원에 관한 법률」 제3조 제4호에 따르면,  
+    <strong>‘정신건강증진시설’이란 정신의료기관, 정신요양시설 및 정신재활시설</strong>을 말합니다.  
+    이들 시설을 중심으로 <strong>국가와 지방자치단체는 정신건강의 예방부터 조기발견, 치료, 재활, 사회복귀까지 전 과정을 포괄하는 서비스를 계획·시행</strong>하고 있습니다.
+</div>
 
 <div style="background-color: #f9f9f9; padding: 25px; border-radius: 12px; line-height: 1.8; font-size: 17px;">
     <ul>
@@ -69,6 +75,7 @@ st.markdown("""
     </ul>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 # II. 정신건강증진시설의 지역격차 지도
