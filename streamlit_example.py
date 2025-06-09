@@ -108,6 +108,11 @@ if "zoom_enabled" not in st.session_state:
 
 # ✅ 지도 설정 정보
 options = {
+    '서울특별시 (강남구)': {
+        'geojson': 'data/hangjeongdong_강남구.geojson',
+        'excel': 'data/gangnam_juso.xlsx',
+        'target_regions': ['강남구']
+    },
     '경상남도 (김해시)': {
         'geojson': 'data/hangjeongdong_경상남도.geojson',
         'excel': 'data/gimhae_juso.xlsx',
@@ -122,11 +127,6 @@ options = {
         'geojson': 'data/hangjeongdong_강원도.geojson',
         'excel': 'data/gangwon_juso.xlsx',
         'target_regions': ['원주시', '횡성군', '홍천군', '평창군', '영월군']
-    },
-    '서울특별시 (강남구)': {
-        'geojson': 'data/hangjeongdong_강남구.geojson',
-        'excel': 'data/gangnam_juso.xlsx',
-        'target_regions': ['강남구']
     }
 }
 
@@ -233,7 +233,7 @@ def render_map(selection, col):
                         icon=folium.Icon(color='orange', icon='heart')
                     ).add_to(m)
         except Exception as e:
-            col.error(f"정신재활시설 파일 로딩 오류: {e}")
+            col.error(f"정신재활시설 표시 오류: {e}")
     elif '강원도' in selection:
         try:
             # 정신재활시설 한 곳만 수동으로 추가
