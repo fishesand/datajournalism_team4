@@ -48,9 +48,9 @@ st.markdown("""
 # 소제목 출력
 # I. 정신건강증진시설의 개념과 기본 통계
 st.markdown("""
-<h2 style='text-align: center; font-size: 40px; margin-top: 60px;'>
+<h1 style='text-align: center; font-size: 40px; margin-top: 60px;'>
     I. 정신건강증진시설의 개념과 기본 통계
-</h2>
+</h1>
 """, unsafe_allow_html=True)
 
 st.markdown("""
@@ -84,7 +84,7 @@ font_prop = fm.FontProperties(fname=font_path)
 
 # 📊 2018~2023 전국 정신건강증진 시설 수 변화 선그래프 표시
 st.markdown("""
-<h3 style='text-align: center; margin-top: 60px;'>2018~2023 전국 정신건강증진 시설 수 변화</h3>
+<h2 style='text-align: center; margin-top: 40px;'>2018~2023 전국 정신건강증진 시설 수 변화</h2>
 """, unsafe_allow_html=True)
 
 # 그래프 데이터 로드 및 전처리
@@ -132,9 +132,9 @@ from io import BytesIO
 
 # II. 정신건강증진시설의 지역격차 지도
 st.markdown("""
-<h2 style='text-align: center; font-size: 40px; margin-top: 80px;'>
+<h1 style='text-align: center; font-size: 40px; margin-top: 80px;'>
     II. 정신건강증진시설의 지역격차 지도
-</h2>
+</h1>
 """, unsafe_allow_html=True)
 
 # ✅ 수동 면적 정보 (㎢ 기준)
@@ -626,11 +626,6 @@ def render_map(selection, col):
             ax.legend(prop=font_prop)
             st.pyplot(fig)
 
-# ────────────────────────────────
-# 🔽 기타 시각화, 분석 코드들
-# 여기에 다른 콘텐츠가 이미 있음
-# ────────────────────────────────
-
 import streamlit as st
 import json
 import pandas as pd
@@ -642,7 +637,7 @@ import time
 
 # 상태 변수 초기화
 if "story_stage" not in st.session_state:
-    st.session_state.story_stage = 0
+    st.session_state.story_stage = 1
 
 def next_stage():
     st.session_state.story_stage += 1
@@ -656,35 +651,10 @@ seolleung_df = pd.read_excel("data/seoulleung_juso.xlsx").dropna(subset=['위도
 seolleung_hospitals = gangnam_df[gangnam_df['주소'].str.contains("선릉로", na=False)]
 
 # 타이틀
-st.markdown("<h1 style='text-align:center; font-size:50px;'>강남구 정신건강 스토리텔링</h1>", unsafe_allow_html=True)
-
-# 0단계: 시작 버튼
-if st.session_state.story_stage == 0:
-    # 버튼 중앙 정렬 및 큰 크기로 표시
-    st.markdown("""
-        <div style='display: flex; justify-content: center; align-items: center; height: 500px;'>
-            <style>
-                div.stButton > button {
-                    padding: 40px 80px;
-                    font-size: 36px;
-                    font-weight: bold;
-                    background-color: #999999;
-                    color: white;
-                    border: none;
-                    border-radius: 15px;
-                    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
-                    cursor: pointer;
-                }
-            </style>
-    """, unsafe_allow_html=True)
-
-    if st.button("A씨와 B씨의 이야기"):
-        st.session_state.story_stage = 1
-
-    st.markdown("</div>", unsafe_allow_html=True)
+st.markdown("<h1 style='text-align:center; font-size:40px;'>III. A씨와 B씨의 이야기</h1>", unsafe_allow_html=True)
 
 # 1단계: 인물 소개
-elif st.session_state.story_stage == 1:
+if st.session_state.story_stage == 1:
     st.markdown("<h2 style='text-align: center; font-size:40px; margin-top:100px;'>강남구에 사는 A씨가 있습니다.</h2>", unsafe_allow_html=True)
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
