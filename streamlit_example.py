@@ -76,6 +76,41 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
+import matplotlib.font_manager as fm
+
+# 폰트 경로 설정
+font_path = "data/NanumGothic.ttf"  # 파일 경로가 다르면 수정
+font_prop = fm.FontProperties(fname=font_path)
+
+# 📊 2018~2023 전국 정신건강증진 시설 수 변화 선그래프 표시
+st.markdown("""
+<h3 style='text-align: center; margin-top: 60px;'>2018~2023 전국 정신건강증진 시설 수 변화</h3>
+""", unsafe_allow_html=True)
+
+# 그래프 데이터 로드 및 전처리
+df_year = pd.read_excel("data/2018_2023_정신건강시설.xlsx")
+df_cleaned = df_year.iloc[1:4].copy()
+df_cleaned.columns = ['종류', 2018, 2019, 2020, 2021, 2022, 2023]
+df_cleaned.set_index('종류', inplace=True)
+df_cleaned = df_cleaned.astype(int).T
+df_cleaned.index = df_cleaned.index.astype(int)
+
+# 그래프 생성 및 크기 조절
+fig, ax = plt.subplots(figsize=(6, 3.5))
+for col in df_cleaned.columns:
+    ax.plot(df_cleaned.index, df_cleaned[col], marker='o', label=col)
+
+# ✅ 폰트 적용
+ax.set_title("2018~2023 전국 정신건강증진 시설 수 변화", fontsize=40, fontproperties=font_prop)
+ax.set_xlabel("연도", fontsize=10, fontproperties=font_prop)
+ax.set_ylabel("시설 수", fontsize=10, fontproperties=font_prop)
+ax.set_xticks(df_cleaned.index)
+ax.set_xticklabels(df_cleaned.index, fontproperties=font_prop)
+ax.legend(prop=font_prop, fontsize=9)
+ax.grid(True)
+
+st.pyplot(fig)
+
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
@@ -314,18 +349,28 @@ def render_map(selection, col):
             ax.legend(prop=font_prop)
             st.pyplot(fig)
 
-    
 
-
-# ✅ 화면 구성
 col1, col2 = st.columns(2)
+
+# 왼쪽 지도 선택
 with col1:
-    selected_left = st.selectbox("🗺️ 왼쪽 지도 지역 선택", list(options.keys()), key='left')
+    selected_left = st.selectbox("🗺️ 왼쪽 지도 지역 선택", list(options.keys()), key='left_map')
     render_map(selected_left, col1)
 
+# 오른쪽 지도 선택 - 왼쪽과 다른 옵션만 제공
 with col2:
-    selected_right = st.selectbox("🗺️ 오른쪽 지도 지역 선택", list(options.keys()), key='right')
-    render_map(selected_right, col2)
+    right_options = [opt for opt in options.keys() if opt != selected_left]
+
+    # 현재 세션에 selected_right가 존재하고, 그것이 새로운 옵션에 없다면 초기화
+    if "selected_right" not in st.session_state or st.session_state.selected_right not in right_options:
+        st.session_state.selected_right = right_options[0] if right_options else None
+
+    if right_options:
+        selected_right = st.selectbox("🗺️ 오른쪽 지도 지역 선택", right_options, index=right_options.index(st.session_state.selected_right), key='right_map')
+        render_map(selected_right, col2)
+    else:
+        st.warning("⚠️ 왼쪽과 다른 지역을 선택해 주세요.")
+
 
 # ✅ 확대 기능 버튼
 st.markdown("---")
@@ -339,74 +384,6 @@ else:
     if colz2.button("🔒 확대 기능 끄기"):
         st.session_state.zoom_enabled = False
         st.rerun()
-
-import pandas as pd
-import matplotlib.pyplot as plt
-import matplotlib.font_manager as fm
-import streamlit as st
-import os
-
-# 한글 폰트 설정
-font_path = os.path.abspath('data/NanumGothic.ttf')
-font_prop = fm.FontProperties(fname=font_path)
-
-# 파일 로딩
-facility_df = pd.read_excel('data/facility.xlsx', skiprows=3)  # 앞부분 설명행 3줄 스킵
-pop_df = pd.read_excel('data/인구통계.xlsx', header=None)
-pop_df.columns = ['지역', '인구']
-
-# 지역명 정리 (인덱스 맞추기용)
-regions = ['서울특별시','부산광역시','대구광역시','인천광역시', '광주광역시', '대전광역시','울산광역시','세종특별자치시',
-           '경기도','강원특별자치도','충청북도','충청남도','전북특별자치도', '전라남도','경상북도','경상남도','제주특별자치도']
-
-# 필요한 행 필터링
-facility_df = facility_df[facility_df.iloc[:, 0].isin(regions)]
-facility_df = facility_df.set_index(facility_df.columns[0])
-pop_df = pop_df[pop_df['지역'].isin(regions)]
-pop_df = pop_df.set_index('지역')
-
-# 정신재활시설 데이터
-rehab = facility_df.iloc[:, 5]  # 6번째 컬럼
-rehab.name = '정신재활시설'
-
-# 의료기관 전체 (합산)
-medical = facility_df.iloc[:, 7:16].sum(axis=1)
-medical.name = '의료기관'
-
-# 인구수 추출 (숫자 변환)
-population = pop_df['인구'].astype(float)
-
-# 비율 계산 (개수 / 인구)
-rehab_ratio = (rehab / population).reindex(regions)
-medical_ratio = (medical / population).reindex(regions)
-
-# 데이터프레임 병합
-ratio_df = pd.DataFrame({
-    '정신재활시설': rehab_ratio,
-    '의료기관': medical_ratio
-}, index=regions)
-
-# 시각화
-fig, ax = plt.subplots(figsize=(12, 6))
-ratio_df.plot(kind='bar', ax=ax, color=['#66c2a5', '#fc8d62'])
-
-ax.set_title('시도별 정신재활시설 및 의료기관 비율 (개수/인구)', fontproperties=font_prop)
-ax.set_ylabel('시설 수 / 인구 수', fontproperties=font_prop)
-ax.set_xlabel('지역', fontproperties=font_prop)
-ax.legend(prop=font_prop)
-plt.xticks(rotation=45, ha='right', fontproperties=font_prop)
-
-st.pyplot(fig)
-
-
-
-
-# II. 정신건강증진시설의 지역격차 지도
-st.markdown("""
-<h2 style='text-align: center; font-size: 40px; margin-top: 80px;'>
-    II. 정신건강증진시설의 지역격차 지도
-</h2>
-""", unsafe_allow_html=True)
 
 # ✅ 수동 면적 정보 (㎢ 기준)
 manual_area_map = {
@@ -649,32 +626,280 @@ def render_map(selection, col):
             ax.legend(prop=font_prop)
             st.pyplot(fig)
 
-    
+# ────────────────────────────────
+# 🔽 기타 시각화, 분석 코드들
+# 여기에 다른 콘텐츠가 이미 있음
+# ────────────────────────────────
 
+import streamlit as st
+import json
+import pandas as pd
+import folium
+from streamlit_folium import st_folium
+import matplotlib.pyplot as plt
+import matplotlib.image as mpimg
+import time
 
-# ✅ 화면 구성
-col1, col2 = st.columns(2)
-with col1:
-    selected_left = st.selectbox("🗺️ 왼쪽 지도 지역 선택", list(options.keys()), key='left')
-    render_map(selected_left, col1)
+# 상태 변수 초기화
+if "story_stage" not in st.session_state:
+    st.session_state.story_stage = 0
 
-with col2:
-    selected_right = st.selectbox("🗺️ 오른쪽 지도 지역 선택", list(options.keys()), key='right')
-    render_map(selected_right, col2)
+def next_stage():
+    st.session_state.story_stage += 1
 
-# ✅ 확대 기능 버튼
-st.markdown("---")
-if not st.session_state.zoom_enabled:
-    if st.button("🔍 확대 기능 켜기"):
-        st.session_state.zoom_enabled = True
+def prev_stage():
+    st.session_state.story_stage -= 1
+
+# 데이터 불러오기
+gangnam_df = pd.read_excel("data/gangnam_juso.xlsx").dropna(subset=['위도', '경도'])
+seolleung_df = pd.read_excel("data/seoulleung_juso.xlsx").dropna(subset=['위도', '경도'])
+seolleung_hospitals = gangnam_df[gangnam_df['주소'].str.contains("선릉로", na=False)]
+
+# 타이틀
+st.markdown("<h1 style='text-align:center; font-size:50px;'>강남구 정신건강 스토리텔링</h1>", unsafe_allow_html=True)
+
+# 0단계: 시작 버튼
+if st.session_state.story_stage == 0:
+    # 버튼 중앙 정렬 및 큰 크기로 표시
+    st.markdown("""
+        <div style='display: flex; justify-content: center; align-items: center; height: 500px;'>
+            <style>
+                div.stButton > button {
+                    padding: 40px 80px;
+                    font-size: 36px;
+                    font-weight: bold;
+                    background-color: #999999;
+                    color: white;
+                    border: none;
+                    border-radius: 15px;
+                    box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+                    cursor: pointer;
+                }
+            </style>
+    """, unsafe_allow_html=True)
+
+    if st.button("A씨와 B씨의 이야기"):
+        st.session_state.story_stage = 1
+
+    st.markdown("</div>", unsafe_allow_html=True)
+
+# 1단계: 인물 소개
+elif st.session_state.story_stage == 1:
+    st.markdown("<h2 style='text-align: center; font-size:40px; margin-top:100px;'>강남구에 사는 A씨가 있습니다.</h2>", unsafe_allow_html=True)
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        st.image("data/A씨.png", width=240)
+
+# 2단계: 전체 강남구 지도
+elif st.session_state.story_stage == 2:
+    st.markdown("<h2 style='text-align:center; font-size:40px; margin-bottom:20px;'>강남구에는 정신병원이 102곳, 정신재활센터는 1곳 있습니다.</h2>", unsafe_allow_html=True)
+
+    m = folium.Map(location=[37.4979, 127.0276], zoom_start=13, tiles=None,
+                   zoom_control=False, dragging=False, scrollWheelZoom=False)
+
+    m.get_root().html.add_child(folium.Element("""
+        <style>.leaflet-container {background-color: #007f00 !important;}</style>
+    """))
+
+    with open("data/gangnam_only.geojson", encoding="utf-8") as f:
+        gangnam_geo = json.load(f)
+
+    folium.GeoJson(gangnam_geo, style_function=lambda x: {
+        'fillColor': 'none', 'color': 'black', 'weight': 3, 'fillOpacity': 0
+    }).add_to(m)
+
+    for _, row in gangnam_df.iterrows():
+        folium.CircleMarker(
+            location=[row['위도'], row['경도']],
+            radius=5, color='red', fill=True, fill_color='red', fill_opacity=0.9
+        ).add_to(m)
+
+    st_folium(m, width=1200, height=700)
+
+# 3단계: 선릉로 강조 지도
+elif st.session_state.story_stage == 3:
+    st.markdown("<h2 style='text-align:center; font-size:40px; margin-bottom:20px;'>A씨가 거주하는 선릉로에만 정신병원이 12곳 있습니다.</h2>", unsafe_allow_html=True)
+
+    m = folium.Map(location=[37.5045, 127.0497], zoom_start=14, tiles=None,
+                   zoom_control=False, dragging=False, scrollWheelZoom=False)
+
+    m.get_root().html.add_child(folium.Element("""
+        <style>.leaflet-container {background-color: #007f00 !important;}</style>
+    """))
+
+    # 선릉로 라인
+    points = list(zip(seolleung_df['위도'], seolleung_df['경도']))
+    folium.PolyLine(points, color='orange', weight=8, opacity=1).add_to(m)
+
+    # 병원 마커
+    for _, row in seolleung_hospitals.iterrows():
+        folium.CircleMarker(
+            location=[row['위도'], row['경도']],
+            radius=7,
+            color='red',
+            weight=2,
+            fill=True,
+            fill_color = 'red',
+            fill_opacity=0.9
+        ).add_to(m)
+
+    st_folium(m, width=1200, height=700)
+
+elif st.session_state.story_stage == 4:
+    st.markdown("<h2 style='text-align:center; font-size:40px;'>A씨의 거주지로부터 정신병원까지 가는 데는 얼마나 걸릴까요?</h2>", unsafe_allow_html=True)
+
+    # 지도 설정
+    m = folium.Map(location=[37.4979, 127.0276], zoom_start=13, tiles=None,
+                   zoom_control=False, dragging=False, scrollWheelZoom=False)
+
+    m.get_root().html.add_child(folium.Element("""
+        <style>.leaflet-container {background-color: #007f00 !important;}</style>
+    """))
+
+    # GeoJSON 로드
+    with open("data/gangnam_only.geojson", encoding="utf-8") as f:
+        gangnam_geo = json.load(f)
+
+    # 스타일 함수 정의: 역삼2동만 노란색, 나머지는 투명
+    def style_function(feature):
+        adm_nm = feature['properties'].get('adm_nm', '')
+        if adm_nm == "서울특별시 강남구 역삼2동":
+            return {
+                'fillColor': '#ffd700',
+                'color': 'black',
+                'weight': 3,
+                'fillOpacity': 0.8
+            }
+        else:
+            return {
+                'fillColor': 'none',
+                'color': 'black',
+                'weight': 3,
+                'fillOpacity': 0
+            }
+
+    # GeoJSON 지도 추가
+    folium.GeoJson(
+        gangnam_geo,
+        name="강남구 행정동",
+        style_function=style_function
+    ).add_to(m)
+
+    # 병원 위치에 CircleMarker 추가
+    for _, row in gangnam_df.iterrows():
+        folium.CircleMarker(
+            location=[row['위도'], row['경도']],
+            radius=5,
+            color='red',
+            fill=True,
+            fill_color='red',
+            fill_opacity=0.9
+        ).add_to(m)
+
+    # 지도 렌더링
+    st_folium(m, width=1200, height=700)
+
+elif st.session_state.story_stage == 5:
+    st.markdown("""
+        <h2 style='text-align:center; font-size:28px; margin-bottom:10px;'>
+            집 근처, 정신병원들이 모여있는 반경까지 이동하는 데 걸어서 12분이 채 걸리지 않습니다.
+        </h2>
+        <h3 style='text-align:center; font-size:28px; color: black;'>
+            많은 병원들이 분포되어 있기 때문에, 선택지의 폭도 넓습니다.
+        </h3>
+    """, unsafe_allow_html=True)
+
+    if "path_step" not in st.session_state:
+        st.session_state.path_step = 1
+
+    path = [
+        [37.5005851, 127.0444115],
+        [37.502807, 127.044328],
+        [37.503531, 127.0470524],
+        [37.5049872, 127.0491562]
+    ]
+
+    m = folium.Map(location=[37.5025, 127.0465], zoom_start=16, tiles=None,
+                   zoom_control=False, dragging=False, scrollWheelZoom=False)
+
+    m.get_root().html.add_child(folium.Element("""
+        <style>.leaflet-container {background-color: #007f00 !important;}</style>
+    """))
+
+    with open("data/gangnam_only.geojson", encoding="utf-8") as f:
+        gangnam_geo = json.load(f)
+
+    def style_function(feature):
+        adm_nm = feature['properties'].get('adm_nm', '')
+        if adm_nm == "서울특별시 강남구 역삼2동":
+            return {
+                'fillColor': '#ffd700',
+                'color': 'black',
+                'weight': 3,
+                'fillOpacity': 0.8
+            }
+        else:
+            return {
+                'fillColor': 'none',
+                'color': 'black',
+                'weight': 3,
+                'fillOpacity': 0
+            }
+
+    folium.GeoJson(
+        gangnam_geo,
+        name="강남구 행정동",
+        style_function=style_function
+    ).add_to(m)
+
+    for _, row in gangnam_df.iterrows():
+        folium.CircleMarker(
+            location=[row['위도'], row['경도']],
+            radius=5,
+            color='red',
+            fill=True,
+            fill_color='red',
+            fill_opacity=0.9
+        ).add_to(m)
+
+    folium.CircleMarker(
+        location=[37.5005851, 127.0444115],
+        radius=7,
+        color='blue',
+        fill=True,
+        fill_color='blue',
+        fill_opacity=0.9
+    ).add_to(m)
+
+    folium.PolyLine(
+        path[:st.session_state.path_step],
+        color='lightblue',
+        weight=5,
+        opacity=0.9
+    ).add_to(m)
+
+    folium.Circle(
+        location=[37.5049600, 127.0481000],
+        radius=300,
+        color='lightblue',
+        fill=True,
+        fill_color='lightblue',
+        fill_opacity=0.3
+    ).add_to(m)
+
+    st_folium(m, width=1200, height=700)
+
+    if st.session_state.path_step < len(path):
+        time.sleep(0.5)
+        st.session_state.path_step += 1
         st.rerun()
-else:
-    colz1, colz2 = st.columns([3, 1])
-    colz1.success("🖱️ 이제 지도를 자유롭게 확대·이동할 수 있습니다.")
-    if colz2.button("🔒 확대 기능 끄기"):
-        st.session_state.zoom_enabled = False
-        st.rerun()
 
-
-
-
+# 🔽 하단 버튼
+if 1 <= st.session_state.story_stage <= 5:
+    col1, col2, col3 = st.columns([1, 8, 1])
+    with col1:
+        if st.session_state.story_stage > 1:
+            st.button("⬅ BACK", on_click=prev_stage)
+    with col3:
+        if st.session_state.story_stage < 5:
+            st.button("NEXT ➡", on_click=next_stage)
