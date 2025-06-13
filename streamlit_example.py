@@ -159,18 +159,27 @@ ax1.legend(bars, labels, prop=font_prop)
 
 st.pyplot(fig)
 
-def show_region(title, num_hospitals, people_per_hospital):
-    st.subheader(title)
-    cols = st.columns(num_hospitals)
-    for col in cols:
-        col.image("hospital.jpeg", width=60)
-        for _ in range(people_per_hospital):
-            col.image("person.png", width=30)
+from PIL import Image
+import streamlit as st
 
-st.title("지역별 병원당 진료 인원 비교")
+# 이미지 로드
+hospital_img = Image.open("data/hospital.png")
+person_img = Image.open("data/person.png")
 
-show_region("서울", num_hospitals=2, people_per_hospital=2)
-show_region("경상북도", num_hospitals=2, people_per_hospital=5)
+def render_region(col, title, num_hospitals, people_per_hospital):
+    col.subheader(title)
+    col.image([hospital_img] * num_hospitals, width=60)  # 병원 이미지 가로 나열
+    col.image([person_img] * people_per_hospital, width=30)  # 사람 이미지 가로 나열
+
+# 전체 제목
+st.title("🏥 지역별 병원당 진료 인원 비교")
+
+# 왼쪽: 서울, 오른쪽: 경상북도
+left_col, right_col = st.columns(2)
+
+render_region(left_col, "서울", num_hospitals=1, people_per_hospital=2)
+render_region(right_col, "경상북도", num_hospitals=1, people_per_hospital=5)
+
 
 # 📊 2018~2023 전국 정신건강증진 시설 수 변화 선그래프 표시
 st.markdown("""
