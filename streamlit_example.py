@@ -350,6 +350,70 @@ def render_map(selection, col):
             ax.legend(prop=font_prop)
             st.pyplot(fig)
 
+    elif '서울특별시' in selection:
+        with col:
+            st.markdown("""
+            **대상 지역:** 서울특별시 강남구       
+            **지역 총면적:** 39.55km²      
+            **지역 총인구:** 556,822명
+                        
+            **지역별 정신병원 및 정신재활센터 수:** 102개/1개
+            """)
+
+        # ✅ 김해시 설명 및 그래프 표시
+    elif '김해시' in selection:
+        with col:
+            st.markdown("""
+            **대상 지역:** 경상남도 김해시  
+            **지역 총면적:** 463.3 km²  
+            **지역 총인구:** 556,505명  
+            
+            **지역별 정신병원 및 정신재활센터 수:**
+            """)
+
+            labels = ['김해시 동부', '김해시 서부']  # 예시 구분
+            hospital_counts = [6, 3]  # 예시 데이터
+            rehab_counts = [1, 0]     # 예시 데이터
+            x = range(len(labels))
+            width = 0.35
+
+            fig, ax = plt.subplots(figsize=(6, 4))
+            ax.bar([i - width/2 for i in x], hospital_counts, width, label='정신병원', color='lightblue')
+            ax.bar([i + width/2 for i in x], rehab_counts, width, label='정신재활센터', color='orange')
+            ax.set_xticks(list(x))
+            ax.set_xticklabels(labels, fontproperties=font_prop)
+            ax.set_ylabel("기관 수", fontproperties=font_prop)
+            ax.set_title("김해시 지역별 정신의료 인프라 분포", fontproperties=font_prop)
+            ax.legend(prop=font_prop)
+            st.pyplot(fig)
+
+    elif '강원도' in selection:
+     with col:
+        st.markdown("""
+        **대상 지역:** 강원도 원주시, 횡성군, 홍천군, 평창군, 영월군  
+        **지역 총면적:**  6272.74 km²  
+        **지역 총인구:** 550028명  
+        
+        **지역별 정신병원 및 정신재활센터 수:**
+        """)
+
+        labels = ['원주시', '횡성군', '홍천군', '평창군', '영월군']
+        hospital_counts = [13, 0, 1, 0, 1]  # 실제 숫자 넣기
+        rehab_counts =  [1, 0, 0, 0, 0]   # 실제 숫자 넣기
+        x = range(len(labels))
+        width = 0.35
+
+        fig, ax = plt.subplots(figsize=(6, 4))
+        ax.bar([i - width/2 for i in x], hospital_counts, width, label='정신병원', color='lightblue')
+        ax.bar([i + width/2 for i in x], rehab_counts, width, label='정신재활센터', color='orange')
+        ax.set_xticks(list(x))
+        ax.set_xticklabels(labels, fontproperties=font_prop)
+        ax.set_ylabel("기관 수", fontproperties=font_prop)
+        ax.set_title("강원도 지역별 정신의료 인프라 분포", fontproperties=font_prop)
+        ax.legend(prop=font_prop)
+        st.pyplot(fig)
+
+
 
 
 col1, col2 = st.columns(2)
@@ -654,6 +718,15 @@ def render_map(selection, col):
             ax.legend(prop=font_prop)
             st.pyplot(fig)
 
+    elif '서울특별시' in selection:
+        with col:
+            st.markdown("""
+            **대상 지역:** 서울특별시 강남구       
+            **지역 총면적:** 39.55km²      
+            **지역 총인구:** 556,822명
+                        
+            **지역별 정신병원 및 정신재활센터 수:** 102개/1개
+            """)
 
 
 import streamlit as st
