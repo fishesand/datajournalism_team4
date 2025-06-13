@@ -350,6 +350,7 @@ def render_map(selection, col):
             st.pyplot(fig)
 
 
+
 col1, col2 = st.columns(2)
 
 # 왼쪽 지도 선택
