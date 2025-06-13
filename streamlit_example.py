@@ -870,6 +870,15 @@ seolleung_hospitals = gangnam_df[gangnam_df['주소'].str.contains("선릉로", 
 # 타이틀
 st.markdown("<h1 style='text-align:center; font-size:40px;'>III. A씨와 B씨의 이야기</h1>", unsafe_allow_html=True)
 
+import pandas as pd
+
+boseong_df = pd.DataFrame({
+    '기관명': ['벌교삼호병원', '보성제일병원'],
+    '주소': ['전남 보성군 남하로 12', '전남 보성군 송재로 59-2'],
+    '위도': [34.8337591, 34.763154],
+    '경도': [127.3459238, 127.073384]
+})
+
 # 1단계: 인물 소개
 if st.session_state.story_stage == 1:
     st.markdown("<h2 style='text-align: center; font-size:40px; margin-top:100px;'>강남구에 사는 A씨가 있습니다.</h2>", unsafe_allow_html=True)
@@ -1077,12 +1086,65 @@ elif st.session_state.story_stage == 5:
         st.session_state.path_step += 1
         st.rerun()
 
+elif st.session_state.story_stage == 6:
+    st.markdown("<h2 style='text-align: center; font-size:40px; margin-top:100px;'>전라남도 보성군에 사는 B씨가 있습니다.</h2>", unsafe_allow_html=True)
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        st.image("data/A씨.png", width=240)
+
+elif st.session_state.story_stage == 7:
+    st.markdown("<h2 style='text-align: center; font-size:38px; margin-bottom:20px;'>보성군에는 정신병원이 단 2곳뿐입니다.</h2>", unsafe_allow_html=True)
+
+    m = folium.Map(location=[34.79, 127.21], zoom_start=11, tiles=None,
+                   zoom_control=False, dragging=False, scrollWheelZoom=False)
+
+    m.get_root().html.add_child(folium.Element("""
+        <style>.leaflet-container {background-color: #003300 !important;}</style>
+    """))
+
+    with open("data/boseong_geo.json", encoding="utf-8") as f:
+        boseong_geo = json.load(f)
+
+    folium.GeoJson(boseong_geo, style_function=lambda x: {
+        'fillColor': 'none',
+        'color': 'black',
+        'weight': 2,
+        'fillOpacity': 0
+    }).add_to(m)
+
+    # 병원 마커 (2곳)
+    for _, row in boseong_df.iterrows():
+        folium.CircleMarker(
+            location=[row['위도'], row['경도']],
+            radius=8,
+            color='red',
+            fill=True,
+            fill_color='red',
+            fill_opacity=0.9,
+            tooltip=row['기관명']
+        ).add_to(m)
+
+    st_folium(m, width=1200, height=700)
+
+elif st.session_state.story_stage == 8:
+    st.markdown("""
+        <h2 style='text-align: center; font-size:28px; margin-bottom:10px;'>
+            B씨는 두 병원 중에서도 거리가 멀거나, 대기시간이 길 경우 대안을 찾기 어렵습니다.
+        </h2>
+        <h3 style='text-align: center; font-size:26px; color: black;'>
+            상황에 따라 순천, 광주까지 나가야 하는 경우도 생깁니다.
+        </h3>
+    """, unsafe_allow_html=True)
+
+    # 기존처럼 외부 도시(광주 등) 연결 경로 표시도 가능
+
+
 # 🔽 하단 버튼
-if 1 <= st.session_state.story_stage <= 5:
+if 1 <= st.session_state.story_stage <= 8:
     col1, col2, col3 = st.columns([1, 8, 1])
     with col1:
         if st.session_state.story_stage > 1:
             st.button("⬅ BACK", on_click=prev_stage)
     with col3:
-        if st.session_state.story_stage < 5:
+        if st.session_state.story_stage < 8:
             st.button("NEXT ➡", on_click=next_stage)
