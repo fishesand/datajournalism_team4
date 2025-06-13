@@ -313,6 +313,20 @@ def render_map(selection, col):
             ).add_to(m)
         except Exception as e:
             col.error(f"정신재활시설 표시 오류: {e}")
+    elif '김해시' in selection or '경상남도' in selection:
+        try:
+        # 정신재활시설 한 곳 수동 추가 (김해시)
+            folium.Marker(
+                location=[35.2396888, 128.8558248],  # 김해시 평전로93번길 10-19
+                popup=folium.Popup(
+                    "<div style='font-size:14px'>경상남도 김해시 평전로93번길 10-19</div>",
+                    max_width=300
+                ),
+                icon=folium.Icon(color='orange', icon='heart')
+            ).add_to(m)
+        except Exception as e:
+            col.error(f"정신재활시설 표시 오류: {e}")
+
 
     m.get_root().add_child(legend)
     m.fit_bounds([[min_lat, min_lon], [max_lat, max_lon]])
@@ -366,20 +380,21 @@ def render_map(selection, col):
             st.markdown("""
             **대상 지역:** 경상남도 김해시  
             **지역 총면적:** 463.3 km²  
-            **지역 총인구:** 556,505명  
+            **지역 총인구:** 532,792명  
             
             **지역별 정신병원 및 정신재활센터 수:**
             """)
 
-            labels = ['김해시 동부', '김해시 서부']  # 예시 구분
-            hospital_counts = [6, 3]  # 예시 데이터
-            rehab_counts = [1, 0]     # 예시 데이터
-            x = range(len(labels))
-            width = 0.35
+            labels = ['김해시']  # 예시 구분
+            hospital_counts = [11]  # 예시 데이터
+            rehab_counts = [1]     # 예시 데이터
+            x = [2]
+            width = 0.3
 
             fig, ax = plt.subplots(figsize=(6, 4))
             ax.bar([i - width/2 for i in x], hospital_counts, width, label='정신병원', color='lightblue')
             ax.bar([i + width/2 for i in x], rehab_counts, width, label='정신재활센터', color='orange')
+            ax.set_xlim(0,4)
             ax.set_xticks(list(x))
             ax.set_xticklabels(labels, fontproperties=font_prop)
             ax.set_ylabel("기관 수", fontproperties=font_prop)
