@@ -251,7 +251,8 @@ def render_map(selection, col):
         scrollWheelZoom=st.session_state.zoom_enabled,
         dragging=st.session_state.zoom_enabled,
         zoom_control=st.session_state.zoom_enabled,
-        tiles='CartoDB dark_matter'
+        tiles='CartoDB dark_matter',
+        control_scale=True
     )
 
     folium.GeoJson(
@@ -572,9 +573,35 @@ def render_map(selection, col):
     font_prop = fm.FontProperties(fname=font_path)
 
 # [중략: 기존 코드 동일, 생략 없이 이어짐]
+     # ✅ 강원도 설명 및 그래프 표시
+    if '강원도' in selection:
+     with col:
+        st.markdown("""
+        **대상 지역:** 강원도 원주시, 횡성군, 홍천군, 평창군, 영월군  
+        **지역 총면적:**  6272.74 km²  
+        **지역 총인구:** 550028명  
+        
+        **지역별 정신병원 및 정신재활센터 수:**
+        """)
+
+        labels = ['원주시', '횡성군', '홍천군', '평창군', '영월군']
+        hospital_counts = [13, 0, 1, 0, 1]  # 실제 숫자 넣기
+        rehab_counts =  [1, 0, 0, 0, 0]   # 실제 숫자 넣기
+        x = range(len(labels))
+        width = 0.35
+
+        fig, ax = plt.subplots(figsize=(6, 4))
+        ax.bar([i - width/2 for i in x], hospital_counts, width, label='정신병원', color='lightblue')
+        ax.bar([i + width/2 for i in x], rehab_counts, width, label='정신재활센터', color='orange')
+        ax.set_xticks(list(x))
+        ax.set_xticklabels(labels, fontproperties=font_prop)
+        ax.set_ylabel("기관 수", fontproperties=font_prop)
+        ax.set_title("강원도 지역별 정신의료 인프라 분포", fontproperties=font_prop)
+        ax.legend(prop=font_prop)
+        st.pyplot(fig)
 
     # ✅ 전라남도 설명 및 그래프 표시
-    if '전라남도' in selection:
+    elif '전라남도' in selection:
         with col:
             st.markdown("""
             **대상 지역:** 전라남도 순천시, 담양군, 곡성군, 구례군, 고흥군, 보성군, 화순군  
@@ -627,6 +654,8 @@ def render_map(selection, col):
             ax.legend(prop=font_prop)
             st.pyplot(fig)
 
+
+
 import streamlit as st
 import json
 import pandas as pd
@@ -667,10 +696,6 @@ elif st.session_state.story_stage == 2:
 
     m = folium.Map(location=[37.4979, 127.0276], zoom_start=13, tiles=None,
                    zoom_control=False, dragging=False, scrollWheelZoom=False)
-
-    m.get_root().html.add_child(folium.Element("""
-        <style>.leaflet-container {background-color: #007f00 !important;}</style>
-    """))
 
     with open("data/gangnam_only.geojson", encoding="utf-8") as f:
         gangnam_geo = json.load(f)
