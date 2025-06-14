@@ -743,6 +743,63 @@ def render_map(selection, col):
             **지역별 정신병원 및 정신재활센터 수:** 102개/1개
             """)
 
+import streamlit as st
+from wordcloud import WordCloud
+from konlpy.tag import Okt
+from collections import Counter
+import matplotlib.pyplot as plt
+
+# -------------------------------
+# 공통 설정
+# -------------------------------
+stopwords = ["조사", "핵심", "논의", "필수", "위해", "단계", "방식", "구성", "예시",
+             "의료", "개혁", "대한", "것", "수", "등", "강화", "방안", "지원", "체계",
+             "의학", "기준", "개선", "병원", "조정", "업무", "이용", "기구", "확립",
+             "계획", "역할", "시간", "근거", "이용"]
+
+def get_wordcloud_data(txt_path):
+    with open(txt_path, "r", encoding="utf-8") as f:
+        text = f.read()
+    okt = Okt()
+    nouns = okt.nouns(text)
+    filtered = [w for w in nouns if w not in stopwords and len(w) > 1]
+    return Counter(filtered)
+
+def color_func(word, font_size, position, orientation, random_state=None, **kwargs):
+    return "red" if word in ["정신", "지역"] else "black"
+
+def generate_wordcloud(counter):
+    wc = WordCloud(
+        font_path="./data/NanumGothic.ttf",
+        background_color="white",
+        width=800,
+        height=600,
+        color_func=color_func,
+    ).generate_from_frequencies(counter)
+    fig = plt.figure(figsize=(6, 4))
+    plt.imshow(wc, interpolation="bilinear")
+    plt.axis("off")
+    return fig
+
+# -------------------------------
+# 워드클라우드 2개 나란히 출력
+# -------------------------------
+st.title("1차·2차 의료 개혁 WordCloud 비교")
+
+col1, col2 = st.columns(2)
+
+with col1:
+    st.subheader("1차 의료 개혁")
+    counter1 = get_wordcloud_data("data/의료개혁1차.txt")
+    fig1 = generate_wordcloud(counter1)
+    st.pyplot(fig1)
+
+with col2:
+    st.subheader("2차 의료 개혁")
+    counter2 = get_wordcloud_data("data/의료개혁2차.txt")
+    fig2 = generate_wordcloud(counter2)
+    st.pyplot(fig2)
+
 
 import streamlit as st
 import json
@@ -762,6 +819,7 @@ def next_stage():
 
 def prev_stage():
     st.session_state.story_stage -= 1
+
 
 # 데이터 불러오기
 gangnam_df = pd.read_excel("data/gangnam_juso.xlsx").dropna(subset=['위도', '경도'])
@@ -987,3 +1045,6 @@ if 1 <= st.session_state.story_stage <= 5:
     with col3:
         if st.session_state.story_stage < 5:
             st.button("NEXT ➡", on_click=next_stage)
+
+
+
