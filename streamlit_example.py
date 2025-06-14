@@ -399,6 +399,7 @@ def render_map(selection, col):
             ).add_to(m)
         except Exception as e:
             col.error(f"정신재활시설 표시 오류: {e}")
+
     elif '강남구' in selection:
         try:
             # 정신재활시설 한 곳만 수동으로 추가
@@ -412,6 +413,7 @@ def render_map(selection, col):
             ).add_to(m)
         except Exception as e:
             col.error(f"정신재활시설 표시 오류: {e}")
+
     elif '김해시' in selection or '경상남도' in selection:
         try:
         # 정신재활시설 한 곳 수동 추가 (김해시)
@@ -1095,28 +1097,55 @@ elif st.session_state.story_stage == 6:
 elif st.session_state.story_stage == 7:
     st.markdown("<h2 style='text-align: center; font-size:38px; margin-bottom:20px;'>보성군에는 정신병원이 단 2곳뿐입니다.</h2>", unsafe_allow_html=True)
 
-    m = folium.Map(location=[34.79, 127.21], zoom_start=11, tiles=None,
+    # 지도 초기화
+    m = folium.Map(location=[34.79, 127.21], zoom_start=10, tiles=None,
                    zoom_control=False, dragging=False, scrollWheelZoom=False)
 
     m.get_root().html.add_child(folium.Element("""
-        <style>.leaflet-container {background-color: #003300 !important;}</style>
+        <style>.leaflet-container {background-color: #006400 !important;}</style>
     """))
 
-    with open("data/boseong_geo.json", encoding="utf-8") as f:
-        boseong_geo = json.load(f)
+    # 전라남도 GeoJSON 불러오기
+    with open("data/hangjeongdong_전라남도.geojson", encoding="utf-8") as f:
+        jeonnam_geo = json.load(f)
 
-    folium.GeoJson(boseong_geo, style_function=lambda x: {
-        'fillColor': 'none',
-        'color': 'black',
-        'weight': 2,
-        'fillOpacity': 0
-    }).add_to(m)
+    # 보성군 읍면을 강조하는 style 함수
+    def style_function(feature):
+        adm_nm = feature['properties'].get('adm_nm', '')
+        if adm_nm.startswith("전라남도 보성군"):
+            return {
+                'fillColor': 'yellow',
+                'color': 'black',
+                'weight': 2,
+                'fillOpacity': 0.8
+            }
+        else:
+            return {
+                'fillColor': 'none',
+                'color': 'black',
+                'weight': 1,
+                'fillOpacity': 0
+            }
 
-    # 병원 마커 (2곳)
+    # 지도에 행정경계 추가
+    folium.GeoJson(
+        jeonnam_geo,
+        name="전라남도 행정경계",
+        style_function=style_function
+    ).add_to(m)
+
+    # 병원 데이터 (보성군 내 2곳)
+    boseong_df = pd.DataFrame({
+        '기관명': ['벌교삼호병원', '보성제일병원'],
+        '위도': [34.8337591, 34.763154],
+        '경도': [127.3459238, 127.073384]
+    })
+
+    # 병원 마커 추가
     for _, row in boseong_df.iterrows():
         folium.CircleMarker(
             location=[row['위도'], row['경도']],
-            radius=8,
+            radius=7,
             color='red',
             fill=True,
             fill_color='red',
@@ -1124,7 +1153,9 @@ elif st.session_state.story_stage == 7:
             tooltip=row['기관명']
         ).add_to(m)
 
+    # 지도 표시
     st_folium(m, width=1200, height=700)
+
 
 elif st.session_state.story_stage == 8:
     st.markdown("""
