@@ -88,7 +88,7 @@ import streamlit as st
 from matplotlib import font_manager
 
 # 한글 폰트 설정 (예: AppleGothic)
-font_path = "/System/Library/Fonts/Supplemental/AppleGothic.ttf"
+font_path = "data/NanumGothic.ttf"
 font_prop = font_manager.FontProperties(fname=font_path)
 
 # 데이터 로드
