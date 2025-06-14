@@ -1,0 +1,18 @@
+{
+"type": "FeatureCollection",
+"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
+"features": [
+{ "type": "Feature", "properties": { "기관명": "근로복지공단 순천병원", "위도": 34.9612347, "경도": 127.5250228 }, "geometry": { "type": "Point", "coordinates": [ 127.5250228, 34.9612347 ] } },
+{ "type": "Feature", "properties": { "기관명": "김량진정신건강의학과의원", "위도": 34.9537678, "경도": 127.5182189 }, "geometry": { "type": "Point", "coordinates": [ 127.5182189, 34.9537678 ] } },
+{ "type": "Feature", "properties": { "기관명": "김인호정신건강의학과", "위도": 34.9412071, "경도": 127.5083068 }, "geometry": { "type": "Point", "coordinates": [ 127.5083068, 34.9412071 ] } },
+{ "type": "Feature", "properties": { "기관명": "담은정신건강의학과", "위도": 34.9690823, "경도": 127.5224549 }, "geometry": { "type": "Point", "coordinates": [ 127.5224549, 34.9690823 ] } },
+{ "type": "Feature", "properties": { "기관명": "민정신건강의학과", "위도": 34.9543107, "경도": 127.5219436 }, "geometry": { "type": "Point", "coordinates": [ 127.5219436, 34.9543107 ] } },
+{ "type": "Feature", "properties": { "기관명": "밝은마을정신건강의학과", "위도": 34.9545255, "경도": 127.518349 }, "geometry": { "type": "Point", "coordinates": [ 127.518349, 34.9545255 ] } },
+{ "type": "Feature", "properties": { "기관명": "성가롤로병원", "위도": 34.9646324, "경도": 127.5437369 }, "geometry": { "type": "Point", "coordinates": [ 127.5437369, 34.9646324 ] } },
+{ "type": "Feature", "properties": { "기관명": "순천은병원", "위도": 34.9132921, "경도": 127.3268285 }, "geometry": { "type": "Point", "coordinates": [ 127.3268285, 34.9132921 ] } },
+{ "type": "Feature", "properties": { "기관명": "순천정신과의원", "위도": 34.9563641, "경도": 127.483946 }, "geometry": { "type": "Point", "coordinates": [ 127.483946, 34.9563641 ] } },
+{ "type": "Feature", "properties": { "기관명": "웰빙의원", "위도": 34.9496708, "경도": 127.4985117 }, "geometry": { "type": "Point", "coordinates": [ 127.4985117, 34.9496708 ] } },
+{ "type": "Feature", "properties": { "기관명": "전라남도순천의료원", "위도": 34.9578856, "경도": 127.4833799 }, "geometry": { "type": "Point", "coordinates": [ 127.4833799, 34.9578856 ] } },
+{ "type": "Feature", "properties": { "기관명": "최종영신경정신과", "위도": 34.9455822, "경도": 127.5244319 }, "geometry": { "type": "Point", "coordinates": [ 127.5244319, 34.9455822 ] } }
+]
+}

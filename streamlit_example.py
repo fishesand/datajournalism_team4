@@ -82,6 +82,105 @@ import matplotlib.font_manager as fm
 font_path = "data/NanumGothic.ttf"  # 파일 경로가 다르면 수정
 font_prop = fm.FontProperties(fname=font_path)
 
+facility_df = pd.read_excel("data/facility.xlsx")
+population_df = pd.read_excel('data/population.xlsx')
+
+    # 3. facility 전처리
+facility_df.columns = facility_df.iloc[1]
+facility_df = facility_df[2:].copy()
+facility_df.rename(columns={'시도별(1)': '시도'}, inplace=True)
+
+    # 4. 의료기관 수 합산
+medical_cols = ['종합병원 정신과', '병원 정신과', '정신병원_국립', '정신병원_공립', '정신병원_사립',
+                    '요양병원 정신과', '한방병원 정신과', '의원 정신과', '한의원 정신과']
+for col in medical_cols:
+        facility_df[col] = (
+            facility_df[col]
+            .astype(str)
+            .str.replace('-', '0')
+            .str.replace(',', '')
+            .astype(float)
+        )
+
+    # 6. 총 의료기관 수 계산
+facility_df['총의료기관수'] = facility_df[medical_cols].sum(axis=1)
+
+    # 7. 정신재활시설 수 (7번째 열, index 6)
+facility_df['정신재활시설수'] = (
+        facility_df.iloc[:, 6]
+        .astype(str)
+        .str.replace('-', '0')
+        .str.replace(',', '')
+        .astype(float)
+    )
+
+    # 8. 인구 데이터 전처리
+population_df = population_df[['sgg', 'population']].dropna()
+population_df.rename(columns={'sgg': '시도'}, inplace=True)
+
+    # 9. 병합 및 전국 제외
+merged_df = pd.merge(facility_df, population_df, on='시도')
+merged_df = merged_df[merged_df['시도'] != '전국']
+
+    # 10. 비율 계산
+merged_df['인구/의료기관'] = merged_df['population'] / merged_df['총의료기관수']
+merged_df['인구/정신재활시설'] = merged_df['population'] / merged_df['정신재활시설수']
+
+    # 11. 시각화
+st.subheader("📊 시도별 인구 대비 의료기관 및 정신재활시설 비율")
+
+fig, ax1 = plt.subplots(figsize=(14, 6)) 
+x = merged_df['시도']
+width = 0.35
+x_idx = range(len(x))
+
+
+# 왼쪽 y축: 인구/의료기관
+bar1 = ax1.bar(x_idx, merged_df['인구/의료기관'], width=width, label='인구 수 / 의료기관 수', color='skyblue')
+ax1.set_ylabel('인구 / 의료기관 수', fontproperties=font_prop, fontsize=12)
+ax1.tick_params(axis='y')
+
+# 오른쪽 y축: 인구/정신재활시설
+ax2 = ax1.twinx()
+bar2 = ax2.bar([i + width for i in x_idx], merged_df['인구/정신재활시설'], width=width, label='인구 수 / 정신재활시설 수', color='salmon')
+ax2.set_ylabel('인구 / 정신재활시설 수', fontproperties=font_prop, fontsize=12)
+ax2.tick_params(axis='y')
+
+# 공통 x축 설정
+ax1.set_xticks([i + width / 2 for i in x_idx])
+ax1.set_xticklabels(x, rotation=45, fontproperties=font_prop)
+ax1.set_title("시도별 의료기관 및 정신재활시설 인구 대비 비율", fontproperties=font_prop, fontsize=16)
+ax1.set_xlabel("시도", fontproperties=font_prop)
+
+# 범례 통합
+bars = bar1 + bar2
+labels = [bar.get_label() for bar in bars]
+ax1.legend(bars, labels, prop=font_prop)
+
+st.pyplot(fig)
+
+from PIL import Image
+import streamlit as st
+
+# 이미지 로드
+hospital_img = Image.open("data/hospital.png")
+person_img = Image.open("data/person.png")
+
+def render_region(col, title, num_hospitals, people_per_hospital):
+    col.subheader(title)
+    col.image([hospital_img] * num_hospitals, width=60)  # 병원 이미지 가로 나열
+    col.image([person_img] * people_per_hospital, width=30)  # 사람 이미지 가로 나열
+
+# 전체 제목
+st.title("🏥 지역별 병원당 진료 인원 비교")
+
+# 왼쪽: 서울, 오른쪽: 경상북도
+left_col, right_col = st.columns(2)
+
+render_region(left_col, "서울", num_hospitals=1, people_per_hospital=2)
+render_region(right_col, "경상북도", num_hospitals=1, people_per_hospital=5)
+
+
 # 📊 2018~2023 전국 정신건강증진 시설 수 변화 선그래프 표시
 st.markdown("""
 <h2 style='text-align: center; margin-top: 40px;'>2018~2023 전국 정신건강증진 시설 수 변화</h2>
@@ -300,6 +399,7 @@ def render_map(selection, col):
             ).add_to(m)
         except Exception as e:
             col.error(f"정신재활시설 표시 오류: {e}")
+
     elif '강남구' in selection:
         try:
             # 정신재활시설 한 곳만 수동으로 추가
@@ -313,6 +413,7 @@ def render_map(selection, col):
             ).add_to(m)
         except Exception as e:
             col.error(f"정신재활시설 표시 오류: {e}")
+
     elif '김해시' in selection or '경상남도' in selection:
         try:
         # 정신재활시설 한 곳 수동 추가 (김해시)
@@ -829,6 +930,15 @@ seolleung_hospitals = gangnam_df[gangnam_df['주소'].str.contains("선릉로", 
 # 타이틀
 st.markdown("<h1 style='text-align:center; font-size:40px;'>III. A씨와 B씨의 이야기</h1>", unsafe_allow_html=True)
 
+import pandas as pd
+
+boseong_df = pd.DataFrame({
+    '기관명': ['벌교삼호병원', '보성제일병원'],
+    '주소': ['전남 보성군 남하로 12', '전남 보성군 송재로 59-2'],
+    '위도': [34.8337591, 34.763154],
+    '경도': [127.3459238, 127.073384]
+})
+
 # 1단계: 인물 소개
 if st.session_state.story_stage == 1:
     st.markdown("<h2 style='text-align: center; font-size:40px; margin-top:100px;'>강남구에 사는 A씨가 있습니다.</h2>", unsafe_allow_html=True)
@@ -1036,15 +1146,297 @@ elif st.session_state.story_stage == 5:
         st.session_state.path_step += 1
         st.rerun()
 
+elif st.session_state.story_stage == 6:
+    st.markdown("<h2 style='text-align: center; font-size:40px; margin-top:100px;'>전라남도 보성군에 사는 B씨가 있습니다.</h2>", unsafe_allow_html=True)
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        st.image("data/A씨.png", width=240)
+
+elif st.session_state.story_stage == 7:
+    st.markdown("<h2 style='text-align: center; font-size:38px; margin-bottom:20px;'>보성군에는 정신병원이 단 2곳뿐입니다.</h2>", unsafe_allow_html=True)
+
+    # 지도 초기화
+    m = folium.Map(location=[34.79, 127.21], zoom_start=10, tiles=None,
+                   zoom_control=False, dragging=False, scrollWheelZoom=False)
+
+    m.get_root().html.add_child(folium.Element("""
+        <style>.leaflet-container {background-color: #006400 !important;}</style>
+    """))
+
+    # 전라남도 GeoJSON 불러오기
+    with open("data/hangjeongdong_전라남도.geojson", encoding="utf-8") as f:
+        jeonnam_geo = json.load(f)
+
+    # 보성군 읍면을 강조하는 style 함수
+    def style_function(feature):
+        adm_nm = feature['properties'].get('adm_nm', '')
+        if adm_nm.startswith("전라남도 보성군"):
+            return {
+                'fillColor': 'yellow',
+                'color': 'black',
+                'weight': 2,
+                'fillOpacity': 0.8
+            }
+        else:
+            return {
+                'fillColor': 'none',
+                'color': 'black',
+                'weight': 1,
+                'fillOpacity': 0
+            }
+
+    # 지도에 행정경계 추가
+    folium.GeoJson(
+        jeonnam_geo,
+        name="전라남도 행정경계",
+        style_function=style_function
+    ).add_to(m)
+
+    # 병원 데이터 (보성군 내 2곳)
+    boseong_df = pd.DataFrame({
+        '기관명': ['벌교삼호병원', '보성제일병원'],
+        '위도': [34.8337591, 34.763154],
+        '경도': [127.3459238, 127.073384]
+    })
+
+    # 병원 마커 추가
+    for _, row in boseong_df.iterrows():
+        folium.CircleMarker(
+            location=[row['위도'], row['경도']],
+            radius=7,
+            color='red',
+            fill=True,
+            fill_color='red',
+            fill_opacity=0.9,
+            tooltip=row['기관명']
+        ).add_to(m)
+
+    # 지도 표시
+    st_folium(m, width=1200, height=700)
+
+
+elif st.session_state.story_stage == 8:
+    st.markdown("""
+    <h2 style='text-align: center; font-size:28px; margin-bottom:10px;'>
+        B씨가 거주하는 지역에도 병원이 있긴 하지만,
+    </h2>
+    <h3 style='text-align: center; font-size:26px; color: black;'>
+        같은 보성군 안에 있는 병원까지도<br>
+        <strong>자동차로는 약 30분,</strong><br>
+        <strong>버스로는 무려 1시간 40분이 걸립니다.</strong>
+    </h3>
+    """, unsafe_allow_html=True)
+
+    # 지도 초기화
+    m = folium.Map(location=[34.79, 127.21], zoom_start=11, tiles=None,
+                   zoom_control=False, dragging=False, scrollWheelZoom=False)
+
+    m.get_root().html.add_child(folium.Element("""
+        <style>.leaflet-container {background-color: #006400 !important;}</style>
+    """))
+
+    # GeoJSON 불러오기
+    with open("data/hangjeongdong_전라남도.geojson", encoding="utf-8") as f:
+        jeonnam_geo = json.load(f)
+
+    # 보성군 강조 스타일
+    def style_function(feature):
+        adm_nm = feature['properties'].get('adm_nm', '')
+        if adm_nm.startswith("전라남도 보성군"):
+            return {
+                'fillColor': 'yellow',
+                'color': 'black',
+                'weight': 2,
+                'fillOpacity': 0.8
+            }
+        else:
+            return {
+                'fillColor': 'none',
+                'color': 'black',
+                'weight': 1,
+                'fillOpacity': 0
+            }
+
+    folium.GeoJson(
+        jeonnam_geo,
+        name="전라남도 행정경계",
+        style_function=style_function
+    ).add_to(m)
+
+    # 병원 데이터
+    boseong_df = pd.DataFrame({
+        '기관명': ['벌교삼호병원', '보성제일병원'],
+        '위도': [34.8337591, 34.763154],
+        '경도': [127.3459238, 127.073384]
+    })
+
+    # 병원 마커 추가 (빨간 점)
+    for _, row in boseong_df.iterrows():
+        folium.CircleMarker(
+            location=[row['위도'], row['경도']],
+            radius=7,
+            color='red',
+            fill=True,
+            fill_color='red',
+            fill_opacity=0.9,
+            tooltip=row['기관명']
+        ).add_to(m)
+
+    # 병원 두 개의 중간 지점 계산 → B씨 집 위치로 설정
+    mid_lat = (34.8337591 + 34.763154) / 2
+    mid_lon = (127.3459238 + 127.073384) / 2
+    home_location = [mid_lat, mid_lon]
+
+    # 파란 점: B씨의 집
+    folium.CircleMarker(
+        location=home_location,
+        radius=7,
+        color='blue',
+        fill=True,
+        fill_color='blue',
+        fill_opacity=0.9,
+        tooltip="B씨의 집"
+    ).add_to(m)
+
+    # 파란 선: 집 → 병원 한 곳 (보성제일병원으로 연결)
+    target_hospital = [34.763154, 127.073384]
+
+    folium.PolyLine(
+        [home_location, target_hospital],
+        color='lightblue',
+        weight=5,
+        opacity=0.9
+    ).add_to(m)
+
+    # 회색 원: 병원 도착 반경
+    folium.Circle(
+        location=target_hospital,
+        radius=300,
+        color='lightblue',
+        fill=True,
+        fill_color='lightblue',
+        fill_opacity=0.3
+    ).add_to(m)
+
+    # 지도 렌더링
+    st_folium(m, width=1200, height=700)
+
+elif st.session_state.story_stage == 9:
+    st.markdown("""
+    <h2 style='text-align: center; font-size:28px; margin-bottom:10px;'>
+        보성군 내 병원 접근이 어려운 B씨는<br>
+        결국 순천시까지 나가야 할지도 모릅니다.
+    </h2>
+    <h3 style='text-align: center; font-size:26px; color: black;'>
+        차로 약 1시간, 버스로는 2시간 넘게 걸리는 거리입니다.
+    </h3>
+    """, unsafe_allow_html=True)
+
+    # 지도 초기화
+    m = folium.Map(location=[34.85, 127.3], zoom_start=10, tiles=None,
+                   zoom_control=False, dragging=False, scrollWheelZoom=False)
+
+    m.get_root().html.add_child(folium.Element("""
+        <style>.leaflet-container {background-color: #006400 !important;}</style>
+    """))
+
+    # 1. 순천시만 노란색으로 표시
+    with open("data/hangjeongdong_전라남도.geojson", encoding="utf-8") as f:
+        jeonnam_geo = json.load(f)
+
+    def style_function(feature):
+        adm_nm = feature["properties"].get("adm_nm", "")
+        if adm_nm.startswith("전라남도 순천시"):
+            return {
+                'fillColor': 'yellow',
+                'color': 'black',
+                'weight': 2,
+                'fillOpacity': 0.8
+            }
+        else:
+            return {
+                'fillColor': 'none',
+                'color': 'black',
+                'weight': 1,
+                'fillOpacity': 0
+            }
+
+    folium.GeoJson(
+        jeonnam_geo,
+        name="전라남도 경계",
+        style_function=style_function
+    ).add_to(m)
+
+    # 2. B씨의 집 (보성군 중심)
+    home_location = [(34.8337591 + 34.763154) / 2, (127.3459238 + 127.073384) / 2]
+
+    folium.CircleMarker(
+        location=home_location,
+        radius=7,
+        color='blue',
+        fill=True,
+        fill_color='blue',
+        fill_opacity=0.9,
+        tooltip="B씨의 집"
+    ).add_to(m)
+
+    # 3. 순천 병원 표시
+    with open("data/suncheon_hospitals.json", encoding="utf-8") as f:
+        suncheon_geo = json.load(f)
+
+    suncheon_coords = []
+    for feature in suncheon_geo["features"]:
+        coords = feature["geometry"]["coordinates"]
+        name = feature["properties"]["기관명"]
+        suncheon_coords.append((coords[1], coords[0]))  # 위도, 경도
+        folium.CircleMarker(
+            location=[coords[1], coords[0]],
+            radius=6,
+            color='red',
+            fill=True,
+            fill_color='red',
+            fill_opacity=0.9,
+            tooltip=name
+        ).add_to(m)
+
+    # 4. 순천 중심 계산 + 회색 원
+    suncheon_center = [
+        sum(lat for lat, _ in suncheon_coords) / len(suncheon_coords),
+        sum(lon for _, lon in suncheon_coords) / len(suncheon_coords)
+    ]
+
+    folium.Circle(
+        location=suncheon_center,
+        radius=5000,
+        color='gray',
+        fill=True,
+        fill_color='gray',
+        fill_opacity=0.3,
+        tooltip="순천시 병원 밀집지역"
+    ).add_to(m)
+
+    # 5. 파란 선: B씨 집 → 순천 중심
+    folium.PolyLine(
+        [home_location, suncheon_center],
+        color='lightblue',
+        weight=5,
+        opacity=0.9
+    ).add_to(m)
+
+    st_folium(m, width=1200, height=700)
+
+
+
 # 🔽 하단 버튼
-if 1 <= st.session_state.story_stage <= 5:
+if 1 <= st.session_state.story_stage <= 9:
     col1, col2, col3 = st.columns([1, 8, 1])
     with col1:
         if st.session_state.story_stage > 1:
             st.button("⬅ BACK", on_click=prev_stage)
     with col3:
+
         if st.session_state.story_stage < 5:
             st.button("NEXT ➡", on_click=next_stage)
-
-
+        if st.session_state.story_stage < 9:
+            st.button("NEXT ➡", on_click=next_stage)
 
