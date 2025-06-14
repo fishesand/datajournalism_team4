@@ -1343,69 +1343,143 @@ if 1 <= st.session_state.story_stage <= 9:
         if st.session_state.story_stage < 9:
             st.button("NEXT ➡", on_click=next_stage, key="next_button")
 
-
-import streamlit as st
-from wordcloud import WordCloud
-from konlpy.tag import Okt
-import matplotlib.pyplot as plt
-import matplotlib.font_manager as fm
-
-# 글꼴 설정 (한글 깨짐 방지)
-font_path = "data/NanumGothic.ttf"
-font_name = fm.FontProperties(fname=font_path).get_name()
-plt.rc('font', family=font_name)
-
-# 텍스트 파일 경로
-file1_path = "data/의료개혁1차.txt"
-file2_path = "data/의료개혁2차.txt"
-
-# 텍스트 읽기
-with open(file1_path, 'r', encoding='utf-8') as f1:
-    text1 = f1.read()
-with open(file2_path, 'r', encoding='utf-8') as f2:
-    text2 = f2.read()
-
-# 명사 추출 함수
-def get_nouns(text):
-    okt = Okt()
-    nouns = okt.nouns(text)
-    stopwords = ['및', '등', '수', '것', '개선', '지원', '필요', '위해', '관련']
-    return [n for n in nouns if n not in stopwords and len(n) > 1]
-
-# 워드 클라우드 생성 함수
-def generate_wordcloud(text):
-    return WordCloud(
-        font_path=font_path,
-        width=600,
-        height=400,
-        background_color='white'
-    ).generate(text)
-
-# 명사 추출 및 워드 클라우드 생성
-nouns1 = get_nouns(text1)
-nouns2 = get_nouns(text2)
-wc1 = generate_wordcloud(" ".join(nouns1))
-wc2 = generate_wordcloud(" ".join(nouns2))
-
-# Streamlit UI
+#제목
 st.markdown(
     """
-    <h1 style='text-align: center;'>IV. 의료개혁 문서 워드 클라우드 비교</h1>
+    <h1 style='text-align: center;'>IV. 의료개혁 지역 격차 비교</h1>
     """,
     unsafe_allow_html=True
 )
 
-col1, col2 = st.columns(2)
-with col1:
-    st.subheader("📄 의료개혁 1차")
-    fig1, ax1 = plt.subplots(figsize=(8, 6))
-    ax1.imshow(wc1, interpolation='bilinear')
-    ax1.axis('off')
-    st.pyplot(fig1)
+import streamlit as st
 
+
+
+st.title("🏥 의료개혁 1차 · 2차 실행방안: 지역 격차 대응 비교")
+
+col1, col2 = st.columns(2)
+
+# ------------ 의료개혁 1차 ------------
+with col1:
+    st.header("📘 의료개혁 1차 실행방안")
+    
+    st.markdown("### ✅ 핵심 내용 요약")
+    st.markdown("""
+- **지역완결 의료체계 구축**
+  - 국립대병원, 지방의료원, 지역 종합병원 중심 기능 강화
+- **지역 전공의 배정 확대**
+  - 수도권·비수도권 5:5 배정, 지역 친화적 배치 방식
+- **지역필수의사제 도입**
+  - 일정 기간 지역 근무 시 수당, 주거 지원, 해외 연수 등 인센티브
+- **지역의료발전기금 신설**, ‘지역의료지원법’ 제정 추진
+- **의료권 기준 개편**
+  - 행정구역이 아닌 진료권 기반 체계화
+""")
+
+    with st.expander("📄 원문 발췌 보기"):
+        st.markdown("""
+- “지역완결 의료체계 구축: 국립대병원 등 권역 책임의료기관 육성 및 기능 강화, 지방의료원 역량 강화, 지역 종합병원 집중 지원”  
+- “의료협력 네트워크 구축 (의뢰·회송 시스템, EMR 정보 공유 등)”  
+- “계약형 지역필수의사제 도입: 일정 기간 지역 병원 근무 시 월 400만원 수당, 정주 여건 지원, 해외 연수 기회 제공”  
+- “‘지역의료지원법’ 제정 추진 및 지역의료발전기금 신설”
+- “병상 수급 및 진료권 체계화 (행정구역보다 실제 진료권 기준으로 재편)”
+        """)
+
+# ------------ 의료개혁 2차 ------------
 with col2:
-    st.subheader("📄 의료개혁 2차")
-    fig2, ax2 = plt.subplots(figsize=(8, 6))
-    ax2.imshow(wc2, interpolation='bilinear')
-    ax2.axis('off')
-    st.pyplot(fig2)
+    st.header("📙 의료개혁 2차 실행방안")
+
+    st.markdown("### ✅ 핵심 내용 요약")
+    st.markdown("""
+- **포괄 2차 종합병원** 집중 지원 (3년간 2조 원 투자)
+- **지방의료원 인프라 현대화**, 진료 포괄성 강화
+- **‘지역수가’ 도입**: 의료취약지에 수가 가산
+- **일차의료 혁신 시범사업**: 주치의 중심 예방·관리 체계
+- **지역 진료협력 네트워크 확대**
+  - 암, 심뇌, 분만, 중환자 등 분야별 협력 시스템 구축
+- **지자체 자율 지역의료혁신 시범사업** 추진
+""")
+
+    with st.expander("📄 원문 발췌 보기"):
+        st.markdown("""
+- “포괄 2차 종합병원 지원사업: 상급종합병원과 협력하여 지역 내 의료수요 대부분 대응 가능토록 집중 지원”  
+- “지역수가 본격 적용: 의료수요·공급 취약지역에 추가 가산 적용”  
+- “일차의료 혁신 시범사업: 통합·지속적 건강관리 위한 의원급 기능 강화”  
+- “상급종합병원-2차병원-일차의료 협력 체계 확대, 진료협력 인력 지원, 중환자 네트워크 도입 등”  
+- “‘지역의료지도’ 활용 및 지자체 중심 지역문제 해결형 시범사업 추진”
+        """)
+
+st.markdown("---")
+st.caption("출처: 보건복지부 『의료개혁 1차 실행방안』, 『의료개혁 2차 실행방안』")
+
+
+
+st.title("1차 → 2차: 달라진 점은?")
+
+st.markdown("## 🔍 지역 격차 대응 방향의 변화")
+
+col1, col2 = st.columns(2)
+
+# 왼쪽: 1차 실행방안
+with col1:
+    st.subheader("📘 1차 실행방안")
+
+    st.markdown("""
+**🧱 주요 특징**
+- 국립대병원, 지방의료원 등 **기본 인프라 확충**
+- 지역 전공의 배정 및 **계약형 지역필수의사제** 도입
+- **의료지원법 제정**, 진료권 기반 재편 등 **정책 방향 제시**
+
+**✅ 의의**
+- 지역 필수의료에 대한 **정치적 선언**
+- 첫 출발로서의 **의미 있는 재정 투자 계획**
+
+**⚠️ 한계**
+- 의료기관의 **역할 분화·기능 정립 부족**
+- ‘**구조 개편**’보다는 ‘**지원**’에 머무름
+""")
+
+# 오른쪽: 2차 실행방안
+with col2:
+    st.subheader("📙 2차 실행방안")
+
+    st.markdown("""
+**🏗️ 주요 특징**
+- **포괄 2차 종합병원** 지정 및 24시간 진료 역량 강화
+- **지역수가 도입**: 의료취약지에 수가 가산
+- **진료협력 네트워크 구축** (암, 심뇌, 분만, 중환자 등)
+- **지자체 중심 지역의료혁신 시범사업** 운영
+
+**✅ 의의**
+- **‘돈’이 아닌 ‘구조’** 중심의 지역 격차 해소 방식
+- 지역 내 **자율 설계 + 성과 기반 보상체계**
+
+**🎯 개선점**
+- 1차의 큰 그림을 **실행 가능한 세부 시스템으로 구체화**
+- 병원 간 역할 분담 → **대형병원 쏠림 완화**
+""")
+
+# 구분선
+st.markdown("---")
+
+# 비교 요약 표
+st.markdown("## ⚖️ 한눈에 보는 비교 요약")
+
+st.markdown("""
+| 항목 | 1차 실행방안 | 2차 실행방안 |
+|------|---------------|---------------|
+| **초점** | 인프라 투자, 제도 도입 | 구조 개편, 운영 체계 설계 |
+| **보상** | 재정 지원 중심 | 성과 기반 + 지역 맞춤 수가 |
+| **의료기관** | 모든 기관 지원 | 역할별 기능 정립·분화 |
+| **지역 자율성** | 법·기금 중심 | 지자체 중심 설계 및 시범사업 |
+| **의의** | 출발점 마련 | 실행 가능성 확보 및 정착 시도 |
+""", unsafe_allow_html=True)
+
+# 한줄 요약
+st.markdown("### 📝 한줄 요약")
+st.info("**1차는 방향을 세웠고, 2차는 실행 구조를 만들었다.**")
+
+# 출처
+st.caption("출처: 보건복지부 『의료개혁 1차 실행방안』, 『의료개혁 2차 실행방안』")
+
+
