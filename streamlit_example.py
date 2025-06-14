@@ -82,82 +82,68 @@ import matplotlib.font_manager as fm
 font_path = "data/NanumGothic.ttf"  # 파일 경로가 다르면 수정
 font_prop = fm.FontProperties(fname=font_path)
 
+import pandas as pd
+import matplotlib.pyplot as plt
+import streamlit as st
+from matplotlib import font_manager
+
+# 한글 폰트 설정 (예: AppleGothic)
+font_path = "/System/Library/Fonts/Supplemental/AppleGothic.ttf"
+font_prop = font_manager.FontProperties(fname=font_path)
+
+# 데이터 로드
 facility_df = pd.read_excel("data/facility.xlsx")
 population_df = pd.read_excel('data/population.xlsx')
 
-    # 3. facility 전처리
+# facility 전처리
 facility_df.columns = facility_df.iloc[1]
 facility_df = facility_df[2:].copy()
 facility_df.rename(columns={'시도별(1)': '시도'}, inplace=True)
 
-    # 4. 의료기관 수 합산
+# 의료기관 수 합산
 medical_cols = ['종합병원 정신과', '병원 정신과', '정신병원_국립', '정신병원_공립', '정신병원_사립',
-                    '요양병원 정신과', '한방병원 정신과', '의원 정신과', '한의원 정신과']
+                '요양병원 정신과', '한방병원 정신과', '의원 정신과', '한의원 정신과']
+
 for col in medical_cols:
-        facility_df[col] = (
-            facility_df[col]
-            .astype(str)
-            .str.replace('-', '0')
-            .str.replace(',', '')
-            .astype(float)
-        )
-
-    # 6. 총 의료기관 수 계산
-facility_df['총의료기관수'] = facility_df[medical_cols].sum(axis=1)
-
-    # 7. 정신재활시설 수 (7번째 열, index 6)
-facility_df['정신재활시설수'] = (
-        facility_df.iloc[:, 6]
+    facility_df[col] = (
+        facility_df[col]
         .astype(str)
         .str.replace('-', '0')
         .str.replace(',', '')
         .astype(float)
     )
 
-    # 8. 인구 데이터 전처리
+facility_df['총의료기관수'] = facility_df[medical_cols].sum(axis=1)
+
+# 인구 데이터 전처리
 population_df = population_df[['sgg', 'population']].dropna()
 population_df.rename(columns={'sgg': '시도'}, inplace=True)
 
-    # 9. 병합 및 전국 제외
+# 병합 및 전국 제외
 merged_df = pd.merge(facility_df, population_df, on='시도')
 merged_df = merged_df[merged_df['시도'] != '전국']
 
-    # 10. 비율 계산
+# 비율 계산 (정신재활시설 제외)
 merged_df['인구/의료기관'] = merged_df['population'] / merged_df['총의료기관수']
-merged_df['인구/정신재활시설'] = merged_df['population'] / merged_df['정신재활시설수']
 
-    # 11. 시각화
-st.subheader("📊 시도별 인구 대비 의료기관 및 정신재활시설 비율")
+# Streamlit 시각화
+st.subheader("📊 시도별 인구 대비 의료기관 비율")
 
-fig, ax1 = plt.subplots(figsize=(14, 6)) 
+fig, ax = plt.subplots(figsize=(12, 6))
 x = merged_df['시도']
-width = 0.35
 x_idx = range(len(x))
+bar_width = 0.4  # 기본은 0.8 정도, 숫자가 작을수록 얇아짐
+bar = ax.bar(x_idx, merged_df['인구/의료기관'], width=bar_width, color='skyblue')
 
 
-# 왼쪽 y축: 인구/의료기관
-bar1 = ax1.bar(x_idx, merged_df['인구/의료기관'], width=width, label='인구 수 / 의료기관 수', color='skyblue')
-ax1.set_ylabel('인구 / 의료기관 수', fontproperties=font_prop, fontsize=12)
-ax1.tick_params(axis='y')
-
-# 오른쪽 y축: 인구/정신재활시설
-ax2 = ax1.twinx()
-bar2 = ax2.bar([i + width for i in x_idx], merged_df['인구/정신재활시설'], width=width, label='인구 수 / 정신재활시설 수', color='salmon')
-ax2.set_ylabel('인구 / 정신재활시설 수', fontproperties=font_prop, fontsize=12)
-ax2.tick_params(axis='y')
-
-# 공통 x축 설정
-ax1.set_xticks([i + width / 2 for i in x_idx])
-ax1.set_xticklabels(x, rotation=45, fontproperties=font_prop)
-ax1.set_title("시도별 의료기관 및 정신재활시설 인구 대비 비율", fontproperties=font_prop, fontsize=16)
-ax1.set_xlabel("시도", fontproperties=font_prop)
-
-# 범례 통합
-bars = bar1 + bar2
-labels = [bar.get_label() for bar in bars]
-ax1.legend(bars, labels, prop=font_prop)
+ax.set_xticks(x_idx)
+ax.set_xticklabels(x, rotation=45, fontproperties=font_prop)
+ax.set_ylabel("인구 / 의료기관 수", fontproperties=font_prop)
+ax.set_title("시도별 인구 대비 의료기관 수 비율", fontproperties=font_prop, fontsize=16)
+ax.set_xlabel("시도", fontproperties=font_prop)
 
 st.pyplot(fig)
+
 
 from PIL import Image
 import streamlit as st
