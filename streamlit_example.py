@@ -1,4 +1,5 @@
 import streamlit as st
+st.set_page_config(layout="wide")
 import folium
 from streamlit_folium import st_folium
 import json
@@ -10,8 +11,7 @@ import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 from io import BytesIO
 
-# set_page_config는 항상 가장 먼저
-st.set_page_config(layout="wide")
+
 
 # 간단한 Streamlit 마크다운 제목으로 먼저 확인
 st.markdown("""
@@ -844,62 +844,116 @@ def render_map(selection, col):
             **지역별 정신병원 및 정신재활센터 수:** 102개/1개
             """)
 
+
 import streamlit as st
+
 from wordcloud import WordCloud
 from konlpy.tag import Okt
-from collections import Counter
 import matplotlib.pyplot as plt
+import re
 
-# -------------------------------
-# 공통 설정
-# -------------------------------
-stopwords = ["조사", "핵심", "논의", "필수", "위해", "단계", "방식", "구성", "예시",
-             "의료", "개혁", "대한", "것", "수", "등", "강화", "방안", "지원", "체계",
-             "의학", "기준", "개선", "병원", "조정", "업무", "이용", "기구", "확립",
-             "계획", "역할", "시간", "근거", "이용"]
+# 파일 경로
+file1_path = "data/의료개혁1차.txt"
+file2_path = "data/의료개혁2차.txt"
 
-def get_wordcloud_data(txt_path):
-    with open(txt_path, "r", encoding="utf-8") as f:
-        text = f.read()
+# 키워드 그룹 분리
+keywords_mental = ["정신건강", "정신건강증진시설", "정신보건", "정신의료"]
+keywords_gap = ["지역 격차", "지역격차", "지역불균형", "지역 편차"]
+
+# 문장 필터링
+def extract_relevant_sentences(text, keywords):
+    pattern = '|'.join([re.escape(k) for k in keywords])
+    sentences = re.split('[.?!\n]', text)
+    return [s for s in sentences if re.search(pattern, s)]
+
+# 명사 추출
+def get_nouns(text):
     okt = Okt()
     nouns = okt.nouns(text)
-    filtered = [w for w in nouns if w not in stopwords and len(w) > 1]
-    return Counter(filtered)
+    stopwords = ['및', '등', '수', '것', '개선', '지원', '필요', '위해', '관련']
+    return [n for n in nouns if n not in stopwords and len(n) > 1]
 
-def color_func(word, font_size, position, orientation, random_state=None, **kwargs):
-    return "red" if word in ["정신", "지역"] else "black"
+# 워드 클라우드 생성
+def generate_wordcloud(text):
+    return WordCloud(
+        font_path="NanumGothic.ttf",  # 폰트 없으면 None
+        width=600,
+        height=400,
+        background_color='white'
+    ).generate(text)
 
-def generate_wordcloud(counter):
-    wc = WordCloud(
-        font_path="./data/NanumGothic.ttf",
-        background_color="white",
-        width=800,
-        height=600,
-        color_func=color_func,
-    ).generate_from_frequencies(counter)
-    fig = plt.figure(figsize=(6, 4))
-    plt.imshow(wc, interpolation="bilinear")
-    plt.axis("off")
-    return fig
+# 텍스트 읽기
+with open(file1_path, 'r', encoding='utf-8') as f1:
+    text1 = f1.read()
 
-# -------------------------------
-# 워드클라우드 2개 나란히 출력
-# -------------------------------
-st.title("1차·2차 의료 개혁 WordCloud 비교")
+with open(file2_path, 'r', encoding='utf-8') as f2:
+    text2 = f2.read()
 
+# 전체 워드 클라우드용 명사 추출
+nouns1 = get_nouns(text1)
+nouns2 = get_nouns(text2)
+
+# 키워드별 문장 추출 및 명사 추출
+mental_sentences = extract_relevant_sentences(text1, keywords_mental) + extract_relevant_sentences(text2, keywords_mental)
+gap_sentences = extract_relevant_sentences(text1, keywords_gap) + extract_relevant_sentences(text2, keywords_gap)
+
+mental_nouns = get_nouns(" ".join(mental_sentences))
+gap_nouns = get_nouns(" ".join(gap_sentences))
+
+# 워드 클라우드 만들기
+wc1 = generate_wordcloud(" ".join(nouns1))
+wc2 = generate_wordcloud(" ".join(nouns2))
+wc_mental = generate_wordcloud(" ".join(mental_nouns))
+wc_gap = generate_wordcloud(" ".join(gap_nouns))
+
+# UI 시작
+st.title("의료개혁 문서 워드 클라우드 시각화")
+
+# 상단: 의료개혁 1차 / 2차
 col1, col2 = st.columns(2)
-
 with col1:
-    st.subheader("1차 의료 개혁")
-    counter1 = get_wordcloud_data("data/의료개혁1차.txt")
-    fig1 = generate_wordcloud(counter1)
+    st.subheader("📄 의료개혁 1차 전체")
+    fig1, ax1 = plt.subplots(figsize=(8, 6))
+    ax1.imshow(wc1, interpolation='bilinear')
+    ax1.axis('off')
     st.pyplot(fig1)
 
 with col2:
-    st.subheader("2차 의료 개혁")
-    counter2 = get_wordcloud_data("data/의료개혁2차.txt")
-    fig2 = generate_wordcloud(counter2)
+    st.subheader("📄 의료개혁 2차 전체")
+    fig2, ax2 = plt.subplots(figsize=(8, 6))
+    ax2.imshow(wc2, interpolation='bilinear')
+    ax2.axis('off')
     st.pyplot(fig2)
+
+# 하단: 정신건강 / 지역격차
+col3, col4 = st.columns(2)
+with col3:
+    st.subheader("🧠 정신건강 관련 내용")
+    fig3, ax3 = plt.subplots(figsize=(8, 6))
+    ax3.imshow(wc_mental, interpolation='bilinear')
+    ax3.axis('off')
+    st.pyplot(fig3)
+
+with col4:
+    st.subheader("🌍 지역 격차 관련 내용")
+    fig4, ax4 = plt.subplots(figsize=(8, 6))
+    ax4.imshow(wc_gap, interpolation='bilinear')
+    ax4.axis('off')
+    st.pyplot(fig4)
+
+st.subheader("🧠 정신건강 관련 핵심 문장")
+for sent in mental_sentences[:5]:
+    st.markdown(f"- {sent.strip()}")
+
+st.subheader("🌍 지역 격차 관련 핵심 문장")
+for sent in gap_sentences[:5]:
+    st.markdown(f"- {sent.strip()}")
+
+
+
+
+
+
 
 
 import streamlit as st
@@ -1432,11 +1486,8 @@ if 1 <= st.session_state.story_stage <= 9:
     col1, col2, col3 = st.columns([1, 8, 1])
     with col1:
         if st.session_state.story_stage > 1:
-            st.button("⬅ BACK", on_click=prev_stage)
+            st.button("⬅ BACK", on_click=prev_stage, key="back_button")
     with col3:
-
-        if st.session_state.story_stage < 5:
-            st.button("NEXT ➡", on_click=next_stage)
         if st.session_state.story_stage < 9:
-            st.button("NEXT ➡", on_click=next_stage)
+            st.button("NEXT ➡", on_click=next_stage, key="next_button")
 
