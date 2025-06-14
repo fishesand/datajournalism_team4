@@ -1,4 +1,5 @@
 import streamlit as st
+st.set_page_config(layout="wide")
 import folium
 from streamlit_folium import st_folium
 import json
@@ -10,8 +11,7 @@ import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 from io import BytesIO
 
-# set_page_config는 항상 가장 먼저
-st.set_page_config(layout="wide")
+
 
 # 간단한 Streamlit 마크다운 제목으로 먼저 확인
 st.markdown("""
@@ -846,6 +846,117 @@ def render_map(selection, col):
 
 
 import streamlit as st
+
+from wordcloud import WordCloud
+from konlpy.tag import Okt
+import matplotlib.pyplot as plt
+import re
+
+# 파일 경로
+file1_path = "data/의료개혁1차.txt"
+file2_path = "data/의료개혁2차.txt"
+
+# 키워드 그룹 분리
+keywords_mental = ["정신건강", "정신건강증진시설", "정신보건", "정신의료"]
+keywords_gap = ["지역 격차", "지역격차", "지역불균형", "지역 편차"]
+
+# 문장 필터링
+def extract_relevant_sentences(text, keywords):
+    pattern = '|'.join([re.escape(k) for k in keywords])
+    sentences = re.split('[.?!\n]', text)
+    return [s for s in sentences if re.search(pattern, s)]
+
+# 명사 추출
+def get_nouns(text):
+    okt = Okt()
+    nouns = okt.nouns(text)
+    stopwords = ['및', '등', '수', '것', '개선', '지원', '필요', '위해', '관련']
+    return [n for n in nouns if n not in stopwords and len(n) > 1]
+
+# 워드 클라우드 생성
+def generate_wordcloud(text):
+    return WordCloud(
+        font_path="NanumGothic.ttf",  # 폰트 없으면 None
+        width=600,
+        height=400,
+        background_color='white'
+    ).generate(text)
+
+# 텍스트 읽기
+with open(file1_path, 'r', encoding='utf-8') as f1:
+    text1 = f1.read()
+
+with open(file2_path, 'r', encoding='utf-8') as f2:
+    text2 = f2.read()
+
+# 전체 워드 클라우드용 명사 추출
+nouns1 = get_nouns(text1)
+nouns2 = get_nouns(text2)
+
+# 키워드별 문장 추출 및 명사 추출
+mental_sentences = extract_relevant_sentences(text1, keywords_mental) + extract_relevant_sentences(text2, keywords_mental)
+gap_sentences = extract_relevant_sentences(text1, keywords_gap) + extract_relevant_sentences(text2, keywords_gap)
+
+mental_nouns = get_nouns(" ".join(mental_sentences))
+gap_nouns = get_nouns(" ".join(gap_sentences))
+
+# 워드 클라우드 만들기
+wc1 = generate_wordcloud(" ".join(nouns1))
+wc2 = generate_wordcloud(" ".join(nouns2))
+wc_mental = generate_wordcloud(" ".join(mental_nouns))
+wc_gap = generate_wordcloud(" ".join(gap_nouns))
+
+# UI 시작
+st.title("의료개혁 문서 워드 클라우드 시각화")
+
+# 상단: 의료개혁 1차 / 2차
+col1, col2 = st.columns(2)
+with col1:
+    st.subheader("📄 의료개혁 1차 전체")
+    fig1, ax1 = plt.subplots(figsize=(8, 6))
+    ax1.imshow(wc1, interpolation='bilinear')
+    ax1.axis('off')
+    st.pyplot(fig1)
+
+with col2:
+    st.subheader("📄 의료개혁 2차 전체")
+    fig2, ax2 = plt.subplots(figsize=(8, 6))
+    ax2.imshow(wc2, interpolation='bilinear')
+    ax2.axis('off')
+    st.pyplot(fig2)
+
+# 하단: 정신건강 / 지역격차
+col3, col4 = st.columns(2)
+with col3:
+    st.subheader("🧠 정신건강 관련 내용")
+    fig3, ax3 = plt.subplots(figsize=(8, 6))
+    ax3.imshow(wc_mental, interpolation='bilinear')
+    ax3.axis('off')
+    st.pyplot(fig3)
+
+with col4:
+    st.subheader("🌍 지역 격차 관련 내용")
+    fig4, ax4 = plt.subplots(figsize=(8, 6))
+    ax4.imshow(wc_gap, interpolation='bilinear')
+    ax4.axis('off')
+    st.pyplot(fig4)
+
+st.subheader("🧠 정신건강 관련 핵심 문장")
+for sent in mental_sentences[:5]:
+    st.markdown(f"- {sent.strip()}")
+
+st.subheader("🌍 지역 격차 관련 핵심 문장")
+for sent in gap_sentences[:5]:
+    st.markdown(f"- {sent.strip()}")
+
+
+
+
+
+
+
+
+import streamlit as st
 import json
 import pandas as pd
 import folium
@@ -863,6 +974,7 @@ def next_stage():
 
 def prev_stage():
     st.session_state.story_stage -= 1
+
 
 # 데이터 불러오기
 gangnam_df = pd.read_excel("data/gangnam_juso.xlsx").dropna(subset=['위도', '경도'])
@@ -1374,7 +1486,8 @@ if 1 <= st.session_state.story_stage <= 9:
     col1, col2, col3 = st.columns([1, 8, 1])
     with col1:
         if st.session_state.story_stage > 1:
-            st.button("⬅ BACK", on_click=prev_stage)
+            st.button("⬅ BACK", on_click=prev_stage, key="back_button")
     with col3:
         if st.session_state.story_stage < 9:
-            st.button("NEXT ➡", on_click=next_stage)
+            st.button("NEXT ➡", on_click=next_stage, key="next_button")
+
