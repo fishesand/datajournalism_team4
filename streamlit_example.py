@@ -846,17 +846,25 @@ def render_map(selection, col):
 
 
 import streamlit as st
-
 from wordcloud import WordCloud
 from konlpy.tag import Okt
 import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
+import networkx as nx
 import re
+from itertools import combinations
+from collections import Counter
+
+# 글꼴 설정 (한글 깨짐 방지)
+font_path = "data/NanumGothic.ttf"
+font_name = fm.FontProperties(fname=font_path).get_name()
+plt.rc('font', family=font_name)
 
 # 파일 경로
-file1_path = "data/의료개혁1차.txt"
-file2_path = "data/의료개혁2차.txt"
+file1_path = "data/의료개혁1차.txt"
+file2_path = "data/의료개혁2차.txt"
 
-# 키워드 그룹 분리
+# 키워드 그룹
 keywords_mental = ["정신건강", "정신건강증진시설", "정신보건", "정신의료"]
 keywords_gap = ["지역 격차", "지역격차", "지역불균형", "지역 편차"]
 
@@ -864,7 +872,7 @@ keywords_gap = ["지역 격차", "지역격차", "지역불균형", "지역 편�
 def extract_relevant_sentences(text, keywords):
     pattern = '|'.join([re.escape(k) for k in keywords])
     sentences = re.split('[.?!\n]', text)
-    return [s for s in sentences if re.search(pattern, s)]
+    return [s.strip() for s in sentences if re.search(pattern, s)]
 
 # 명사 추출
 def get_nouns(text):
@@ -876,40 +884,73 @@ def get_nouns(text):
 # 워드 클라우드 생성
 def generate_wordcloud(text):
     return WordCloud(
-        font_path="NanumGothic.ttf",  # 폰트 없으면 None
+        font_path=font_path,
         width=600,
         height=400,
         background_color='white'
     ).generate(text)
 
+# 네트워크 그래프 생성
+def create_cooccurrence_network(nouns_by_sentence, top_k=30):
+    pairs = []
+    for noun_list in nouns_by_sentence:
+        pairs.extend(combinations(noun_list, 2))
+    counter = Counter(pairs)
+    common_pairs = counter.most_common(top_k)
+
+    G = nx.Graph()
+    for (n1, n2), weight in common_pairs:
+        G.add_edge(n1, n2, weight=weight)
+    return G
+
+# 네트워크 그리기 (한글 폰트 적용)
+def plot_network(G):
+    fig, ax = plt.subplots(figsize=(8, 6))
+    pos = nx.spring_layout(G, k=0.5)
+    weights = [G[u][v]['weight'] * 0.5 for u, v in G.edges()]
+
+    nx.draw_networkx_nodes(G, pos, node_color='skyblue', node_size=1500, ax=ax)
+    nx.draw_networkx_edges(G, pos, width=weights, edge_color='gray', ax=ax)
+
+    # 한글 글꼴 적용
+    font_prop = fm.FontProperties(fname=font_path)
+    nx.draw_networkx_labels(G, pos, font_size=10, font_properties=font_prop, ax=ax)
+
+    ax.axis('off')
+    return fig
+
 # 텍스트 읽기
 with open(file1_path, 'r', encoding='utf-8') as f1:
     text1 = f1.read()
-
 with open(file2_path, 'r', encoding='utf-8') as f2:
     text2 = f2.read()
 
-# 전체 워드 클라우드용 명사 추출
+# 명사 추출
 nouns1 = get_nouns(text1)
 nouns2 = get_nouns(text2)
 
-# 키워드별 문장 추출 및 명사 추출
+# 문장 추출
 mental_sentences = extract_relevant_sentences(text1, keywords_mental) + extract_relevant_sentences(text2, keywords_mental)
 gap_sentences = extract_relevant_sentences(text1, keywords_gap) + extract_relevant_sentences(text2, keywords_gap)
 
-mental_nouns = get_nouns(" ".join(mental_sentences))
-gap_nouns = get_nouns(" ".join(gap_sentences))
+# 문장 단위 명사 리스트
+mental_nouns_list = [get_nouns(s) for s in mental_sentences]
+gap_nouns_list = [get_nouns(s) for s in gap_sentences]
 
-# 워드 클라우드 만들기
+# 워드 클라우드
 wc1 = generate_wordcloud(" ".join(nouns1))
 wc2 = generate_wordcloud(" ".join(nouns2))
-wc_mental = generate_wordcloud(" ".join(mental_nouns))
-wc_gap = generate_wordcloud(" ".join(gap_nouns))
+wc_mental = generate_wordcloud(" ".join([" ".join(n) for n in mental_nouns_list]))
+wc_gap = generate_wordcloud(" ".join([" ".join(n) for n in gap_nouns_list]))
 
-# UI 시작
-st.title("의료개혁 문서 워드 클라우드 시각화")
+# 네트워크 그래프
+G_mental = create_cooccurrence_network(mental_nouns_list)
+G_gap = create_cooccurrence_network(gap_nouns_list)
 
-# 상단: 의료개혁 1차 / 2차
+# Streamlit UI
+st.title("🩺 의료개혁 문서 시각화")
+
+# 워드 클라우드 - 전체
 col1, col2 = st.columns(2)
 with col1:
     st.subheader("📄 의료개혁 1차 전체")
@@ -925,29 +966,8 @@ with col2:
     ax2.axis('off')
     st.pyplot(fig2)
 
-# 하단: 정신건강 / 지역격차
-col3, col4 = st.columns(2)
-with col3:
-    st.subheader("🧠 정신건강 관련 내용")
-    fig3, ax3 = plt.subplots(figsize=(8, 6))
-    ax3.imshow(wc_mental, interpolation='bilinear')
-    ax3.axis('off')
-    st.pyplot(fig3)
 
-with col4:
-    st.subheader("🌍 지역 격차 관련 내용")
-    fig4, ax4 = plt.subplots(figsize=(8, 6))
-    ax4.imshow(wc_gap, interpolation='bilinear')
-    ax4.axis('off')
-    st.pyplot(fig4)
 
-st.subheader("🧠 정신건강 관련 핵심 문장")
-for sent in mental_sentences[:5]:
-    st.markdown(f"- {sent.strip()}")
-
-st.subheader("🌍 지역 격차 관련 핵심 문장")
-for sent in gap_sentences[:5]:
-    st.markdown(f"- {sent.strip()}")
 
 
 
