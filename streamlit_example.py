@@ -1159,23 +1159,222 @@ elif st.session_state.story_stage == 7:
 
 elif st.session_state.story_stage == 8:
     st.markdown("""
-        <h2 style='text-align: center; font-size:28px; margin-bottom:10px;'>
-            B씨는 두 병원 중에서도 거리가 멀거나, 대기시간이 길 경우 대안을 찾기 어렵습니다.
-        </h2>
-        <h3 style='text-align: center; font-size:26px; color: black;'>
-            상황에 따라 순천, 광주까지 나가야 하는 경우도 생깁니다.
-        </h3>
+    <h2 style='text-align: center; font-size:28px; margin-bottom:10px;'>
+        B씨가 거주하는 지역에도 병원이 있긴 하지만,
+    </h2>
+    <h3 style='text-align: center; font-size:26px; color: black;'>
+        같은 보성군 안에 있는 병원까지도<br>
+        <strong>자동차로는 약 30분,</strong><br>
+        <strong>버스로는 무려 1시간 40분이 걸립니다.</strong>
+    </h3>
     """, unsafe_allow_html=True)
 
-    # 기존처럼 외부 도시(광주 등) 연결 경로 표시도 가능
+    # 지도 초기화
+    m = folium.Map(location=[34.79, 127.21], zoom_start=11, tiles=None,
+                   zoom_control=False, dragging=False, scrollWheelZoom=False)
+
+    m.get_root().html.add_child(folium.Element("""
+        <style>.leaflet-container {background-color: #006400 !important;}</style>
+    """))
+
+    # GeoJSON 불러오기
+    with open("data/hangjeongdong_전라남도.geojson", encoding="utf-8") as f:
+        jeonnam_geo = json.load(f)
+
+    # 보성군 강조 스타일
+    def style_function(feature):
+        adm_nm = feature['properties'].get('adm_nm', '')
+        if adm_nm.startswith("전라남도 보성군"):
+            return {
+                'fillColor': 'yellow',
+                'color': 'black',
+                'weight': 2,
+                'fillOpacity': 0.8
+            }
+        else:
+            return {
+                'fillColor': 'none',
+                'color': 'black',
+                'weight': 1,
+                'fillOpacity': 0
+            }
+
+    folium.GeoJson(
+        jeonnam_geo,
+        name="전라남도 행정경계",
+        style_function=style_function
+    ).add_to(m)
+
+    # 병원 데이터
+    boseong_df = pd.DataFrame({
+        '기관명': ['벌교삼호병원', '보성제일병원'],
+        '위도': [34.8337591, 34.763154],
+        '경도': [127.3459238, 127.073384]
+    })
+
+    # 병원 마커 추가 (빨간 점)
+    for _, row in boseong_df.iterrows():
+        folium.CircleMarker(
+            location=[row['위도'], row['경도']],
+            radius=7,
+            color='red',
+            fill=True,
+            fill_color='red',
+            fill_opacity=0.9,
+            tooltip=row['기관명']
+        ).add_to(m)
+
+    # 병원 두 개의 중간 지점 계산 → B씨 집 위치로 설정
+    mid_lat = (34.8337591 + 34.763154) / 2
+    mid_lon = (127.3459238 + 127.073384) / 2
+    home_location = [mid_lat, mid_lon]
+
+    # 파란 점: B씨의 집
+    folium.CircleMarker(
+        location=home_location,
+        radius=7,
+        color='blue',
+        fill=True,
+        fill_color='blue',
+        fill_opacity=0.9,
+        tooltip="B씨의 집"
+    ).add_to(m)
+
+    # 파란 선: 집 → 병원 한 곳 (보성제일병원으로 연결)
+    target_hospital = [34.763154, 127.073384]
+
+    folium.PolyLine(
+        [home_location, target_hospital],
+        color='lightblue',
+        weight=5,
+        opacity=0.9
+    ).add_to(m)
+
+    # 회색 원: 병원 도착 반경
+    folium.Circle(
+        location=target_hospital,
+        radius=300,
+        color='lightblue',
+        fill=True,
+        fill_color='lightblue',
+        fill_opacity=0.3
+    ).add_to(m)
+
+    # 지도 렌더링
+    st_folium(m, width=1200, height=700)
+
+elif st.session_state.story_stage == 9:
+    st.markdown("""
+    <h2 style='text-align: center; font-size:28px; margin-bottom:10px;'>
+        보성군 내 병원 접근이 어려운 B씨는<br>
+        결국 순천시까지 나가야 할지도 모릅니다.
+    </h2>
+    <h3 style='text-align: center; font-size:26px; color: black;'>
+        차로 약 1시간, 버스로는 2시간 넘게 걸리는 거리입니다.
+    </h3>
+    """, unsafe_allow_html=True)
+
+    # 지도 초기화
+    m = folium.Map(location=[34.85, 127.3], zoom_start=10, tiles=None,
+                   zoom_control=False, dragging=False, scrollWheelZoom=False)
+
+    m.get_root().html.add_child(folium.Element("""
+        <style>.leaflet-container {background-color: #006400 !important;}</style>
+    """))
+
+    # 1. 순천시만 노란색으로 표시
+    with open("data/hangjeongdong_전라남도.geojson", encoding="utf-8") as f:
+        jeonnam_geo = json.load(f)
+
+    def style_function(feature):
+        adm_nm = feature["properties"].get("adm_nm", "")
+        if adm_nm.startswith("전라남도 순천시"):
+            return {
+                'fillColor': 'yellow',
+                'color': 'black',
+                'weight': 2,
+                'fillOpacity': 0.8
+            }
+        else:
+            return {
+                'fillColor': 'none',
+                'color': 'black',
+                'weight': 1,
+                'fillOpacity': 0
+            }
+
+    folium.GeoJson(
+        jeonnam_geo,
+        name="전라남도 경계",
+        style_function=style_function
+    ).add_to(m)
+
+    # 2. B씨의 집 (보성군 중심)
+    home_location = [(34.8337591 + 34.763154) / 2, (127.3459238 + 127.073384) / 2]
+
+    folium.CircleMarker(
+        location=home_location,
+        radius=7,
+        color='blue',
+        fill=True,
+        fill_color='blue',
+        fill_opacity=0.9,
+        tooltip="B씨의 집"
+    ).add_to(m)
+
+    # 3. 순천 병원 표시
+    with open("data/suncheon_hospitals.json", encoding="utf-8") as f:
+        suncheon_geo = json.load(f)
+
+    suncheon_coords = []
+    for feature in suncheon_geo["features"]:
+        coords = feature["geometry"]["coordinates"]
+        name = feature["properties"]["기관명"]
+        suncheon_coords.append((coords[1], coords[0]))  # 위도, 경도
+        folium.CircleMarker(
+            location=[coords[1], coords[0]],
+            radius=6,
+            color='red',
+            fill=True,
+            fill_color='red',
+            fill_opacity=0.9,
+            tooltip=name
+        ).add_to(m)
+
+    # 4. 순천 중심 계산 + 회색 원
+    suncheon_center = [
+        sum(lat for lat, _ in suncheon_coords) / len(suncheon_coords),
+        sum(lon for _, lon in suncheon_coords) / len(suncheon_coords)
+    ]
+
+    folium.Circle(
+        location=suncheon_center,
+        radius=5000,
+        color='gray',
+        fill=True,
+        fill_color='gray',
+        fill_opacity=0.3,
+        tooltip="순천시 병원 밀집지역"
+    ).add_to(m)
+
+    # 5. 파란 선: B씨 집 → 순천 중심
+    folium.PolyLine(
+        [home_location, suncheon_center],
+        color='lightblue',
+        weight=5,
+        opacity=0.9
+    ).add_to(m)
+
+    st_folium(m, width=1200, height=700)
+
 
 
 # 🔽 하단 버튼
-if 1 <= st.session_state.story_stage <= 8:
+if 1 <= st.session_state.story_stage <= 9:
     col1, col2, col3 = st.columns([1, 8, 1])
     with col1:
         if st.session_state.story_stage > 1:
             st.button("⬅ BACK", on_click=prev_stage)
     with col3:
-        if st.session_state.story_stage < 8:
+        if st.session_state.story_stage < 9:
             st.button("NEXT ➡", on_click=next_stage)
