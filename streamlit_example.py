@@ -801,66 +801,7 @@ def render_map(selection, col):
             """)
 
 
-import streamlit as st
-from wordcloud import WordCloud
-from konlpy.tag import Okt
-import matplotlib.pyplot as plt
-import matplotlib.font_manager as fm
 
-# 글꼴 설정 (한글 깨짐 방지)
-font_path = "data/NanumGothic.ttf"
-font_name = fm.FontProperties(fname=font_path).get_name()
-plt.rc('font', family=font_name)
-
-# 텍스트 파일 경로
-file1_path = "data/의료개혁1차.txt"
-file2_path = "data/의료개혁2차.txt"
-
-# 텍스트 읽기
-with open(file1_path, 'r', encoding='utf-8') as f1:
-    text1 = f1.read()
-with open(file2_path, 'r', encoding='utf-8') as f2:
-    text2 = f2.read()
-
-# 명사 추출 함수
-def get_nouns(text):
-    okt = Okt()
-    nouns = okt.nouns(text)
-    stopwords = ['및', '등', '수', '것', '개선', '지원', '필요', '위해', '관련']
-    return [n for n in nouns if n not in stopwords and len(n) > 1]
-
-# 워드 클라우드 생성 함수
-def generate_wordcloud(text):
-    return WordCloud(
-        font_path=font_path,
-        width=600,
-        height=400,
-        background_color='white'
-    ).generate(text)
-
-# 명사 추출 및 워드 클라우드 생성
-nouns1 = get_nouns(text1)
-nouns2 = get_nouns(text2)
-wc1 = generate_wordcloud(" ".join(nouns1))
-wc2 = generate_wordcloud(" ".join(nouns2))
-
-# Streamlit UI
-st.title("🩺 의료개혁 문서 워드 클라우드 비교")
-
-col1, col2 = st.columns(2)
-with col1:
-    st.subheader("📄 의료개혁 1차")
-    fig1, ax1 = plt.subplots(figsize=(8, 6))
-    ax1.imshow(wc1, interpolation='bilinear')
-    ax1.axis('off')
-    st.pyplot(fig1)
-
-with col2:
-    st.subheader("📄 의료개혁 2차")
-    fig2, ax2 = plt.subplots(figsize=(8, 6))
-    ax2.imshow(wc2, interpolation='bilinear')
-    ax2.axis('off')
-    st.pyplot(fig2)
 
 
 
@@ -1402,3 +1343,69 @@ if 1 <= st.session_state.story_stage <= 9:
         if st.session_state.story_stage < 9:
             st.button("NEXT ➡", on_click=next_stage, key="next_button")
 
+
+import streamlit as st
+from wordcloud import WordCloud
+from konlpy.tag import Okt
+import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
+
+# 글꼴 설정 (한글 깨짐 방지)
+font_path = "data/NanumGothic.ttf"
+font_name = fm.FontProperties(fname=font_path).get_name()
+plt.rc('font', family=font_name)
+
+# 텍스트 파일 경로
+file1_path = "data/의료개혁1차.txt"
+file2_path = "data/의료개혁2차.txt"
+
+# 텍스트 읽기
+with open(file1_path, 'r', encoding='utf-8') as f1:
+    text1 = f1.read()
+with open(file2_path, 'r', encoding='utf-8') as f2:
+    text2 = f2.read()
+
+# 명사 추출 함수
+def get_nouns(text):
+    okt = Okt()
+    nouns = okt.nouns(text)
+    stopwords = ['및', '등', '수', '것', '개선', '지원', '필요', '위해', '관련']
+    return [n for n in nouns if n not in stopwords and len(n) > 1]
+
+# 워드 클라우드 생성 함수
+def generate_wordcloud(text):
+    return WordCloud(
+        font_path=font_path,
+        width=600,
+        height=400,
+        background_color='white'
+    ).generate(text)
+
+# 명사 추출 및 워드 클라우드 생성
+nouns1 = get_nouns(text1)
+nouns2 = get_nouns(text2)
+wc1 = generate_wordcloud(" ".join(nouns1))
+wc2 = generate_wordcloud(" ".join(nouns2))
+
+# Streamlit UI
+st.markdown(
+    """
+    <h1 style='text-align: center;'>IV. 의료개혁 문서 워드 클라우드 비교</h1>
+    """,
+    unsafe_allow_html=True
+)
+
+col1, col2 = st.columns(2)
+with col1:
+    st.subheader("📄 의료개혁 1차")
+    fig1, ax1 = plt.subplots(figsize=(8, 6))
+    ax1.imshow(wc1, interpolation='bilinear')
+    ax1.axis('off')
+    st.pyplot(fig1)
+
+with col2:
+    st.subheader("📄 의료개혁 2차")
+    fig2, ax2 = plt.subplots(figsize=(8, 6))
+    ax2.imshow(wc2, interpolation='bilinear')
+    ax2.axis('off')
+    st.pyplot(fig2)
