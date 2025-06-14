@@ -1,0 +1,11 @@
+streamlit
+folium
+streamlit-folium
+pandas
+matplotlib
+openpyxl
+branca
+Pillow
+konlpy
+wordcloud
+networkx
