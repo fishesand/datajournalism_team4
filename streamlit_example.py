@@ -890,6 +890,10 @@ elif st.session_state.story_stage == 2:
     m = folium.Map(location=[37.4979, 127.0276], zoom_start=13, tiles=None,
                    zoom_control=False, dragging=False, scrollWheelZoom=False)
 
+    m.get_root().html.add_child(folium.Element("""
+        <style>.leaflet-container {background-color: #007f00 !important;}</style>
+    """))
+    
     with open("data/gangnam_only.geojson", encoding="utf-8") as f:
         gangnam_geo = json.load(f)
 
@@ -996,9 +1000,6 @@ elif st.session_state.story_stage == 5:
         </h2>
     """, unsafe_allow_html=True)
 
-    if "path_step" not in st.session_state:
-        st.session_state.path_step = 1
-
     path = [
         [37.5005851, 127.0444115],
         [37.502807, 127.044328],
@@ -1058,8 +1059,9 @@ elif st.session_state.story_stage == 5:
         fill_opacity=0.9
     ).add_to(m)
 
+    # ✅ 경로 전체를 한 번에 고정적으로 표시
     folium.PolyLine(
-        path[:st.session_state.path_step],
+        path,
         color='lightblue',
         weight=5,
         opacity=0.9
@@ -1076,10 +1078,6 @@ elif st.session_state.story_stage == 5:
 
     st_folium(m, width=1200, height=700)
 
-    if st.session_state.path_step < len(path):
-        time.sleep(0.5)
-        st.session_state.path_step += 1
-        st.rerun()
 
 elif st.session_state.story_stage == 6:
     st.markdown("<h2 style='text-align: center; margin-top: 40px;'>전라남도 보성군에 사는 B씨가 있습니다.</h2>", unsafe_allow_html=True)
