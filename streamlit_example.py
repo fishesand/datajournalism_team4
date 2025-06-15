@@ -267,27 +267,7 @@ options = {
     }
 }
 
-# ✅ 범례 HTML
-legend_html = """
-{% macro html(this, kwargs) %}
-<div style='
-    position: fixed;
-    bottom: 50px;
-    left: 50px;
-    z-index: 9999;
-    background-color: rgba(255,255,255,0.85);
-    padding: 10px;
-    border-radius: 5px;
-    font-size: 14px;
-'>
-    <b>🗂 범례</b><br>
-    <i class="fa fa-plus-square" style="color: lightblue"></i> 정신병원<br>
-    <i class="fa fa-heart" style="color: orange"></i> 정신재활시설
-</div>
-{% endmacro %}
-"""
-legend = MacroElement()
-legend._template = Template(legend_html)
+
 
 # ✅ 지도 렌더링 함수
 def render_map(selection, col):
@@ -500,7 +480,27 @@ def render_map(selection, col):
         ax.legend(prop=font_prop)
         st.pyplot(fig)
 
-
+# ✅ 범례 HTML
+legend_html = """
+{% macro html(this, kwargs) %}
+<div style='
+    position: fixed;
+    bottom: 50px;
+    left: 50px;
+    z-index: 9999;
+    background-color: rgba(255,255,255,0.85);
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+'>
+    <b>🗂 범례</b><br>
+    <i class="fa fa-plus-square" style="color: lightblue"></i> 정신병원<br>
+    <i class="fa fa-heart" style="color: orange"></i> 정신재활시설
+</div>
+{% endmacro %}
+"""
+legend = MacroElement()
+legend._template = Template(legend_html)
 
 
 col1, col2 = st.columns(2)
