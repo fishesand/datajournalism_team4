@@ -431,7 +431,7 @@ def render_map(selection, col):
             ax.legend(prop=font_prop)
             st.pyplot(fig)
 
-    elif '서울특별시' in selection:
+    elif '강남구' in selection:
         with col:
             st.markdown("""
             **대상 지역:** 서울특별시 강남구       
