@@ -1441,7 +1441,6 @@ st.header("1차 → 2차: 달라진 점은?")
             
            
 
-st.markdown("## 지역 격차 대응 방향의 변화")
 
 col1, col2 = st.columns(2)
 
@@ -1500,10 +1499,6 @@ st.markdown("""
 | **의의** | 출발점 마련 | 실행 가능성 확보 및 정착 시도 |
 """, unsafe_allow_html=True)
 
-
-# 한줄 요약
-st.markdown("## 한줄 요약")
-st.info("**1차는 방향을 세웠고, 2차는 실행 구조를 만들었다.**")
 
 
 # 출처
