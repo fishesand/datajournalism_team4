@@ -127,19 +127,23 @@ merged_df = merged_df[merged_df['시도'] != '전국']
 merged_df['인구/의료기관'] = merged_df['population'] / merged_df['총의료기관수']
 
 # Streamlit 시각화
-st.subheader("📊 시도별 인구 대비 의료기관 비율")
+st.markdown("""
+<h2 style='text-align: center; margin-top: 40px;'>의료기관 1곳이 담당하는 인구 수 </h2>
+            """, unsafe_allow_html=True)
+
+sorted_df = merged_df.sort_values(by='인구/의료기관', ascending=False)
 
 fig, ax = plt.subplots(figsize=(12, 6))
-x = merged_df['시도']
+x = sorted_df['시도']
 x_idx = range(len(x))
-bar_width = 0.4  # 기본은 0.8 정도, 숫자가 작을수록 얇아짐
-bar = ax.bar(x_idx, merged_df['인구/의료기관'], width=bar_width, color='skyblue')
+bar_width = 0.4
 
+bar = ax.bar(x_idx, sorted_df['인구/의료기관'], width=bar_width, color='skyblue')
 
 ax.set_xticks(x_idx)
 ax.set_xticklabels(x, rotation=45, fontproperties=font_prop)
 ax.set_ylabel("인구 / 의료기관 수", fontproperties=font_prop)
-ax.set_title("시도별 인구 대비 의료기관 수 비율", fontproperties=font_prop, fontsize=16)
+ax.set_title("시도별 의료기관당 인구", fontproperties=font_prop, fontsize=16)
 ax.set_xlabel("시도", fontproperties=font_prop)
 
 st.pyplot(fig)
@@ -147,24 +151,51 @@ st.pyplot(fig)
 
 from PIL import Image
 import streamlit as st
+import base64
+from io import BytesIO
+
+# 이미지 → base64로 인코딩하는 유틸 함수
+def image_to_base64(img, width):
+    buffered = BytesIO()
+    img.save(buffered, format="PNG")
+    img_b64 = base64.b64encode(buffered.getvalue()).decode()
+    return f"<img src='data:image/png;base64,{img_b64}' width='{width}' style='margin:2px;'/>"
+
+# 병원 + 사람 이미지와 인구 수 텍스트를 렌더링
+def render_region(col, title, num_hospitals, people_per_hospital, people_count_text):
+    with col:
+        st.markdown(f"<h3 style='text-align: center;'>{title}</h3>", unsafe_allow_html=True)
+
+        # 병원 이미지
+        hospital_html = "".join([image_to_base64(hospital_img, width=60) for _ in range(num_hospitals)])
+        st.markdown(f"<div style='text-align: center;'>{hospital_html}</div>", unsafe_allow_html=True)
+
+        # 사람 이미지
+        person_html = "".join([image_to_base64(person_img, width=30) for _ in range(people_per_hospital)])
+        st.markdown(f"<div style='text-align: center;'>{person_html}</div>", unsafe_allow_html=True)
+
+        # 인구 수 텍스트
+        st.markdown(f"<p style='text-align: center; font-size:16px;'>{people_count_text}</p>", unsafe_allow_html=True)
+
 
 # 이미지 로드
 hospital_img = Image.open("data/hospital.png")
 person_img = Image.open("data/person.png")
 
-def render_region(col, title, num_hospitals, people_per_hospital):
-    col.subheader(title)
-    col.image([hospital_img] * num_hospitals, width=60)  # 병원 이미지 가로 나열
-    col.image([person_img] * people_per_hospital, width=30)  # 사람 이미지 가로 나열
-
 # 전체 제목
-st.title("🏥 지역별 병원당 진료 인원 비교")
+st.markdown("""
+<h2 style='text-align: center; margin-top: 40px;'>서울과 경상북도 비교</h2>
+            """, unsafe_allow_html=True)
 
-# 왼쪽: 서울, 오른쪽: 경상북도
+
+
+# 좌우 컬럼
 left_col, right_col = st.columns(2)
 
-render_region(left_col, "서울", num_hospitals=1, people_per_hospital=2)
-render_region(right_col, "경상북도", num_hospitals=1, people_per_hospital=5)
+# 각 지역 렌더링
+render_region(left_col, "서울", num_hospitals=1, people_per_hospital=2, people_count_text="14,437명")
+render_region(right_col, "경상북도", num_hospitals=1, people_per_hospital=5, people_count_text="36,998명 (약 2.5배)")
+
 
 
 # 📊 2018~2023 전국 정신건강증진 시설 수 변화 선그래프 표시
@@ -847,14 +878,14 @@ boseong_df = pd.DataFrame({
 
 # 1단계: 인물 소개
 if st.session_state.story_stage == 1:
-    st.markdown("<h2 style='text-align: center; font-size:40px; margin-top:100px;'>강남구에 사는 A씨가 있습니다.</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align: center; margin-top: 40px;'>강남구에 사는 A씨가 있습니다.</h2>", unsafe_allow_html=True)
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
         st.image("data/A씨.png", width=240)
 
 # 2단계: 전체 강남구 지도
 elif st.session_state.story_stage == 2:
-    st.markdown("<h2 style='text-align:center; font-size:40px; margin-bottom:20px;'>강남구에는 정신병원이 102곳, 정신재활센터는 1곳 있습니다.</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align: center; margin-top: 40px;'>강남구에는 정신병원이 102곳, 정신재활센터는 1곳 있습니다.</h2>", unsafe_allow_html=True)
 
     m = folium.Map(location=[37.4979, 127.0276], zoom_start=13, tiles=None,
                    zoom_control=False, dragging=False, scrollWheelZoom=False)
@@ -876,7 +907,7 @@ elif st.session_state.story_stage == 2:
 
 # 3단계: 선릉로 강조 지도
 elif st.session_state.story_stage == 3:
-    st.markdown("<h2 style='text-align:center; font-size:40px; margin-bottom:20px;'>A씨가 거주하는 선릉로에만 정신병원이 12곳 있습니다.</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align: center; margin-top: 40px;'>A씨가 거주하는 선릉로에만 정신병원이 12곳 있습니다.</h2>", unsafe_allow_html=True)
 
     m = folium.Map(location=[37.5045, 127.0497], zoom_start=14, tiles=None,
                    zoom_control=False, dragging=False, scrollWheelZoom=False)
@@ -904,7 +935,7 @@ elif st.session_state.story_stage == 3:
     st_folium(m, width=1200, height=700)
 
 elif st.session_state.story_stage == 4:
-    st.markdown("<h2 style='text-align:center; font-size:40px;'>A씨의 거주지로부터 정신병원까지 가는 데는 얼마나 걸릴까요?</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align: center; margin-top: 40px;'>A씨의 거주지로부터 정신병원까지 가는 데는 얼마나 걸릴까요?</h2>", unsafe_allow_html=True)
 
     # 지도 설정
     m = folium.Map(location=[37.4979, 127.0276], zoom_start=13, tiles=None,
@@ -959,12 +990,10 @@ elif st.session_state.story_stage == 4:
 
 elif st.session_state.story_stage == 5:
     st.markdown("""
-        <h2 style='text-align:center; font-size:28px; margin-bottom:10px;'>
-            집 근처, 정신병원들이 모여있는 반경까지 이동하는 데 걸어서 12분이 채 걸리지 않습니다.
-        </h2>
-        <h3 style='text-align:center; font-size:28px; color: black;'>
+        <h2 style='text-align: center; margin-top: 40px;'>
+            집 근처, 정신병원들이 모여있는 반경까지 이동하는 데<br> 걸어서 12분이 채 걸리지 않습니다.<br>
             많은 병원들이 분포되어 있기 때문에, 선택지의 폭도 넓습니다.
-        </h3>
+        </h2>
     """, unsafe_allow_html=True)
 
     if "path_step" not in st.session_state:
@@ -1053,13 +1082,13 @@ elif st.session_state.story_stage == 5:
         st.rerun()
 
 elif st.session_state.story_stage == 6:
-    st.markdown("<h2 style='text-align: center; font-size:40px; margin-top:100px;'>전라남도 보성군에 사는 B씨가 있습니다.</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align: center; margin-top: 40px;'>전라남도 보성군에 사는 B씨가 있습니다.</h2>", unsafe_allow_html=True)
     col1, col2, col3 = st.columns([1, 2, 1])
     with col2:
         st.image("data/A씨.png", width=240)
 
 elif st.session_state.story_stage == 7:
-    st.markdown("<h2 style='text-align: center; font-size:38px; margin-bottom:20px;'>보성군에는 정신병원이 단 2곳뿐입니다.</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align: center; margin-top: 40px;'>보성군에는 정신병원이 단 2곳뿐입니다.</h2>", unsafe_allow_html=True)
 
     # 지도 초기화
     m = folium.Map(location=[34.79, 127.21], zoom_start=10, tiles=None,
@@ -1123,14 +1152,12 @@ elif st.session_state.story_stage == 7:
 
 elif st.session_state.story_stage == 8:
     st.markdown("""
-    <h2 style='text-align: center; font-size:28px; margin-bottom:10px;'>
-        B씨가 거주하는 지역에도 병원이 있긴 하지만,
-    </h2>
-    <h3 style='text-align: center; font-size:26px; color: black;'>
+    <h2 style='text-align: center; margin-top: 40px;'>
+        B씨가 거주하는 지역에도 병원이 있긴 하지만,<br>
         같은 보성군 안에 있는 병원까지도<br>
         <strong>자동차로는 약 30분,</strong><br>
         <strong>버스로는 무려 1시간 40분이 걸립니다.</strong>
-    </h3>
+    </h2>
     """, unsafe_allow_html=True)
 
     # 지도 초기화
@@ -1229,13 +1256,11 @@ elif st.session_state.story_stage == 8:
 
 elif st.session_state.story_stage == 9:
     st.markdown("""
-    <h2 style='text-align: center; font-size:28px; margin-bottom:10px;'>
+   <h2 style='text-align: center; margin-top: 40px;'>
         보성군 내 병원 접근이 어려운 B씨는<br>
-        결국 순천시까지 나가야 할지도 모릅니다.
-    </h2>
-    <h3 style='text-align: center; font-size:26px; color: black;'>
+        결국 순천시까지 나가야 할지도 모릅니다.<br>
         차로 약 1시간, 버스로는 2시간 넘게 걸리는 거리입니다.
-    </h3>
+    </h2>
     """, unsafe_allow_html=True)
 
     # 지도 초기화
@@ -1346,23 +1371,22 @@ if 1 <= st.session_state.story_stage <= 9:
 #제목
 st.markdown(
     """
-    <h1 style='text-align: center;'>IV. 의료개혁 지역 격차 비교</h1>
+    <h1 style='text-align: center; font-size: 40px; margin-top: 60px;'>IV. 의료개혁 지역 격차 비교</h1>
     """,
     unsafe_allow_html=True
 )
 
 import streamlit as st
 
-
-
-st.title(" 의료개혁 1차 · 2차 실행방안: 지역 격차 대응 비교")
+st.markdown("""
+<h2 style='text-align: center; margin-top: 40px;'>의료개혁 1차 · 2차 실행방안: 지역 격차 대응 비교</h2>
+            """, unsafe_allow_html=True)
 
 col1, col2 = st.columns(2)
 
 # ------------ 의료개혁 1차 ------------
 with col1:
     st.header("의료개혁 1차 실행방안")
-    
     st.markdown("### 핵심 내용 요약")
     st.markdown("""
 - **지역완결 의료체계 구축**
@@ -1413,8 +1437,9 @@ st.markdown("---")
 st.caption("출처: 보건복지부 『의료개혁 1차 실행방안』, 『의료개혁 2차 실행방안』")
 
 
-
-st.title("1차 → 2차: 달라진 점은?")
+st.header("1차 → 2차: 달라진 점은?")
+            
+           
 
 st.markdown("## 지역 격차 대응 방향의 변화")
 
@@ -1444,7 +1469,7 @@ with col2:
     st.subheader("2차 실행방안")
 
     st.markdown("""
-**🏗️ 주요 특징**
+**주요 특징**
 - **포괄 2차 종합병원** 지정 및 24시간 진료 역량 강화
 - **지역수가 도입**: 의료취약지에 수가 가산
 - **진료협력 네트워크 구축** (암, 심뇌, 분만, 중환자 등)
@@ -1476,7 +1501,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # 한줄 요약
-st.markdown("### 한줄 요약")
+st.markdown("## 한줄 요약")
 st.info("**1차는 방향을 세웠고, 2차는 실행 구조를 만들었다.**")
 
 # 출처
