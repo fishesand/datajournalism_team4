@@ -1394,7 +1394,7 @@ if 1 <= st.session_state.story_stage <= 9:
 #제목
 st.markdown(
     """
-    <h1 style='text-align: center; font-size: 40px; margin-top: 60px;'>IV. 의료개혁 지역 격차 비교</h1>
+    <h1 style='text-align: center; font-size: 40px; margin-top: 60px;'>IV. 보건복지부 의료개혁 실행방안 텍스트 분석</h1>
     """,
     unsafe_allow_html=True
 )
