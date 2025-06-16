@@ -133,7 +133,7 @@ st.markdown("""
 
 sorted_df = merged_df.sort_values(by='인구/의료기관', ascending=False)
 
-fig, ax = plt.subplots(figsize=(12, 6))
+fig, ax = plt.subplots(figsize=(9, 5))
 x = sorted_df['시도']
 x_idx = range(len(x))
 bar_width = 0.4
@@ -141,10 +141,13 @@ bar_width = 0.4
 bar = ax.bar(x_idx, sorted_df['인구/의료기관'], width=bar_width, color='skyblue')
 
 ax.set_xticks(x_idx)
-ax.set_xticklabels(x, rotation=45, fontproperties=font_prop)
+ax.set_xticklabels(x, rotation=45, fontsize = 5, fontproperties=font_prop)
 ax.set_ylabel("인구 / 의료기관 수", fontproperties=font_prop)
 ax.set_title("시도별 의료기관당 인구", fontproperties=font_prop, fontsize=16)
 ax.set_xlabel("시도", fontproperties=font_prop)
+
+fig.tight_layout()
+
 
 st.pyplot(fig)
 
@@ -212,17 +215,18 @@ df_cleaned = df_cleaned.astype(int).T
 df_cleaned.index = df_cleaned.index.astype(int)
 
 # 그래프 생성 및 크기 조절
-fig, ax = plt.subplots(figsize=(6, 3.5))
+fig, ax = plt.subplots(figsize=(6, 3))
 for col in df_cleaned.columns:
     ax.plot(df_cleaned.index, df_cleaned[col], marker='o', label=col)
 
 # ✅ 폰트 적용
-ax.set_title("2018~2023 전국 정신건강증진 시설 수 변화", fontsize=40, fontproperties=font_prop)
-ax.set_xlabel("연도", fontsize=10, fontproperties=font_prop)
-ax.set_ylabel("시설 수", fontsize=10, fontproperties=font_prop)
+ax.set_title("2018~2023 전국 정신건강증진 시설 수 변화", fontsize=12, fontproperties=font_prop)
+ax.set_xlabel("연도", fontsize=9, fontproperties=font_prop)
+ax.set_ylabel("시설 수", fontsize=9, fontproperties=font_prop)
 ax.set_xticks(df_cleaned.index)
-ax.set_xticklabels(df_cleaned.index, fontproperties=font_prop)
-ax.legend(prop=font_prop, fontsize=9)
+ax.set_xticklabels(df_cleaned.index, fontproperties=font_prop, fontsize=8)
+ax.tick_params(axis='y', labelsize=7)  # 원하는 크기로 조절 (예: 7)
+ax.legend(prop=font_prop, fontsize=3)
 ax.grid(True)
 
 st.pyplot(fig)
