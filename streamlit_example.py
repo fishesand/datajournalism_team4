@@ -11,8 +11,6 @@ import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 from io import BytesIO
 
-
-
 # 간단한 Streamlit 마크다운 제목으로 먼저 확인
 st.markdown("""
 <h1 style='
@@ -59,7 +57,7 @@ st.markdown("""
 <div style="background-color: #e3f2fd; padding: 20px; border-left: 6px solid #1976d2; border-radius: 8px; margin-bottom: 25px; font-size: 16px;">
     「정신건강증진 및 정신질환자 복지서비스 지원에 관한 법률」 제3조 제4호에 따르면,  
     <strong>‘정신건강증진시설’이란 정신의료기관, 정신요양시설 및 정신재활시설</strong>을 말합니다.  
-    이들 시설을 중심으로 <strong>국가와 지방자치단체는 정신건강의 예방부터 조기발견, 치료, 재활, 사회복귀까지 전 과정을 포괄하는 서비스를 계획·시행</strong>하고 있습니다.
+    이들 시설을 중심으로 <strong>국가와 지방자치단체는 정신건강의 예방부터 조기발견, 치료, 재활, 사회복귀까지 전 과정을 포괄하는 서비스를 계획 및 시행</strong>하고 있습니다.
 </div>
 
 <div style="background-color: #f9f9f9; padding: 25px; border-radius: 12px; line-height: 1.8; font-size: 17px;">
@@ -73,6 +71,12 @@ st.markdown("""
         <li><strong>정신재활시설:</strong> 정신질환자의 사회복귀를 위한 생활지원, 직업재활, 주거제공 등을 수행합니다.</li>
         <li><strong>정신요양시설:</strong> 보호가 필요한 만성 정신질환자의 요양·보호를 통해 삶의 질 향상을 지원합니다.</li>
     </ul>
+</div>
+            
+<div style="background-color: #fff8e1; padding: 20px; border-left: 6px solid #fbc02d; border-radius: 8px; margin-top: 30px; font-size: 16px; line-height: 1.7;">
+    본 프로젝트는 전체 정신건강증진시설 중에서 <strong>가장 일반적인 대상층을 가진 정신병원과 정신재활시설</strong>에 주목하여 분석을 진행하였습니다.  
+    이는 노인복지시설이나 트라우마센터처럼 특정 계층을 대상으로 한 시설보다,  
+    <strong>보다 폭넓은 인구에게 직접적인 영향을 미치는 기반 시설</strong>로 판단했기 때문입니다.
 </div>
 """, unsafe_allow_html=True)
 
@@ -131,7 +135,7 @@ st.markdown("""
 <h2 style='text-align: center; margin-top: 40px;'>시도별 의료기관 1곳이 담당하는 인구 수 </h2>
             """, unsafe_allow_html=True)
 
-sorted_df = merged_df.sort_values(by='인구/의료기관', ascending=False)
+sorted_df = merged_df.sort_values(by='인구/의료기관', ascending=True)
 
 fig, ax = plt.subplots(figsize=(9, 5))
 x = sorted_df['시도']
@@ -150,6 +154,13 @@ fig.tight_layout()
 
 st.pyplot(fig)
 
+st.markdown("""
+<div style="background-color: #e3f2fd; padding: 20px; border-left: 6px solid #1976d2; border-radius: 8px; margin-top: 20px; font-size: 16px; line-height: 1.7;">
+    위 그래프는 의료기관 1곳이 평균적으로 담당해야 하는 인구 수를 나타냅니다.  
+    숫자가 클수록 지역에서 한 병원이 감당해야 할 환자 수가 많아,  
+    의료 접근성이 낮고 의료 인프라가 부족하다는 것을 의미합니다.
+</div>
+""", unsafe_allow_html=True)
 
 from PIL import Image
 import streamlit as st
@@ -197,8 +208,13 @@ left_col, right_col = st.columns(2)
 # 각 지역 렌더링
 render_region(left_col, "서울", num_hospitals=1, people_per_hospital=2, people_count_text="14,437명")
 render_region(right_col, "경상북도", num_hospitals=1, people_per_hospital=5, people_count_text="36,998명 (약 2.5배)")
-
-
+st.markdown("""
+<div style="background-color: #e3f2fd; padding: 20px; border-left: 6px solid #1976d2; border-radius: 8px; margin-top: 15px; font-size: 16px; line-height: 1.7;">
+    예를 들어, 서울에서는 의료기관 1곳당 약 14,000명을 담당하는 반면,  
+    경상북도에서는 약 37,000명을 담당하고 있습니다.  
+    경북의 의료기관 1곳이 서울보다 평균 2.5배 더 많은 인구를 감당하고 있는 셈입니다.
+</div>
+""", unsafe_allow_html=True)
 
 # 📊 2018~2023 전국 정신건강증진 시설 수 변화 선그래프 표시
 st.markdown("""
@@ -228,6 +244,13 @@ ax.legend(prop=font_prop, fontsize=3)
 ax.grid(True)
 
 st.pyplot(fig)
+
+st.markdown("""
+<div style="background-color: #e3f2fd; padding: 20px; border-left: 6px solid #1976d2; border-radius: 8px; margin-top: 15px; font-size: 16px; line-height: 1.7;">
+    위 그래프는 시간이 갈수록 정신병원의 개수는 증가했으며, 정신재활시설의 개수는 거의 일정하게 유지되었다는 것을 보여줍니다. 
+    밑에 등장하는 지역격차 지도와 함께 본다면, 이는 정신건강 자체를 위한 인프라는 그대로 유지되거나 그 수가 증가하였지만, 인프라 자체의 증가가 지역격차 해결과는 상관관계가 없다는 것을 가리킵니다.
+</div>
+""", unsafe_allow_html=True)
 
 import pandas as pd
 import matplotlib.pyplot as plt
