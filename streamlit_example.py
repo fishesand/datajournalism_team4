@@ -18,8 +18,8 @@ st.markdown("""
     font-size: 64px;
     font-weight: 900;
     margin-top: 30px;
+    color: #FF6A00;
     margin-bottom: 40px;
-    color: #1e1e1e;
     letter-spacing: -1px;
     text-shadow: 2px 2px 0px #ffffff, 4px 4px 0px #cccccc;
 '>
