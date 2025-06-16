@@ -857,13 +857,6 @@ def render_map(selection, col):
             """)
 
 
-
-
-
-
-
-
-
 import streamlit as st
 import json
 import pandas as pd
@@ -872,16 +865,6 @@ from streamlit_folium import st_folium
 import matplotlib.pyplot as plt
 import matplotlib.image as mpimg
 import time
-
-# 상태 변수 초기화
-if "story_stage" not in st.session_state:
-    st.session_state.story_stage = 1
-
-def next_stage():
-    st.session_state.story_stage += 1
-
-def prev_stage():
-    st.session_state.story_stage -= 1
 
 
 # 데이터 불러오기
@@ -902,16 +885,19 @@ boseong_df = pd.DataFrame({
 })
 
 # 1단계: 인물 소개
-if st.session_state.story_stage == 1:
-    st.markdown("<h2 style='text-align: center; margin-top: 40px;'>강남구에 사는 A씨가 있습니다.</h2>", unsafe_allow_html=True)
-    col1, col2, col3 = st.columns([1, 2, 1])
+col1, col2 = st.columns([1, 1])
+with col2:
+    st.markdown("<h2 style='text-align: center; margin-top: 40px;'> <br><br><br>강남구에 사는 A씨가 있습니다.</h2>", unsafe_allow_html=True)
+
+with col1:
+    col1, col2, col3 = st.columns([1, 1, 1])
     with col2:
         st.image("data/A씨.png", width=240)
 
-# 2단계: 전체 강남구 지도
-elif st.session_state.story_stage == 2:
-    st.markdown("<h2 style='text-align: center; margin-top: 40px;'>강남구에는 정신병원이 102곳, 정신재활센터는 1곳 있습니다.</h2>", unsafe_allow_html=True)
 
+# 2단계: 전체 강남구 지도
+col1, col2 = st.columns([1, 1])
+with col1:
     m = folium.Map(location=[37.4979, 127.0276], zoom_start=13, tiles=None,
                    zoom_control=False, dragging=False, scrollWheelZoom=False)
 
@@ -933,11 +919,13 @@ elif st.session_state.story_stage == 2:
         ).add_to(m)
 
     st_folium(m, width=1200, height=700)
+with col2:
+    st.markdown("<h2 style='text-align: center; margin-top: 40px;'><br><br><br><br><br>강남구에는 정신병원이 102곳, 정신재활센터는 1곳 있습니다.</h2>", unsafe_allow_html=True)
+
 
 # 3단계: 선릉로 강조 지도
-elif st.session_state.story_stage == 3:
-    st.markdown("<h2 style='text-align: center; margin-top: 40px;'>A씨가 거주하는 선릉로에만 정신병원이 12곳 있습니다.</h2>", unsafe_allow_html=True)
-
+col1, col2 = st.columns([1, 1])
+with col1:
     m = folium.Map(location=[37.5045, 127.0497], zoom_start=14, tiles=None,
                    zoom_control=False, dragging=False, scrollWheelZoom=False)
 
@@ -962,10 +950,12 @@ elif st.session_state.story_stage == 3:
         ).add_to(m)
 
     st_folium(m, width=1200, height=700)
+with col2:
+    st.markdown("<h2 style='text-align: center; margin-top: 40px;'><br><br><br><br><br>A씨가 거주하는 선릉로에만 정신병원이 12곳 있습니다.</h2>", unsafe_allow_html=True)
 
-elif st.session_state.story_stage == 4:
-    st.markdown("<h2 style='text-align: center; margin-top: 40px;'>A씨의 거주지로부터 정신병원까지 가는 데는 얼마나 걸릴까요?</h2>", unsafe_allow_html=True)
 
+col1, col2 = st.columns([1, 1])
+with col1:
     # 지도 설정
     m = folium.Map(location=[37.4979, 127.0276], zoom_start=13, tiles=None,
                    zoom_control=False, dragging=False, scrollWheelZoom=False)
@@ -1016,15 +1006,11 @@ elif st.session_state.story_stage == 4:
 
     # 지도 렌더링
     st_folium(m, width=1200, height=700)
+with col2:
+     st.markdown("<h2 style='text-align: center; margin-top: 40px;'><br><br><br><br><br>A씨의 거주지로부터 정신병원까지 가는 데는 얼마나 걸릴까요?</h2>", unsafe_allow_html=True)
 
-elif st.session_state.story_stage == 5:
-    st.markdown("""
-        <h2 style='text-align: center; margin-top: 40px;'>
-            집 근처, 정신병원들이 모여있는 반경까지 이동하는 데<br> 걸어서 12분이 채 걸리지 않습니다.<br>
-            많은 병원들이 분포되어 있기 때문에, 선택지의 폭도 넓습니다.
-        </h2>
-    """, unsafe_allow_html=True)
-
+col1, col2 = st.columns([1, 1])
+with col1:
     path = [
         [37.5005851, 127.0444115],
         [37.502807, 127.044328],
@@ -1103,16 +1089,28 @@ elif st.session_state.story_stage == 5:
 
     st_folium(m, width=1200, height=700)
 
+with col2:
+    st.markdown("""
+        <h2 style='text-align: center; margin-top: 40px;'><br><br><br><br>
+            집 근처, 정신병원들이 모여있는 반경까지 이동하는 데<br> 걸어서 12분이 채 걸리지 않습니다.<br>
+            많은 병원들이 분포되어 있기 때문에, 선택지의 폭도 넓습니다.
+        </h2>
+    """, unsafe_allow_html=True)
 
-elif st.session_state.story_stage == 6:
-    st.markdown("<h2 style='text-align: center; margin-top: 40px;'>전라남도 보성군에 사는 B씨가 있습니다.</h2>", unsafe_allow_html=True)
-    col1, col2, col3 = st.columns([1, 2, 1])
+st.markdown("<div style='height: 100px;'></div>", unsafe_allow_html=True)
+
+col1, col2 = st.columns([1, 1])
+
+with col2:
+    st.markdown("<h2 style='text-align: center; margin-top: 40px;'><br><br><br>전라남도 보성군에 사는 B씨가 있습니다.</h2>", unsafe_allow_html=True)
+
+with col1:
+    col1, col2, col3 = st.columns([1, 1, 1])
     with col2:
         st.image("data/A씨.png", width=240)
 
-elif st.session_state.story_stage == 7:
-    st.markdown("<h2 style='text-align: center; margin-top: 40px;'>보성군에는 정신병원이 단 2곳뿐입니다.</h2>", unsafe_allow_html=True)
-
+col1, col2 = st.columns([1, 1])
+with col1:
     # 지도 초기화
     m = folium.Map(location=[34.79, 127.21], zoom_start=10, tiles=None,
                    zoom_control=False, dragging=False, scrollWheelZoom=False)
@@ -1171,18 +1169,11 @@ elif st.session_state.story_stage == 7:
 
     # 지도 표시
     st_folium(m, width=1200, height=700)
+with col2:
+     st.markdown("<h2 style='text-align: center; margin-top: 40px;'><br><br><br><br><br>보성군에는 정신병원이 단 2곳뿐입니다.</h2>", unsafe_allow_html=True)
 
-
-elif st.session_state.story_stage == 8:
-    st.markdown("""
-    <h2 style='text-align: center; margin-top: 40px;'>
-        B씨가 거주하는 지역에도 병원이 있긴 하지만,<br>
-        같은 보성군 안에 있는 병원까지도<br>
-        <strong>자동차로는 약 30분,</strong><br>
-        <strong>버스로는 무려 1시간 40분이 걸립니다.</strong>
-    </h2>
-    """, unsafe_allow_html=True)
-
+col1, col2 = st.columns([1, 1])
+with col1:
     # 지도 초기화
     m = folium.Map(location=[34.79, 127.21], zoom_start=11, tiles=None,
                    zoom_control=False, dragging=False, scrollWheelZoom=False)
@@ -1276,16 +1267,18 @@ elif st.session_state.story_stage == 8:
 
     # 지도 렌더링
     st_folium(m, width=1200, height=700)
-
-elif st.session_state.story_stage == 9:
+with col2:
     st.markdown("""
-   <h2 style='text-align: center; margin-top: 40px;'>
-        보성군 내 병원 접근이 어려운 B씨는<br>
-        결국 순천시까지 나가야 할지도 모릅니다.<br>
-        차로 약 1시간, 버스로는 2시간 넘게 걸리는 거리입니다.
+    <h2 style='text-align: center; margin-top: 40px;'><br><br><br><br>
+        B씨가 거주하는 지역에도 병원이 있긴 하지만,<br>
+        같은 보성군 안에 있는 병원까지도<br>
+        <strong>자동차로는 약 30분,</strong><br>
+        <strong>버스로는 무려 1시간 40분이 걸립니다.</strong>
     </h2>
     """, unsafe_allow_html=True)
 
+col1, col2 = st.columns([1, 1])
+with col1:
     # 지도 초기화
     m = folium.Map(location=[34.85, 127.3], zoom_start=10, tiles=None,
                    zoom_control=False, dragging=False, scrollWheelZoom=False)
@@ -1378,19 +1371,15 @@ elif st.session_state.story_stage == 9:
     ).add_to(m)
 
     st_folium(m, width=1200, height=700)
-
-
-
-# 🔽 하단 버튼
-if 1 <= st.session_state.story_stage <= 9:
-    col1, col2, col3 = st.columns([1, 8, 1])
-    with col1:
-        if st.session_state.story_stage > 1:
-            st.button("⬅ BACK", on_click=prev_stage, key="back_button")
-    with col3:
-        if st.session_state.story_stage < 9:
-            st.button("NEXT ➡", on_click=next_stage, key="next_button")
-
+with col2:
+     st.markdown("""
+   <h2 style='text-align: center; margin-top: 40px;'><br><br><br><br>
+        보성군 내 병원 접근이 어려운 B씨는<br>
+        결국 순천시까지 나가야 할지도 모릅니다.<br>
+        차로 약 1시간, 버스로는 2시간 넘게 걸리는 거리입니다.
+    </h2>
+    """, unsafe_allow_html=True)
+     
 #제목
 st.markdown(
     """
