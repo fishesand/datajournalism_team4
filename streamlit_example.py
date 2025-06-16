@@ -128,7 +128,7 @@ merged_df['인구/의료기관'] = merged_df['population'] / merged_df['총의�
 
 # Streamlit 시각화
 st.markdown("""
-<h2 style='text-align: center; margin-top: 40px;'>의료기관 1곳이 담당하는 인구 수 </h2>
+<h2 style='text-align: center; margin-top: 40px;'>시도별 의료기관 1곳이 담당하는 인구 수 </h2>
             """, unsafe_allow_html=True)
 
 sorted_df = merged_df.sort_values(by='인구/의료기관', ascending=False)
@@ -143,7 +143,6 @@ bar = ax.bar(x_idx, sorted_df['인구/의료기관'], width=bar_width, color='sk
 ax.set_xticks(x_idx)
 ax.set_xticklabels(x, rotation=45, fontsize = 5, fontproperties=font_prop)
 ax.set_ylabel("인구 / 의료기관 수", fontproperties=font_prop)
-ax.set_title("시도별 의료기관당 인구", fontproperties=font_prop, fontsize=16)
 ax.set_xlabel("시도", fontproperties=font_prop)
 
 fig.tight_layout()
@@ -220,7 +219,6 @@ for col in df_cleaned.columns:
     ax.plot(df_cleaned.index, df_cleaned[col], marker='o', label=col)
 
 # ✅ 폰트 적용
-ax.set_title("2018~2023 전국 정신건강증진 시설 수 변화", fontsize=12, fontproperties=font_prop)
 ax.set_xlabel("연도", fontsize=9, fontproperties=font_prop)
 ax.set_ylabel("시설 수", fontsize=9, fontproperties=font_prop)
 ax.set_xticks(df_cleaned.index)
