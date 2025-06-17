@@ -416,6 +416,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
+
 #정신건강증진시설 개념
 st.markdown("""
 <h2 style="text-align: center; margin-top: 60px; margin-bottom: 40px; font-weight: bold; font-size: clamp(28px, 4vw, 40px); color: #E64A19;">
@@ -490,29 +491,41 @@ merged_df = merged_df[merged_df['시도'] != '전국']
 merged_df['인구/의료기관'] = merged_df['population'] / merged_df['총의료기관수']
 
 # 좌우 레이아웃
-st.markdown("<h2 style='text-align: center; margin-top: 40px;'>시도별 의료기관 1곳이 담당하는 인구 수<br></h2>", unsafe_allow_html=True)
-left_col, right_col = st.columns([1, 1])
+st.markdown("<h2 style='text-align: center; margin-top: 40px;'>시도별 의료기관 1곳이 담당하는 인구 수</h2>", unsafe_allow_html=True)
 
-with left_col:
-    sorted_df = merged_df.sort_values(by='인구/의료기관', ascending=True)
-    fig, ax = plt.subplots(figsize=(7, 4))
-    x = sorted_df['시도']
-    x_idx = range(len(x))
-    ax.bar(x_idx, sorted_df['인구/의료기관'], width=0.4, color='skyblue')
-    ax.set_xticks(x_idx)
-    ax.set_xticklabels(x, rotation=60, ha='right', fontsize=6, fontproperties=font_prop)
-    ax.set_ylabel("인구 / 의료기관 수", fontproperties=font_prop, fontsize=8)
-    ax.set_xlabel("시도", fontproperties=font_prop, fontsize=8)
-    fig.tight_layout()
-    st.pyplot(fig)
+import matplotlib.pyplot as plt
+import base64
+from io import BytesIO
 
+# 그래프 생성
+sorted_df = merged_df.sort_values(by='인구/의료기관', ascending=True)
+fig, ax = plt.subplots(figsize=(7, 4))
+x = sorted_df['시도']
+x_idx = range(len(x))
+ax.bar(x_idx, sorted_df['인구/의료기관'], width=0.4, color='skyblue')
+ax.set_xticks(x_idx)
+ax.set_xticklabels(x, rotation=60, ha='right', fontsize=6, fontproperties=font_prop)
+ax.set_ylabel("인구 / 의료기관 수", fontproperties=font_prop, fontsize=8)
+ax.set_xlabel("시도", fontproperties=font_prop, fontsize=8)
+fig.tight_layout()
+plt.show()
+# base64로 변환
+buf = BytesIO()
+fig.savefig(buf, format="png", bbox_inches="tight")
+buf.seek(0)
+encoded_graph = base64.b64encode(buf.read()).decode()
+
+# HTML로 그래프 + 글 정렬
+
+
+left_col, right_col = st.columns([1, 2])
 with right_col:
     st.markdown("""
     <div style="text-align: center; font-size: clamp(45px, 5.5vw, 65px); color: #E64A19; font-weight: bold; line-height: 1; margin-top: 30px;">
         ”
     </div>
 
-    <div style="font-size: clamp(17px, 2.2vw, 22px); line-height: 1.8; margin: 20px 0; color: #333333; text-align: left;">
+    <div style="font-size: clamp(15px, 2.0vw, 18px); line-height: 1.8; margin: 20px 0; color: #333333; text-align: left;">
         - 본 그래프는 2023년 기준으로, <span style="font-size: 1.15em; font-weight: bold;">각 시도별 정신건강의학과 의료기관 한 곳이 평균적으로 담당하는 인구 수</span>를 나타낸 것입니다.<br>
         - 막대의 높이가 클수록 해당 지역의 의료기관 한 곳이 감당해야 하는 인구 수가 많다는 것을 의미하며, 이는 곧 의료 접근성이 낮고 정신건강 관련 인프라가 부족하다는 사실을 시사합니다.<br>
         - 서울특별시의 경우, 의료기관 한 곳당 약 14,000명을 담당하는 반면, 경상북도는 한 곳당 약 37,000명을 담당하고 있어, <span style="font-size: 1.15em; font-weight: bold;">지역 간 약 2.5배에 달하는 격차</span>가 존재합니다.<br>
@@ -564,7 +577,7 @@ with right_col:
         ”
     </div>
 
-    <div style="font-size: clamp(17px, 2.2vw, 22px); line-height: 1.8; margin: 20px 0; color: #333333; text-align: left;">
+    <div style="font-size: clamp(15px, 2.0vw, 18px); line-height: 1.8; margin: 20px 0; color: #333333; text-align: left;">
         - 대표적으로 서울과 경상북도를 시각화하여 비교해보면 다음과 같습니다.<br>
         - 서울은 한 개의 병원 당 약 14,437명을 담당하고 있으나, 경상북도의 병원은 약 36,998명을 담당하고 있습니다.<br>
         - <span style="font-size: 1.15em; font-weight: bold;">경북의 의료기관 1곳이 서울보다 평균 2.5배 더 많은 인구를 감당</span>하고 있는 셈입니다.<br>
@@ -585,6 +598,7 @@ left_col, right_col = st.columns([1, 1])
 
 # 왼쪽: 선그래프
 with left_col:
+    
     df_year = pd.read_excel("data/2018_2023_정신건강시설.xlsx")
     df_cleaned = df_year.iloc[1:4].copy()
     df_cleaned.columns = ['종류', 2018, 2019, 2020, 2021, 2022, 2023]
@@ -616,7 +630,7 @@ with right_col:
         ”
     </div>
 
-    <div style="font-size: clamp(17px, 2.2vw, 22px); line-height: 1.8; margin: 20px 0; color: #333333; text-align: left;">
+    <div style="font-size: clamp(15px, 2.0vw, 18px); line-height: 1.8; margin: 20px 0; color: #333333; text-align: left;">
         - 본 그래프는 2018년부터 2023년까지 정신건강 관련 의료기관과 정신재활시설 수의 변화를 보여줍니다.<br>
         - 의료기관은 꾸준히 증가하고 있으며, 재활시설도 일정 수준 유지되고 있음을 확인할 수 있습니다.<br>
         - 그러나 앞서 살펴본 지역별 의료기관 당 인구수 분포를 함께 고려하면, 이러한 인프라의 양적 확대가 곧 지역 간 격차 해소로 이어지지는 않는다는 사실을 알 수 있습니다.<br>
