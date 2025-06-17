@@ -12,41 +12,29 @@ import matplotlib.font_manager as fm
 from io import BytesIO
 
 # 간단한 Streamlit 마크다운 제목으로 먼저 확인
-st.markdown("""
-<style>
-@font-face {
-    font-family: '강원교육튼튼';
-    src: url('data/강원교육튼튼.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
-body {
-    background-color: #000000;
-    margin: 0;
-    padding: 0;
-}
-h1.title-main {
-    font-family: '강원교육튼튼', "Segoe UI", "Apple SD Gothic Neo", sans-serif;
-    font-size: 64px;
-    font-weight: 900;
-    text-align: center;
-    color: #FF6F00;  /* 주황 */
-    margin: 20px 0 0 0;  /* 수정: 아래 여백 없애고 위쪽도 줄임 */
-}
-h2.title-sub {
-    font-family: '강원교육튼튼', "Segoe UI", "Apple SD Gothic Neo", sans-serif;
-    font-size: 48px;
-    font-weight: 800;
-    text-align: center;
-    color: #000000;  /* 검정 */
-    margin: 0 0 30px 0;  /* 수정: 위쪽 여백 없애고 아래만 유지 */
-}
-</style>
+import streamlit as st
+import matplotlib.pyplot as plt
+from matplotlib import font_manager
 
-<h1 class="title-main">정신건강</h1>
-<h2 class="title-sub">수도권만의 권리인가요?</h2>
-""", unsafe_allow_html=True)
+# 1. 폰트 경로 설정
+font_path = "data/강원교육튼튼.ttf"
+font_prop = font_manager.FontProperties(fname=font_path)
 
+# 2. 그래프 영역 설정 (배경 없음)
+fig, ax = plt.subplots(figsize=(8, 3))
+
+# 3. 텍스트 추가
+ax.text(0.5, 0.6, '정신건강', fontproperties=font_prop,
+        fontsize=48, color='#FF6F00', ha='center', va='center')
+
+ax.text(0.5, 0.3, '수도권만의 권리인가요?', fontproperties=font_prop,
+        fontsize=28, color='black', ha='center', va='center')
+
+# 4. 축/테두리 제거
+ax.axis('off')
+
+# 5. Streamlit에 출력
+st.pyplot(fig)
 
 
 
