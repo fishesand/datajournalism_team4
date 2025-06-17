@@ -12,66 +12,101 @@ import matplotlib.font_manager as fm
 from io import BytesIO
 
 # 간단한 Streamlit 마크다운 제목으로 먼저 확인
-import streamlit as st
 import matplotlib.pyplot as plt
 from matplotlib import font_manager
+import matplotlib.image as mpimg
+from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 
-# 1. 폰트 경로 설정
+# 1. 폰트 설정
 font_path = "data/강원교육튼튼.ttf"
 font_prop = font_manager.FontProperties(fname=font_path)
 
-# 2. 그래프 영역 설정 (배경 없음)
-fig, ax = plt.subplots(figsize=(8, 3))
+# 2. 이미지 경로
+image_files = [
+    "data/image1.png",
+    "data/image2.png",
+    "data/image3.png",
+    "data/image4.png"
+]
 
-# 3. 텍스트 추가
+# 3. 이미지 배치 정보 (x, y, scale, alpha)
+image_settings = [
+    (0.01, 0.6, 0.25, 0.1),
+    (0.9, 0.6, 0.25, 0.1),
+    (0.1, 0.2, 0.22, 0.1),
+    (0.9999, 0.2, 0.22, 0.1),
+]
+
+# 4. 그래프 생성
+fig, ax = plt.subplots(figsize=(8, 4))
+ax.set_xlim(0, 1)
+ax.set_ylim(0, 1)
+
+# 이미지 배치
+for path, (x, y, zoom, alpha) in zip(image_files, image_settings):
+    img = mpimg.imread(path)
+    imagebox = OffsetImage(img, zoom=zoom, alpha=alpha)
+    ab = AnnotationBbox(imagebox, (x, y),
+                        frameon=False,
+                        box_alignment=(0.5, 0.5),
+                        zorder=0)
+    ax.add_artist(ab)
+
+# 제목 텍스트 (배경 흰색 박스)
 ax.text(0.5, 0.6, '정신건강', fontproperties=font_prop,
-        fontsize=36, color='#FF6F00', ha='center', va='center')
+        fontsize=50, color= '#FF5722', ha='center', va='center', zorder=3,
+        bbox=dict(facecolor='white', alpha=0.7, edgecolor='none', boxstyle='round'))
 
+# 부제목 텍스트
 ax.text(0.5, 0.3, '수도권만의 권리인가요?', fontproperties=font_prop,
-        fontsize=20, color='black', ha='center', va='center')
+        fontsize=30, color='black', ha='center', va='center', zorder=3)
 
-# 4. 축/테두리 제거
+# 7. 축 제거
 ax.axis('off')
 
-# 5. Streamlit에 출력
+# 8. 출력
+import streamlit as st
 st.pyplot(fig)
 
 
+# 1. 폰트 설정
 
 
 
 # HTML 렌더링은 줄이거나 검증된 구조만 사용
 st.markdown("""
-<div style="color: #1e1e1e; font-family: 'Segoe UI', sans-serif; padding: 10px 20px; text-align: center;">
+<div style="color: #1e1e1e; font-family: 'Segoe UI', sans-serif; padding: 10px 5vw; text-align: center;">
 
-  <div style="font-size: 28px; font-weight: bold; color: #FF5722; margin-bottom: 10px;">
+  <div style="font-size: clamp(20px, 3vw, 36px); font-weight: bold; color: #FF5722; margin-bottom: 1vw;">
     우리나라 국민의 1/3은
   </div>
 
-  <div style="font-size: 22px; margin-bottom: 30px;">
+  <div style="font-size: clamp(18px, 2vw, 28px); margin-bottom: 2vw;">
     ‘중간 수준 이상의 우울감’을 경험하고 있습니다.
   </div>
 
-  <div style="font-size: 13px; color: #888888; margin-bottom: 40px;">
+  <div style="font-size: clamp(12px, 1vw, 16px); color: #888888; margin-bottom: 2vw;">
     출처: ‘정신건강 증진과 위기 대비를 위한 일반인 조사’<br>
     (서울대 보건대학원 BK21 건강재난 통합대응을 위한 교육연구단, 2025-05-07)
   </div>
 
-  <div style="font-size: 20px; margin-bottom: 20px;">
+  <div style="font-size: clamp(16px, 1.6vw, 24px); margin-bottom: 1.5vw;">
     <strong style="color: #FF5722;">그럼에도</strong>, 우리 사회에서 <strong>정신건강</strong>은 늘 뒷전입니다.
   </div>
 
-  <div style="font-size: 20px; margin-bottom: 30px;">
+  <div style="font-size: clamp(16px, 1.6vw, 24px); margin-bottom: 2vw;">
     <strong style="color: #FF5722;">지방, 농어촌 지역</strong>의 정신건강은 더더욱 방치되어 있습니다.
   </div>
 
-  <div style="font-size: 28px; font-weight: bold; color: #FF5722;">
+  <div style="font-size: clamp(22px, 2.5vw, 36px); font-weight: bold; color: #FF5722;">
     본 프로젝트의 목표는<br>
     <span style="color: #1e1e1e;">정신건강증진시설의 지역 격차</span>를 시각화하는 것입니다.
   </div>
 
 </div>
 """, unsafe_allow_html=True)
+
+
 
 st.markdown("""
 <!-- 공백과 세로선 영역 -->
@@ -128,8 +163,8 @@ with open("data/A씨.png", "rb") as image_file:
 st.markdown(f"""
 <div style="display: flex; justify-content: center; margin-top: 40px;">
     <div style="text-align: center;">
-        <img src="data:image/png;base64,{encoded}" style="max-width: 240px; width: 100%;" />
-        <div style="margin-top: 20px; font-size: 24px; line-height: 1.6;">
+        <img src="data:image/png;base64,{encoded}" style="max-width: 200px; width: 80%;" />
+        <div style="margin-top: 20px; font-size: clamp(16px, 2vw, 24px); line-height: 1.6;">
             강남구에 사는 A씨가 있습니다.
         </div>
     </div>
@@ -150,8 +185,8 @@ with open("data/1.png", "rb") as image_file:
 st.markdown(f"""
 <div style="display: flex; justify-content: center; margin-top: 40px;">
     <div style="text-align: center;">
-        <img src="data:image/png;base64,{encoded_img}" style="max-width: 1000px; width: 100%;" />
-        <div style="margin-top: 30px; font-size: 24px; line-height: 1.6;">
+        <img src="data:image/png;base64,{encoded_img}" style="max-width: 800px; width: 80%;" />
+        <div style="margin-top: 30px; font-size: clamp(16px, 2vw, 24px); line-height: 1.6;">
             강남구에는 정신병원이 102곳,<br>
             정신재활센터는 1곳 있습니다.<br><br>
         </div>
@@ -171,8 +206,9 @@ with open("data/2.png", "rb") as image_file:
 st.markdown(f"""
 <div style="display: flex; justify-content: center; margin-top: 40px;">
     <div style="text-align: center;">
-        <img src="data:image/png;base64,{encoded_img}" style="max-width: 1000px; width: 100%;" />
-        <div style="margin-top: 30px; font-size: 24px; line-height: 1.6;">
+        <img src="data:image/png;base64,{encoded_img}" style="max-width: 800px; width: 80%;" />
+        <div style="margin-top: 30px; font-size: clamp(16px, 2vw, 24px);
+ line-height: 1.6;">
             A씨가 거주하는 선릉로에만 <br>
             정신병원이 12곳 있습니다.<br><br>
         </div>
@@ -192,8 +228,9 @@ with open("data/3.png", "rb") as image_file:
 st.markdown(f"""
 <div style="display: flex; justify-content: center; margin-top: 40px;">
     <div style="text-align: center;">
-        <img src="data:image/png;base64,{encoded_img}" style="max-width: 1000px; width: 100%;" />
-        <div style="margin-top: 30px; font-size: 24px; line-height: 1.6;">
+        <img src="data:image/png;base64,{encoded_img}" style="max-width: 800px; width: 80%;" />
+        <div style="margin-top: 30px; font-size: clamp(16px, 2vw, 24px);
+ line-height: 1.6;">
             A씨의 집에서 정신병원까지 가기 위해서는 얼마나 걸릴까요?<br><br><br>
         </div>
     </div>
@@ -211,8 +248,9 @@ with open("data/4.png", "rb") as image_file:
 st.markdown(f"""
 <div style="display: flex; justify-content: center; margin-top: 40px;">
     <div style="text-align: center;">
-        <img src="data:image/png;base64,{encoded_img}" style="max-width: 1000px; width: 100%;" />
-        <div style="margin-top: 30px; font-size: 24px; line-height: 1.6;">
+        <img src="data:image/png;base64,{encoded_img}" style="max-width: 900px; width: 90%;" />
+        <div style="margin-top: 30px; font-size: clamp(16px, 2vw, 24px);
+ line-height: 1.6;">
             A씨는 집 근처 정신병원들이 모여있는 반경까지 이동하는 데<br>
             걸어서 12분이 채 걸리지 않습니다.<br>
             많은 병원들이 분포되어 있기 때문에,<br>
@@ -222,7 +260,24 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
+st.markdown("""
+<!-- 공백과 세로선 영역 -->
+<div style="position: relative; height: 80px; margin: 60px 0;">
 
+  <!-- 세로선: 가운데 정렬 -->
+  <div style="
+    position: absolute;
+    left: 50%;
+    top: 10px;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 150px;
+    background-color: #FF5722;
+    opacity: 0.7;
+  "></div>
+
+</div>
+""", unsafe_allow_html=True)
 
 #5단계
 import base64
@@ -235,8 +290,9 @@ with open("data/A씨.png", "rb") as image_file:
 st.markdown(f"""
 <div style="display: flex; justify-content: center; margin-top: 40px;">
     <div style="text-align: center;">
-        <img src="data:image/png;base64,{encoded_img}" style="max-width: 240px; width: 100%;" />
-        <div style="margin-top: 30px; font-size: 24px; line-height: 1.6;">
+        <img src="data:image/png;base64,{encoded_img}" style="max-width: 200px; width: 80%;" />
+        <div style="margin-top: 30px; font-size: clamp(16px, 2vw, 24px);
+; line-height: 1.6;">
             한편, 전라남도 보성군에 사는 B씨가 있습니다.<br><br>
         </div>
     </div>
@@ -255,8 +311,9 @@ with open("data/5.png", "rb") as image_file:
 st.markdown(f"""
 <div style="display: flex; justify-content: center; margin-top: 40px;">
     <div style="text-align: center;">
-        <img src="data:image/png;base64,{encoded_img}" style="max-width: 1000px; width: 100%;" />
-        <div style="margin-top: 30px; font-size: 24px; line-height: 1.6;">
+        <img src="data:image/png;base64,{encoded_img}" style="max-width: 800px; width: 80%;" />
+        <div style="margin-top: 30px; font-size: clamp(16px, 2vw, 24px);
+; line-height: 1.6;">
             보성군에는 정신병원이 단 2곳뿐입니다.<br><br>
         </div>
     </div>
@@ -274,8 +331,9 @@ with open("data/6.png", "rb") as image_file:
 st.markdown(f"""
 <div style="display: flex; justify-content: center; margin-top: 40px;">
     <div style="text-align: center;">
-        <img src="data:image/png;base64,{encoded_img}" style="max-width: 1000px; width: 100%;" />
-        <div style="margin-top: 30px; font-size: 24px; line-height: 1.6;">
+        <img src="data:image/png;base64,{encoded_img}" style="max-width: 800px; width: 80%;" />
+        <div style="margin-top: 30px; font-size: clamp(16px, 2vw, 24px);
+ line-height: 1.6;">
             B씨가 거주하는 지역에도 병원이 있긴 하지만,<br>
             같은 보성군 안에 있는 병원까지도<br>
             <strong>자동차로는 약 30분,</strong><br>
@@ -297,8 +355,9 @@ with open("data/7.png", "rb") as image_file:
 st.markdown(f"""
 <div style="display: flex; justify-content: center; margin-top: 40px;">
     <div style="text-align: center;">
-        <img src="data:image/png;base64,{encoded_img}" style="max-width: 1000px; width: 100%;" />
-        <div style="margin-top: 30px; font-size: 24px;">
+        <img src="data:image/png;base64,{encoded_img}" style="max-width: 900px; width: 90%;" />
+        <div style="margin-top: 30px; font-size: clamp(16px, 2vw, 24px);
+;">
             보성군 내 병원 접근이 어려운 B씨는<br>
             결국 순천시까지 나가야 할지도 모릅니다.<br>
             차로 약 1시간, 버스로는 2시간 넘게 걸리는 거리입니다.<br><br>
@@ -309,52 +368,90 @@ st.markdown(f"""
 
 
 st.markdown("""
-<div style="background-color: #e3f2fd; padding: 20px; border-left: 6px solid #1976d2; border-radius: 8px; margin-bottom: 25px; font-size: 20px; max-width: 100%; text-align: center;">
-    이러한 문제는 단지 A씨와 B씨 개인의 문제가 아닙니다. <br>
-    현재 우리 사회에서는 정신건강증진시설에 지역 간 격차가 존재하며, 이는 많은 이들의 삶에 영향을 미치고 있습니다. <br>
-    이에 따라 정신건강증진시설의 개념과 관련 통계를 살펴보고, <br>
-    지역 격차가 실제로 어떻게 나타나는지 지도를 통해 확인한 뒤, <br>
-    이를 해소하기 위한 보건복지부의 의료 개혁 방향에 대해 논의하고자 합니다.<br>
+<div style="padding: 1.5vw 3vw; margin-bottom: 3vw; text-align: center;
+            font-size: clamp(18px, 1.8vw, 26px); color: #1e1e1e;
+            font-family: 'Segoe UI', sans-serif; line-height: 1.8; position: relative;">
+
+  <span style="display: inline-block; font-weight: bold; font-size: clamp(22px, 2.2vw, 30px); color: #FF5722;">
+    이러한 문제는 단지 A씨와 B씨 개인의 문제가 아닙니다.
+  </span><br><br>
+
+  <div style="font-size: clamp(45px, 5.5vw, 65px); color: #FF5722; font-weight: bold; line-height: 1; margin-bottom: 0.2em;">
+    “
+  </div>
+
+  <div style="font-size: clamp(20px, 2.0vw, 20px); line-height: 1.9;">
+  현재 우리 사회에서는 <strong style="color: #FF5722;">정신건강증진시설에 지역 간 격차</strong>가 존재하며,<br>
+  이는 많은 이들의 삶에 영향을 미치고 있습니다.<br><br>
+
+  이에 따라 <strong style="color: black;">정신건강증진시설의 개념과 관련 통계</strong>를 살펴보고,<br>
+  <strong style="color: black;">지역 격차</strong>가 실제로 어떻게 나타나는지 지도를 통해 확인한 뒤,<br>
+  <strong style="color: #FF5722;">보건복지부의 의료 개혁 방향</strong>에 대해 논의하고자 합니다.
+</div>
+
+  <div style="font-size: clamp(45px, 5.5vw, 65px); color: #FF5722; font-weight: bold; line-height: 1; margin-top: 1em; text-align: center;">
+    ”
+  </div>
+
+</div>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+<!-- 공백과 세로선 영역 -->
+<div style="position: relative; height: 80px; margin: 60px 0;">
+
+  <!-- 세로선: 가운데 정렬 -->
+  <div style="
+    position: absolute;
+    left: 50%;
+    top: 10px;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 150px;
+    background-color: #FF5722;
+    opacity: 0.7;
+  "></div>
+
 </div>
 """, unsafe_allow_html=True)
 
 
-# 소제목 출력
-# I. 정신건강증진시설의 개념과 기본 통계
+#정신건강증진시설 개념
 st.markdown("""
-<h1 style='text-align: center; font-size: 40px; margin-top: 60px;'>
-    I. 정신건강증진시설의 개념과 기본 통계
-</h1>
-""", unsafe_allow_html=True)
+<h2 style="text-align: center; margin-top: 60px; margin-bottom: 40px; font-weight: bold; font-size: clamp(28px, 4vw, 40px); color: #E64A19;">
+    <span style="color: black;">I. </span>정신건강증진시설<span style="color: black;">이란?</span>
+</h2>
 
-st.markdown("""
-<h2 style='text-align: center; margin-top: 40px;'>정신건강증진시설이란?</h2>
-
-<div style="background-color: #e3f2fd; padding: 20px; border-left: 6px solid #1976d2; border-radius: 8px; margin-bottom: 25px; font-size: 25px;">
+<div style="background-color: #f0f0f0; padding: 20px; border-left: 6px solid #555555; border-radius: 8px; margin-bottom: 25px; font-size: clamp(16px, 2vw, 22px); line-height: 1.6; color: #333333;">
     「정신건강증진 및 정신질환자 복지서비스 지원에 관한 법률」 제3조 제4호에 따르면,  
-    <strong>‘정신건강증진시설’이란 정신의료기관, 정신요양시설 및 정신재활시설</strong>을 말합니다.  
-    이들 시설을 중심으로 <strong>국가와 지방자치단체는 정신건강의 예방부터 조기발견, 치료, 재활, 사회복귀까지 전 과정을 포괄하는 서비스를 계획 및 시행</strong>하고 있습니다.
+    <strong style="color: black;">‘정신건강증진시설’이란 정신의료기관, 정신요양시설 및 정신재활시설</strong>을 말합니다.  
+    이들 시설을 중심으로 <strong style="color: black;">국가와 지방자치단체는 정신건강의 예방부터 조기발견, 치료, 재활, 사회복귀까지 전 과정을 포괄하는 서비스를 계획 및 시행</strong>하고 있습니다.
 </div>
 
-<div style="background-color: #f9f9f9; padding: 25px; border-radius: 12px; line-height: 1.8; font-size: 24px;">
-    <ul>
-        <li><strong>정신건강복지센터:</strong> 지역주민 및 정신장애인과 그 가족에게 포괄적인 정신건강 서비스를 제공합니다.</li>
-        <li><strong>아동·청소년 정신건강복지센터:</strong> 조기 발견, 상담·치료를 통해 아동·청소년의 건강한 성장을 지원합니다.</li>
-        <li><strong>노인정신건강복지센터:</strong> 노인 대상 정신건강 서비스 제공으로 건강한 노년을 지원합니다.</li>
-        <li><strong>자살예방센터:</strong> 자살 고위험군 및 유가족에 대한 지원과 생명존중 문화 확산을 위한 서비스를 제공합니다.</li>
-        <li><strong>중독관리통합지원센터:</strong> 알코올, 약물, 도박 등 중독자 조기발견부터 치료·재활까지 통합적 지원을 합니다.</li>
-        <li><strong>트라우마센터:</strong> 재난이나 사고로 인한 심리적 충격에 대응해 심리 안정과 사회 적응을 돕습니다.</li>
-        <li><strong>정신재활시설:</strong> 정신질환자의 사회복귀를 위한 생활지원, 직업재활, 주거제공 등을 수행합니다.</li>
-        <li><strong>정신요양시설:</strong> 보호가 필요한 만성 정신질환자의 요양·보호를 통해 삶의 질 향상을 지원합니다.</li>
+<div style="padding: 25px; border-radius: 12px; line-height: 1.8; font-size: clamp(18px, 2.2vw, 26px); color: #3e3e3e;">
+    <ul style="padding-left: 1.2em; margin: 0;">
+        <li><strong style="color: #E64A19;">정신건강복지센터:</strong> 지역주민 및 정신장애인과 그 가족에게 포괄적인 정신건강 서비스를 제공합니다.</li>
+        <li><strong style="color: #E64A19;">아동·청소년 정신건강복지센터:</strong> 조기 발견, 상담·치료를 통해 아동·청소년의 건강한 성장을 지원합니다.</li>
+        <li><strong style="color: #E64A19;">노인정신건강복지센터:</strong> 노인 대상 정신건강 서비스 제공으로 건강한 노년을 지원합니다.</li>
+        <li><strong style="color: #E64A19;">자살예방센터:</strong> 자살 고위험군 및 유가족에 대한 지원과 생명존중 문화 확산을 위한 서비스를 제공합니다.</li>
+        <li><strong style="color: #E64A19;">중독관리통합지원센터:</strong> 알코올, 약물, 도박 등 중독자 조기발견부터 치료·재활까지 통합적 지원을 합니다.</li>
+        <li><strong style="color: #E64A19;">트라우마센터:</strong> 재난이나 사고로 인한 심리적 충격에 대응해 심리 안정과 사회 적응을 돕습니다.</li>
+        <li><strong style="color: #E64A19;">정신재활시설:</strong> 정신질환자의 사회복귀를 위한 생활지원, 직업재활, 주거제공 등을 수행합니다.</li>
+        <li><strong style="color: #E64A19;">정신요양시설:</strong> 보호가 필요한 만성 정신질환자의 요양·보호를 통해 삶의 질 향상을 지원합니다.</li>
     </ul>
 </div>
-            
-<div style="background-color: #fff8e1; padding: 20px; border-left: 6px solid #fbc02d; border-radius: 8px; margin-top: 30px; font-size: 24px; line-height: 1.7;">
-    본 프로젝트는 전체 정신건강증진시설 중에서 <strong>가장 일반적인 대상층을 가진 정신병원과 정신재활시설</strong>에 주목하여 분석을 진행하였습니다.  
+
+<div style="background-color: #f0f0f0; padding: 20px; border-left: 6px solid #555555; border-radius: 8px; margin-top: 30px; font-size: clamp(16px, 2vw, 22px); line-height: 1.7; color: #333333;">
+    본 프로젝트는 전체 정신건강증진시설 중에서 <strong style="color: black;">가장 일반적인 대상층을 가진 정신병원과 정신재활시설</strong>에 주목하여 분석을 진행하였습니다.  
     이는 노인복지시설이나 트라우마센터처럼 특정 계층을 대상으로 한 시설보다,  
-    <strong>보다 폭넓은 인구에게 직접적인 영향을 미치는 기반 시설</strong>로 판단했기 때문입니다.
+    <strong style="color: black;">보다 폭넓은 인구에게 직접적인 영향을 미치는 기반 시설</strong>로 판단했기 때문입니다.
 </div>
 """, unsafe_allow_html=True)
+
+
+
+
+
 
 import matplotlib.font_manager as fm
 import pandas as pd
@@ -411,13 +508,23 @@ with left_col:
 
 with right_col:
     st.markdown("""
-    <div style="background-color: #f4f6f8; padding: 28px; border-left: 5px solid #1976d2;
-                border-radius: 8px; margin-top: 30px; font-size: 26px; line-height: 1.9; text-align: left;">
-        -본 그래프는 2023년 기준으로, 각 시도별 정신건강의학과 의료기관 한 곳이 평균적으로 담당하는 인구 수를 나타낸 것입니다.<br>
-        -막대의 높이가 클수록 해당 지역의 의료기관 한 곳이 감당해야 하는 인구 수가 많다는 것을 의미하며, 이는 곧 의료 접근성이 낮고 정신건강 관련 인프라가 부족하다는 사실을 시사합니다.<br>
-        -서울특별시의 경우, 의료기관 한 곳당 약 14,000명을 담당하는 반면, 경상북도는 한 곳당 약 37,000명을 담당하고 있어, 지역 간 약 2.5배에 달하는 격차가 존재합니다.<br>
-        -전반적으로 수도권과 광역시에 비해, 충청도, 전라도, 경상도 등 비수도권 지역일수록 인구 대비 의료기관 수가 적은 경향을 보입니다. 이러한 현상은 정신건강 분야에서의 지역 불균형 문제를 드러내며, 보다 균형 잡힌 정책적 개입이 요구된다고 할 수 있습니다.<br> </div>
+    <div style="text-align: center; font-size: clamp(45px, 5.5vw, 65px); color: #E64A19; font-weight: bold; line-height: 1; margin-top: 30px;">
+        ”
+    </div>
+
+    <div style="font-size: clamp(17px, 2.2vw, 22px); line-height: 1.8; margin: 20px 0; color: #333333; text-align: left;">
+        - 본 그래프는 2023년 기준으로, <span style="font-size: 1.15em; font-weight: bold;">각 시도별 정신건강의학과 의료기관 한 곳이 평균적으로 담당하는 인구 수</span>를 나타낸 것입니다.<br>
+        - 막대의 높이가 클수록 해당 지역의 의료기관 한 곳이 감당해야 하는 인구 수가 많다는 것을 의미하며, 이는 곧 의료 접근성이 낮고 정신건강 관련 인프라가 부족하다는 사실을 시사합니다.<br>
+        - 서울특별시의 경우, 의료기관 한 곳당 약 14,000명을 담당하는 반면, 경상북도는 한 곳당 약 37,000명을 담당하고 있어, <span style="font-size: 1.15em; font-weight: bold;">지역 간 약 2.5배에 달하는 격차</span>가 존재합니다.<br>
+        - 전반적으로 수도권과 광역시에 비해, 충청도, 전라도, 경상도 등 비수도권 지역일수록 인구 대비 의료기관 수가 적은 경향을 보입니다. <span style="font-size: 1.15em; font-weight: bold;">이러한 현상은 정신건강 분야에서의 지역 불균형 문제를 드러내며, 보다 균형 잡힌 정책적 개입이 요구된다고 할 수 있습니다.</span>
+    </div>
+
+    <div style="text-align: center; font-size: clamp(45px, 5.5vw, 65px); color: #E64A19; font-weight: bold; line-height: 1; margin-bottom: 30px;">
+        ”
+    </div>
     """, unsafe_allow_html=True)
+
+
 
 # 이미지 → base64 변환 함수
 # 병원/사람 시각화 함수
@@ -453,14 +560,22 @@ with left_col:
 # 오른쪽: 설명 줄글
 with right_col:
     st.markdown("""
-    <div style="background-color: #f4f6f8; padding: 24px; border-left: 6px solid #1976d2;
-                border-radius: 8px; margin-top: 50px; font-size: 26px; line-height: 1.9; text-align: left;">
-        -대표적으로 서울과 경상북도를 시각화하여 비교해보면 다음과 같습니다. <br>
-        -서울은 한 개의 병원 당 약 14,437명을 담당하고 있으나, 경상북도의 병원은 약 36,998명을 담당하고 있습니다.<br>
-        -이는 경북의 의료기관 1곳이 서울보다 평균 2.5배 더 많은 인구를 감당하고 있는 셈입니다.<br>
-        -앞서 살펴본 그래프와 같이 이러한 수치는 두 지역 간 의료 인프라의 밀도 차이를 드러내며, 정신건강 분야에서의 지역 불균형 문제를 보다 명확히 보여주는 사례로 해석할 수 있습니다.
+    <div style="text-align: center; font-size: clamp(45px, 5.5vw, 65px); color: #E64A19; font-weight: bold; line-height: 1; margin-top: 30px;">
+        ”
+    </div>
+
+    <div style="font-size: clamp(17px, 2.2vw, 22px); line-height: 1.8; margin: 20px 0; color: #333333; text-align: left;">
+        - 대표적으로 서울과 경상북도를 시각화하여 비교해보면 다음과 같습니다.<br>
+        - 서울은 한 개의 병원 당 약 14,437명을 담당하고 있으나, 경상북도의 병원은 약 36,998명을 담당하고 있습니다.<br>
+        - <span style="font-size: 1.15em; font-weight: bold;">경북의 의료기관 1곳이 서울보다 평균 2.5배 더 많은 인구를 감당</span>하고 있는 셈입니다.<br>
+        - 앞서 살펴본 그래프와 같이 이러한 수치는 <span style="font-size: 1.15em; font-weight: bold;">두 지역 간 의료 인프라의 밀도 차이</span>를 드러내며, 정신건강 분야에서의 지역 불균형 문제를 보다 명확히 보여주는 사례로 해석할 수 있습니다.
+    </div>
+
+    <div style="text-align: center; font-size: clamp(45px, 5.5vw, 65px); color: #E64A19; font-weight: bold; line-height: 1; margin-bottom: 30px;">
+        ”
     </div>
     """, unsafe_allow_html=True)
+
 
 # 제목
 st.markdown("<h2 style='text-align: center; margin-top: 80px;'><br>2018~2023 전국 정신건강증진 시설 수 변화<br></h2>", unsafe_allow_html=True)
@@ -497,16 +612,42 @@ with left_col:
 # 오른쪽: 설명 줄글
 with right_col:
     st.markdown("""
-    <div style="background-color: #f4f6f8; padding: 24px; border-left: 6px solid #1976d2;
-                border-radius: 8px; margin-top: 30px; font-size: 26px; line-height: 1.9; text-align: left;">
-        -본 그래프는 2018년부터 2023년까지 정신건강 관련 의료기관과 정신재활시설 수의 변화를 보여줍니다. <br>
-        -의료기관은 꾸준히 증가하고 있으며, 재활시설도 일정 수준 유지되고 있음을 확인할 수 있습니다. <br>
-        -그러나 앞서 살펴본 지역별 의료기관 당 인구수 분포를 함께 고려하면, 이러한 인프라의 양적 확대가 곧 지역 간 격차 해소로 이어지지는 않는다는 사실을 알 수 있습니다. <br>
-        -즉, 의료기관이나 재활시설이 늘어나는 추세에도 불구하고, 특정 지역에서는 여전히 의료 접근성이 낮고 과도한 부담이 집중되고 있습니다. <br>
-        -이는 단순한 시설 수의 증가만으로는 지역 불균형 문제를 해결할 수 없으며, 인프라의 ‘분포’와 ‘배치’ 또한 정책적으로 고려되어야 함을 시사합니다.
+    <div style="text-align: center; font-size: clamp(45px, 5.5vw, 65px); color: #E64A19; font-weight: bold; line-height: 1; margin-top: 30px;">
+        ”
+    </div>
+
+    <div style="font-size: clamp(17px, 2.2vw, 22px); line-height: 1.8; margin: 20px 0; color: #333333; text-align: left;">
+        - 본 그래프는 2018년부터 2023년까지 정신건강 관련 의료기관과 정신재활시설 수의 변화를 보여줍니다.<br>
+        - 의료기관은 꾸준히 증가하고 있으며, 재활시설도 일정 수준 유지되고 있음을 확인할 수 있습니다.<br>
+        - 그러나 앞서 살펴본 지역별 의료기관 당 인구수 분포를 함께 고려하면, 이러한 인프라의 양적 확대가 곧 지역 간 격차 해소로 이어지지는 않는다는 사실을 알 수 있습니다.<br>
+        - <span style="font-size: 1.15em; font-weight: bold;">의료기관이나 재활시설이 늘어나는 추세에도 불구하고, 특정 지역에서는 여전히 의료 접근성이 낮고 과도한 부담이 집중</span>되고 있습니다.<br>
+        - 이는 단순한 시설 수의 증가만으로는 지역 불균형 문제를 해결할 수 없으며, <span style="font-size: 1.15em; font-weight: bold;">인프라의 ‘분포’와 ‘배치’ 또한 정책적으로 고려되어야 함</span>을 시사합니다.
+    </div>
+
+    <div style="text-align: center; font-size: clamp(45px, 5.5vw, 65px); color: #E64A19; font-weight: bold; line-height: 1; margin-bottom: 30px;">
+        ”
     </div>
     """, unsafe_allow_html=True)
 
+
+st.markdown("""
+<!-- 공백과 세로선 영역 -->
+<div style="position: relative; height: 80px; margin: 60px 0;">
+
+  <!-- 세로선: 가운데 정렬 -->
+  <div style="
+    position: absolute;
+    left: 50%;
+    top: 10px;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 150px;
+    background-color: #FF5722;
+    opacity: 0.7;
+  "></div>
+
+</div>
+""", unsafe_allow_html=True)
 
 
 import pandas as pd
