@@ -118,111 +118,195 @@ boseong_df = pd.DataFrame({
 })
 
 # 1단계: 인물 소개
-col1, col2, col3 = st.columns([1.5,1,1])
-with col2:
-    st.markdown("<h2 style='text-align: center; margin-top: 40px;'><br><br></h2>", unsafe_allow_html=True)
-    st. image("data/A씨.png",width=240)
+import base64
 
-col1, col2, col3 = st.columns([1,1,1])
-with col2:
-    st.markdown("<h2 style='text-align: center; margin-top: 40px;'><br>강남구에 사는 A씨가 있습니다.<br><br></h2>", unsafe_allow_html=True)
+# 이미지 파일 불러와서 base64 인코딩
+with open("data/A씨.png", "rb") as image_file:
+    encoded = base64.b64encode(image_file.read()).decode()
+
+# HTML 코드 삽입
+st.markdown(f"""
+<div style="display: flex; justify-content: center; margin-top: 40px;">
+    <div style="text-align: center;">
+        <img src="data:image/png;base64,{encoded}" style="max-width: 240px; width: 100%;" />
+        <div style="margin-top: 20px; font-size: 24px; line-height: 1.6;">
+            강남구에 사는 A씨가 있습니다.
+        </div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
+
 
 
 # 2단계: 전체 강남구 지도
-col1, col2, col3 = st.columns([1,1,1])
-with col2:
-    st. image("data/1.png",width=1000)
+import base64
 
-col1, col2, col3 = st.columns([1,1,1])
-with col2:
-    st.markdown("<h2 style='text-align: center; margin-top: 40px;'>강남구에는 정신병원이 102곳,<br>정신재활센터는 1곳 있습니다.<br><br></h2>", unsafe_allow_html=True)
+# 이미지 파일 base64 인코딩
+with open("data/1.png", "rb") as image_file:
+    encoded_img = base64.b64encode(image_file.read()).decode()
+
+# HTML로 이미지 + 텍스트 중앙 정렬 표시
+st.markdown(f"""
+<div style="display: flex; justify-content: center; margin-top: 40px;">
+    <div style="text-align: center;">
+        <img src="data:image/png;base64,{encoded_img}" style="max-width: 1000px; width: 100%;" />
+        <div style="margin-top: 30px; font-size: 24px; line-height: 1.6;">
+            강남구에는 정신병원이 102곳,<br>
+            정신재활센터는 1곳 있습니다.<br><br>
+        </div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
 
 # 3단계: 선릉로 강조 지도
-col1, col2, col3 = st.columns([1,1,1])
-with col2:
-    st. image("data/2.png",width=1000)
+import base64
 
-col1, col2, col3 = st.columns([1,1,1])
-with col2:
-    st.markdown("<h2 style='text-align: center; margin-top: 40px;'>A씨가 거주하는 선릉로에만 <br>정신병원이 12곳 있습니다.<br><br></h2>", unsafe_allow_html=True)
+# 이미지 파일 base64 인코딩
+with open("data/2.png", "rb") as image_file:
+    encoded_img = base64.b64encode(image_file.read()).decode()
+
+# HTML로 이미지 + 텍스트 중앙 정렬 표시
+st.markdown(f"""
+<div style="display: flex; justify-content: center; margin-top: 40px;">
+    <div style="text-align: center;">
+        <img src="data:image/png;base64,{encoded_img}" style="max-width: 1000px; width: 100%;" />
+        <div style="margin-top: 30px; font-size: 24px; line-height: 1.6;">
+            A씨가 거주하는 선릉로에만 <br>
+            정신병원이 12곳 있습니다.<br><br>
+        </div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
 
 #4단계
-col1, col2, col3 = st.columns([1,1,1])
-with col2:
-    st. image("data/3.png",width=1000)
+import base64
 
-col1, col2, col3 = st.columns([1,1,1])
-with col2:
-    st.markdown("""
-        <h2 style='text-align: center; margin-top: 40px;'>
+# 이미지 파일 base64 인코딩
+with open("data/3.png", "rb") as image_file:
+    encoded_img = base64.b64encode(image_file.read()).decode()
+
+# 이미지 + 텍스트 중앙 정렬
+st.markdown(f"""
+<div style="display: flex; justify-content: center; margin-top: 40px;">
+    <div style="text-align: center;">
+        <img src="data:image/png;base64,{encoded_img}" style="max-width: 1000px; width: 100%;" />
+        <div style="margin-top: 30px; font-size: 24px; line-height: 1.6;">
             A씨의 집에서 정신병원까지 가기 위해서는 얼마나 걸릴까요?<br><br><br>
-        </h2>
-    """, unsafe_allow_html=True)
+        </div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
 ##
-col1, col2, col3 = st.columns([1,1,1])
-with col2:
-    st. image("data/4.png",width=1000)
+import base64
 
-col1, col2, col3 = st.columns([1,1,1])
-with col2:
-    st.markdown("""
-        <h2 style='text-align: center; margin-top: 40px;'>
-            A씨는 집 근처 정신병원들이 모여있는 반경까지 이동하는 데 걸어서 12분이 채 걸리지 않습니다.<br>
-            많은 병원들이 분포되어 있기 때문에, <br>선택지의 폭도 넓습니다.<br><br><br>
-        </h2>
-    """, unsafe_allow_html=True)
+# 이미지 파일 base64 인코딩
+with open("data/4.png", "rb") as image_file:
+    encoded_img = base64.b64encode(image_file.read()).decode()
+
+# 이미지와 텍스트를 HTML로 중앙 정렬
+st.markdown(f"""
+<div style="display: flex; justify-content: center; margin-top: 40px;">
+    <div style="text-align: center;">
+        <img src="data:image/png;base64,{encoded_img}" style="max-width: 1000px; width: 100%;" />
+        <div style="margin-top: 30px; font-size: 24px; line-height: 1.6;">
+            A씨는 집 근처 정신병원들이 모여있는 반경까지 이동하는 데<br>
+            걸어서 12분이 채 걸리지 않습니다.<br>
+            많은 병원들이 분포되어 있기 때문에,<br>
+            선택지의 폭도 넓습니다.<br><br><br>
+        </div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
+
 
 #5단계
-col1, col2, col3 = st.columns([1.5,1,1])
-with col2:
-    st. image("data/A씨.png",width=240)
+import base64
 
-col1, col2, col3 = st.columns([1,1,1])
-with col2:
-    st.markdown("<h2 style='text-align: center; margin-top: 40px;'><br>한편, 전라남도 보성군에 사는 B씨가 있습니다.<br><br></h2>", unsafe_allow_html=True)
+# 이미지 파일 base64 인코딩
+with open("data/A씨.png", "rb") as image_file:
+    encoded_img = base64.b64encode(image_file.read()).decode()
 
-##
+# 중앙 정렬된 이미지 + 텍스트 표시
+st.markdown(f"""
+<div style="display: flex; justify-content: center; margin-top: 40px;">
+    <div style="text-align: center;">
+        <img src="data:image/png;base64,{encoded_img}" style="max-width: 240px; width: 100%;" />
+        <div style="margin-top: 30px; font-size: 24px; line-height: 1.6;">
+            한편, 전라남도 보성군에 사는 B씨가 있습니다.<br><br>
+        </div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
-col1, col2, col3 = st.columns([1,1,1])
-with col2:
-    st. image("data/5.png",width=1000)
-
-col1, col2, col3 = st.columns([1,1,1])
-with col2:
-     st.markdown("<h2 style='text-align: center; margin-top: 40px;'><br>보성군에는 정신병원이 단 2곳뿐입니다.<br><br></h2>", unsafe_allow_html=True)
-
-##
-col1, col2, col3 = st.columns([1,1,1])
-with col2:
-    st. image("data/6.png",width=1000)
-
-col1, col2, col3 = st.columns([1,1,1])
-with col2:
-    st.markdown("""
-    <h2 style='text-align: center; margin-top: 40px;'><br>
-        B씨가 거주하는 지역에도 병원이 있긴 하지만,<br>
-        같은 보성군 안에 있는 병원까지도<br>
-        <strong>자동차로는 약 30분,</strong><br>
-        <strong>버스로는 무려 1시간 40분이 걸립니다.</strong><br><br>
-    </h2>
-    """, unsafe_allow_html=True)
 
 ##
-col1, col2, col3 = st.columns([1,1,1])
-with col2:
-    st. image("data/7.png",width=1000)
+import base64
 
-col1, col2, col3 = st.columns([1,1,1])
-with col2:
-     st.markdown("""
-   <h2 style='text-align: center; margin-top: 40px;'><br>
-        보성군 내 병원 접근이 어려운 B씨는<br>
-        결국 순천시까지 나가야 할지도 모릅니다.<br>
-        차로 약 1시간, 버스로는 2시간 넘게 걸리는 거리입니다.<br><br>
-    </h2>
-    """, unsafe_allow_html=True)
+# 이미지 파일 base64 인코딩
+with open("data/5.png", "rb") as image_file:
+    encoded_img = base64.b64encode(image_file.read()).decode()
+
+# 이미지 + 텍스트 중앙 정렬 표시
+st.markdown(f"""
+<div style="display: flex; justify-content: center; margin-top: 40px;">
+    <div style="text-align: center;">
+        <img src="data:image/png;base64,{encoded_img}" style="max-width: 1000px; width: 100%;" />
+        <div style="margin-top: 30px; font-size: 24px; line-height: 1.6;">
+            보성군에는 정신병원이 단 2곳뿐입니다.<br><br>
+        </div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
+##
+import base64
+
+# 이미지 base64 인코딩
+with open("data/6.png", "rb") as image_file:
+    encoded_img = base64.b64encode(image_file.read()).decode()
+
+# HTML로 이미지 + 텍스트 중앙 정렬
+st.markdown(f"""
+<div style="display: flex; justify-content: center; margin-top: 40px;">
+    <div style="text-align: center;">
+        <img src="data:image/png;base64,{encoded_img}" style="max-width: 1000px; width: 100%;" />
+        <div style="margin-top: 30px; font-size: 24px; line-height: 1.6;">
+            B씨가 거주하는 지역에도 병원이 있긴 하지만,<br>
+            같은 보성군 안에 있는 병원까지도<br>
+            <strong>자동차로는 약 30분,</strong><br>
+            <strong>버스로는 무려 1시간 40분이 걸립니다.</strong><br><br>
+        </div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
+
+##
+import base64
+
+# 이미지 base64 인코딩
+with open("data/7.png", "rb") as image_file:
+    encoded_img = base64.b64encode(image_file.read()).decode()
+
+# HTML로 이미지 + 텍스트 중앙 정렬
+st.markdown(f"""
+<div style="display: flex; justify-content: center; margin-top: 40px;">
+    <div style="text-align: center;">
+        <img src="data:image/png;base64,{encoded_img}" style="max-width: 1000px; width: 100%;" />
+        <div style="margin-top: 30px; font-size: 24px;">
+            보성군 내 병원 접근이 어려운 B씨는<br>
+            결국 순천시까지 나가야 할지도 모릅니다.<br>
+            차로 약 1시간, 버스로는 2시간 넘게 걸리는 거리입니다.<br><br>
+        </div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
 
 st.markdown("""
 <div style="background-color: #e3f2fd; padding: 20px; border-left: 6px solid #1976d2; border-radius: 8px; margin-bottom: 25px; font-size: 20px; max-width: 100%; text-align: center;">
