@@ -393,34 +393,45 @@ merged_df = merged_df[merged_df['시도'] != '전국']
 merged_df['인구/의료기관'] = merged_df['population'] / merged_df['총의료기관수']
 
 # 좌우 레이아웃
-st.markdown("<h2 style='text-align: center; margin-top: 40px;'>시도별 의료기관 1곳이 담당하는 인구 수<br></h2>", unsafe_allow_html=True)
-left_col, right_col = st.columns([1, 1])
+st.markdown("<h2 style='text-align: center; margin-top: 40px;'>시도별 의료기관 1곳이 담당하는 인구 수</h2>", unsafe_allow_html=True)
 
-with left_col:
-    st.markdown("""<h1 style='text-align: center; font-size: 40px; margin-top: 20px;'></h1>
-                """, unsafe_allow_html=True)
-    
-    sorted_df = merged_df.sort_values(by='인구/의료기관', ascending=True)
-    fig, ax = plt.subplots(figsize=(7, 4))
-    x = sorted_df['시도']
-    x_idx = range(len(x))
-    ax.bar(x_idx, sorted_df['인구/의료기관'], width=0.4, color='skyblue')
-    ax.set_xticks(x_idx)
-    ax.set_xticklabels(x, rotation=60, ha='right', fontsize=6, fontproperties=font_prop)
-    ax.set_ylabel("인구 / 의료기관 수", fontproperties=font_prop, fontsize=8)
-    ax.set_xlabel("시도", fontproperties=font_prop, fontsize=8)
-    fig.tight_layout()
-    st.pyplot(fig)
+import matplotlib.pyplot as plt
+import base64
+from io import BytesIO
 
-with right_col:
-    st.markdown("""
-    <div style="background-color: #f4f6f8; padding: 28px; border-left: 5px solid #1976d2;
-                border-radius: 8px; margin-top: 15px; font-size: 18px; line-height: 1.9; text-align: left;">
-        -본 그래프는 2023년 기준으로, 각 시도별 정신건강의학과 의료기관 한 곳이 평균적으로 담당하는 인구 수를 나타낸 것입니다.<br>
-        -막대의 높이가 클수록 해당 지역의 의료기관 한 곳이 감당해야 하는 인구 수가 많다는 것을 의미하며, 이는 곧 의료 접근성이 낮고 정신건강 관련 인프라가 부족하다는 사실을 시사합니다.<br>
-        -서울특별시의 경우, 의료기관 한 곳당 약 14,000명을 담당하는 반면, 경상북도는 한 곳당 약 37,000명을 담당하고 있어, 지역 간 약 2.5배에 달하는 격차가 존재합니다.<br>
-        -전반적으로 수도권과 광역시에 비해, 충청도, 전라도, 경상도 등 비수도권 지역일수록 인구 대비 의료기관 수가 적은 경향을 보입니다. 이러한 현상은 정신건강 분야에서의 지역 불균형 문제를 드러내며, 보다 균형 잡힌 정책적 개입이 요구된다고 할 수 있습니다.<br> </div>
-    """, unsafe_allow_html=True)
+# 그래프 생성
+sorted_df = merged_df.sort_values(by='인구/의료기관', ascending=True)
+fig, ax = plt.subplots(figsize=(7, 4))
+x = sorted_df['시도']
+x_idx = range(len(x))
+ax.bar(x_idx, sorted_df['인구/의료기관'], width=0.4, color='skyblue')
+ax.set_xticks(x_idx)
+ax.set_xticklabels(x, rotation=60, ha='right', fontsize=6, fontproperties=font_prop)
+ax.set_ylabel("인구 / 의료기관 수", fontproperties=font_prop, fontsize=8)
+ax.set_xlabel("시도", fontproperties=font_prop, fontsize=8)
+fig.tight_layout()
+
+# base64로 변환
+buf = BytesIO()
+fig.savefig(buf, format="png", bbox_inches="tight")
+buf.seek(0)
+encoded_graph = base64.b64encode(buf.read()).decode()
+
+# HTML로 그래프 + 글 정렬
+st.markdown(f"""
+<div style="display: flex; flex-direction: row; justify-content: center; align-items: center; gap: 50px; margin-top: 40px; flex-wrap: wrap;">
+    <div style="flex: 1;">
+        <img src="data:image/png;base64,{encoded_graph}" style="max-width: 100%; height: auto;" />
+    </div>
+    <div style="flex: 1; font-size: 18px; line-height: 1.8;">
+        <p><strong>- 본 그래프는 2023년 기준으로, 각 시도별 정신건강의학과 의료기관 한 곳이 평균적으로 담당하는 인구 수를 나타낸 것입니다.</strong></p>
+        <p>- 막대의 높이가 클수록 해당 지역의 의료기관 한 곳이 감당해야 하는 인구 수가 많다는 것을 의미하며, 이는 곧 의료 접근성이 낮고 정신건강 관련 인프라가 부족하다는 사실을 시사합니다.</p>
+        <p>- 서울특별시의 경우, 의료기관 한 곳당 약 14,000명을 담당하는 반면, 경상북도는 한 곳당 약 37,000명을 담당하고 있어, 지역 간 약 2.5배에 달하는 격차가 존재합니다.</p>
+        <p>- 전반적으로 수도권과 광역시에 비해, 충청도, 전라도, 경상도 등 비수도권 지역일수록 인구 대비 의료기관 수가 적은 경향을 보입니다. 이러한 현상은 정신건강 분야에서의 지역 불균형 문제를 드러내며, 보다 균형 잡힌 정책적 개입이 요구된다고 할 수 있습니다.</p>
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
 
 # 이미지 → base64 변환 함수
 # 병원/사람 시각화 함수
