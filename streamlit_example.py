@@ -13,35 +13,102 @@ from io import BytesIO
 
 # 간단한 Streamlit 마크다운 제목으로 먼저 확인
 st.markdown("""
-<h1 style='
-    text-align: center;
+<style>
+@font-face {
+    font-family: '강원교육튼튼';
+    src: url('data/강원교육튼튼.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+body {
+    background-color: #000000;
+    margin: 0;
+    padding: 0;
+}
+h1.title-main {
+    font-family: '강원교육튼튼', "Segoe UI", "Apple SD Gothic Neo", sans-serif;
     font-size: 64px;
     font-weight: 900;
-    margin-top: 30px;
-    color: #FF6A00;
-    margin-bottom: 40px;
-    letter-spacing: -1px;
-    text-shadow: 2px 2px 0px #ffffff, 4px 4px 0px #cccccc;
-'>
-    정신건강, 수도권만의 권리인가요?
-</h1>
+    text-align: center;
+    color: #FF6F00;  /* 주황 */
+    margin: 20px 0 0 0;  /* 수정: 아래 여백 없애고 위쪽도 줄임 */
+}
+h2.title-sub {
+    font-family: '강원교육튼튼', "Segoe UI", "Apple SD Gothic Neo", sans-serif;
+    font-size: 48px;
+    font-weight: 800;
+    text-align: center;
+    color: #000000;  /* 검정 */
+    margin: 0 0 30px 0;  /* 수정: 위쪽 여백 없애고 아래만 유지 */
+}
+</style>
+
+<h1 class="title-main">정신건강</h1>
+<h2 class="title-sub">수도권만의 권리인가요?</h2>
 """, unsafe_allow_html=True)
+
+
+
+
 
 
 # HTML 렌더링은 줄이거나 검증된 구조만 사용
 st.markdown("""
-<div style="background-color: #1e1e1e; padding: 20px; border-radius: 12px; text-align: center; font-size: 18px; line-height: 1.8; color: white;">
-    <strong>우리나라 국민의 1/3은</strong> ‘중간 수준 이상의 우울감’을 경험하고 있습니다.  
-    <div style="font-size: 12px; color: #bbbbbb; margin-top: 0;">
-        출처: ‘정신건강 증진과 위기 대비를 위한 일반인 조사’ (서울대 보건대학원 BK21 건강재난 통합대응을 위한 교육연구단, 2025-05-07)</div>
-    <br><br>
-    그럼에도, 우리 사회에서 정신건강은 늘 뒷전입니다.  
-    <br><br>
-    <strong>지방, 농어촌 지역의 정신건강은</strong> 더더욱 방치되어 있습니다.  
-    <br><br>
-    <strong>본 프로젝트의 목표는</strong> 정신건강증진시설의 지역 격차를 시각화하는 것입니다.
+<div style="color: #1e1e1e; font-family: 'Segoe UI', sans-serif; padding: 10px 20px; text-align: center;">
+
+  <div style="font-size: 28px; font-weight: bold; color: #FF5722; margin-bottom: 10px;">
+    우리나라 국민의 1/3은
+  </div>
+
+  <div style="font-size: 22px; margin-bottom: 30px;">
+    ‘중간 수준 이상의 우울감’을 경험하고 있습니다.
+  </div>
+
+  <div style="font-size: 13px; color: #888888; margin-bottom: 40px;">
+    출처: ‘정신건강 증진과 위기 대비를 위한 일반인 조사’<br>
+    (서울대 보건대학원 BK21 건강재난 통합대응을 위한 교육연구단, 2025-05-07)
+  </div>
+
+  <div style="font-size: 20px; margin-bottom: 20px;">
+    <strong style="color: #FF5722;">그럼에도</strong>, 우리 사회에서 <strong>정신건강</strong>은 늘 뒷전입니다.
+  </div>
+
+  <div style="font-size: 20px; margin-bottom: 30px;">
+    <strong style="color: #FF5722;">지방, 농어촌 지역</strong>의 정신건강은 더더욱 방치되어 있습니다.
+  </div>
+
+  <div style="font-size: 28px; font-weight: bold; color: #FF5722;">
+    본 프로젝트의 목표는<br>
+    <span style="color: #1e1e1e;">정신건강증진시설의 지역 격차</span>를 시각화하는 것입니다.
+  </div>
+
 </div>
 """, unsafe_allow_html=True)
+
+st.markdown("""
+<!-- 공백과 세로선 영역 -->
+<div style="position: relative; height: 80px; margin: 60px 0;">
+
+  <!-- 세로선: 가운데 정렬 -->
+  <div style="
+    position: absolute;
+    left: 50%;
+    top: 10px;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 150px;
+    background-color: #FF5722;
+    opacity: 0.7;
+  "></div>
+
+</div>
+""", unsafe_allow_html=True)
+
+
+
+
+
+
 
 # 소제목 출력
 # I. 정신건강증진시설의 개념과 기본 통계
