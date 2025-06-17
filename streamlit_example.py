@@ -278,6 +278,14 @@ st.markdown("""
 </h1>
 """, unsafe_allow_html=True)
 
+st.markdown("""
+<div style="background-color: #e3f2fd; padding: 20px; border-left: 6px solid #1976d2; border-radius: 8px; margin-top: 30px; font-size: 16px; line-height: 1.7;">
+   그렇다면 전국의 정신건강증진시설은 어떻게 분포되어있을까요? 인구수가 유사한 지역 4곳(강남구, 김해시, 강원도, 전라남도)을 지도로 시각화해보았습니다. 
+</div>
+""", unsafe_allow_html=True)
+
+st.write("")
+
 # ✅ 수동 면적 정보 (㎢ 기준)
 manual_area_map = {
     '서울특별시 (강남구)': 39.55,
@@ -855,6 +863,12 @@ def render_map(selection, col):
                         
             **지역별 정신병원 및 정신재활센터 수:** 102개/1개
             """)
+st.markdown("""
+<div style="background-color: #e3f2fd; padding: 20px; border-left: 6px solid #1976d2; border-radius: 8px; margin-top: 30px; font-size: 16px; line-height: 1.7;">
+지도에서 볼 수 있듯이, 수도권의 중심지인 강남구에는 정신의료기관과 정신재활시설이 밀집해 있는 반면, 일부 지방 지역 3곳에는 이들 시설이 현저히 부족한 실정입니다. 이는 지역 간 정신보건 서비스 접근성에 뚜렷한 불균형이 존재함을 시사하며, 정신건강 격차 해소를 위한 정책적 개입이 요구되는 지점입니다.
+
+</div>
+""", unsafe_allow_html=True)
 
 
 import streamlit as st
