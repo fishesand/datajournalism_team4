@@ -309,7 +309,7 @@ st.markdown(f"""
 
 
 st.markdown("""
-<div style="background-color: #e3f2fd; padding: 20px; border-left: 6px solid #1976d2; border-radius: 8px; margin-bottom: 25px; font-size: 20px; max-width: 100%; text-align: center;">
+<div style="background-color: #e3f2fd; padding: 20px; border-left: 6px solid #1976d2; border-radius: 8px; margin-bottom: 25px; font-size: 18px; max-width: 100%; text-align: center;">
     이러한 문제는 단지 A씨와 B씨 개인의 문제가 아닙니다. <br>
     현재 우리 사회에서는 정신건강증진시설에 지역 간 격차가 존재하며, 이는 많은 이들의 삶에 영향을 미치고 있습니다. <br>
     이에 따라 정신건강증진시설의 개념과 관련 통계를 살펴보고, <br>
@@ -330,13 +330,13 @@ st.markdown("""
 st.markdown("""
 <h2 style='text-align: center; margin-top: 40px;'>정신건강증진시설이란?</h2>
 
-<div style="background-color: #e3f2fd; padding: 20px; border-left: 6px solid #1976d2; border-radius: 8px; margin-bottom: 25px; font-size: 25px;">
+<div style="background-color: #e3f2fd; padding: 20px; border-left: 6px solid #1976d2; border-radius: 8px; margin-bottom: 25px; font-size: 22px;">
     「정신건강증진 및 정신질환자 복지서비스 지원에 관한 법률」 제3조 제4호에 따르면,  
     <strong>‘정신건강증진시설’이란 정신의료기관, 정신요양시설 및 정신재활시설</strong>을 말합니다.  
     이들 시설을 중심으로 <strong>국가와 지방자치단체는 정신건강의 예방부터 조기발견, 치료, 재활, 사회복귀까지 전 과정을 포괄하는 서비스를 계획 및 시행</strong>하고 있습니다.
 </div>
 
-<div style="background-color: #f9f9f9; padding: 25px; border-radius: 12px; line-height: 1.8; font-size: 24px;">
+<div style="background-color: #f9f9f9; padding: 25px; border-radius: 12px; line-height: 1.8; font-size: 18px;">
     <ul>
         <li><strong>정신건강복지센터:</strong> 지역주민 및 정신장애인과 그 가족에게 포괄적인 정신건강 서비스를 제공합니다.</li>
         <li><strong>아동·청소년 정신건강복지센터:</strong> 조기 발견, 상담·치료를 통해 아동·청소년의 건강한 성장을 지원합니다.</li>
@@ -349,7 +349,7 @@ st.markdown("""
     </ul>
 </div>
             
-<div style="background-color: #fff8e1; padding: 20px; border-left: 6px solid #fbc02d; border-radius: 8px; margin-top: 30px; font-size: 24px; line-height: 1.7;">
+<div style="background-color: #fff8e1; padding: 20px; border-left: 6px solid #fbc02d; border-radius: 8px; margin-top: 30px; font-size: 18px; line-height: 1.7;">
     본 프로젝트는 전체 정신건강증진시설 중에서 <strong>가장 일반적인 대상층을 가진 정신병원과 정신재활시설</strong>에 주목하여 분석을 진행하였습니다.  
     이는 노인복지시설이나 트라우마센터처럼 특정 계층을 대상으로 한 시설보다,  
     <strong>보다 폭넓은 인구에게 직접적인 영향을 미치는 기반 시설</strong>로 판단했기 때문입니다.
@@ -412,7 +412,7 @@ with left_col:
 with right_col:
     st.markdown("""
     <div style="background-color: #f4f6f8; padding: 28px; border-left: 5px solid #1976d2;
-                border-radius: 8px; margin-top: 30px; font-size: 26px; line-height: 1.9; text-align: left;">
+                border-radius: 8px; margin-top: 30px; font-size: 18px; line-height: 1.9; text-align: left;">
         -본 그래프는 2023년 기준으로, 각 시도별 정신건강의학과 의료기관 한 곳이 평균적으로 담당하는 인구 수를 나타낸 것입니다.<br>
         -막대의 높이가 클수록 해당 지역의 의료기관 한 곳이 감당해야 하는 인구 수가 많다는 것을 의미하며, 이는 곧 의료 접근성이 낮고 정신건강 관련 인프라가 부족하다는 사실을 시사합니다.<br>
         -서울특별시의 경우, 의료기관 한 곳당 약 14,000명을 담당하는 반면, 경상북도는 한 곳당 약 37,000명을 담당하고 있어, 지역 간 약 2.5배에 달하는 격차가 존재합니다.<br>
@@ -454,7 +454,7 @@ with left_col:
 with right_col:
     st.markdown("""
     <div style="background-color: #f4f6f8; padding: 24px; border-left: 6px solid #1976d2;
-                border-radius: 8px; margin-top: 50px; font-size: 26px; line-height: 1.9; text-align: left;">
+                border-radius: 8px; margin-top: 50px; font-size: 18px; line-height: 1.9; text-align: left;">
         -대표적으로 서울과 경상북도를 시각화하여 비교해보면 다음과 같습니다. <br>
         -서울은 한 개의 병원 당 약 14,437명을 담당하고 있으나, 경상북도의 병원은 약 36,998명을 담당하고 있습니다.<br>
         -이는 경북의 의료기관 1곳이 서울보다 평균 2.5배 더 많은 인구를 감당하고 있는 셈입니다.<br>
@@ -498,7 +498,7 @@ with left_col:
 with right_col:
     st.markdown("""
     <div style="background-color: #f4f6f8; padding: 24px; border-left: 6px solid #1976d2;
-                border-radius: 8px; margin-top: 30px; font-size: 26px; line-height: 1.9; text-align: left;">
+                border-radius: 8px; margin-top: 30px; font-size: 18px; line-height: 1.9; text-align: left;">
         -본 그래프는 2018년부터 2023년까지 정신건강 관련 의료기관과 정신재활시설 수의 변화를 보여줍니다. <br>
         -의료기관은 꾸준히 증가하고 있으며, 재활시설도 일정 수준 유지되고 있음을 확인할 수 있습니다. <br>
         -그러나 앞서 살펴본 지역별 의료기관 당 인구수 분포를 함께 고려하면, 이러한 인프라의 양적 확대가 곧 지역 간 격차 해소로 이어지지는 않는다는 사실을 알 수 있습니다. <br>
