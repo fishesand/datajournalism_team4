@@ -398,7 +398,7 @@ left_col, right_col = st.columns([1, 1])
 
 with left_col:
     st.markdown("""
-<h1 style='text-align: center; font-size: 40px; margin-top: 60px;'>
+<h1 style='text-align: center; font-size: 40px; margin-top: 30px;'>
     <br>
 </h1>
 """, unsafe_allow_html=True)
