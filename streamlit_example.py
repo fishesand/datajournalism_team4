@@ -397,7 +397,7 @@ st.markdown("<h2 style='text-align: center; margin-top: 40px;'>시도별 의료�
 left_col, right_col = st.columns([1, 1])
 
 with left_col:
-    st.markdown("""<h1 style='text-align: center; font-size: 40px; margin-top: 30px;'></h1>
+    st.markdown("""<h1 style='text-align: center; font-size: 40px; margin-top: 20px;'></h1>
                 """, unsafe_allow_html=True)
     
     sorted_df = merged_df.sort_values(by='인구/의료기관', ascending=True)
