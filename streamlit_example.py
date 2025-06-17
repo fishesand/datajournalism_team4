@@ -508,7 +508,7 @@ ax.set_xticklabels(x, rotation=60, ha='right', fontsize=6, fontproperties=font_p
 ax.set_ylabel("인구 / 의료기관 수", fontproperties=font_prop, fontsize=8)
 ax.set_xlabel("시도", fontproperties=font_prop, fontsize=8)
 fig.tight_layout()
-plt.show()
+
 # base64로 변환
 buf = BytesIO()
 fig.savefig(buf, format="png", bbox_inches="tight")
@@ -517,8 +517,11 @@ encoded_graph = base64.b64encode(buf.read()).decode()
 
 # HTML로 그래프 + 글 정렬
 
-
 left_col, right_col = st.columns([1, 2])
+
+with left_col:
+    st.image(buf, use_column_width=True)
+
 with right_col:
     st.markdown("""
     <div style="text-align: center; font-size: clamp(45px, 5.5vw, 65px); color: #E64A19; font-weight: bold; line-height: 1; margin-top: 30px;">
