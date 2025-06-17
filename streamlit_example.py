@@ -1402,7 +1402,11 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-import streamlit as st
+st.markdown("""
+<div style="background-color: #e3f2fd; padding: 20px; border-left: 6px solid #1976d2; border-radius: 8px; margin-top: 30px; font-size: 16px; line-height: 1.7;">
+  앞선 논의들을 바탕으로, 현재의 의료 정책 방향을 점검하고자 보건복지부에서 발행한 의료 개혁 1차, 2차 자료집의 텍스트 분석을 진행했습니다. 
+</div>
+""", unsafe_allow_html=True)
 
 st.markdown("""
 <h2 style='text-align: center; margin-top: 40px;'>의료개혁 1차 · 2차 실행방안: 지역 격차 대응 비교</h2>
