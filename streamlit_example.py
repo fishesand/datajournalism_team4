@@ -108,9 +108,6 @@ gangnam_df = pd.read_excel("data/gangnam_juso.xlsx").dropna(subset=['위도', '�
 seolleung_df = pd.read_excel("data/seoulleung_juso.xlsx").dropna(subset=['위도', '경도'])
 seolleung_hospitals = gangnam_df[gangnam_df['주소'].str.contains("선릉로", na=False)]
 
-# 타이틀
-st.markdown("<h1 style='text-align:center; font-size:40px;'><br><br><br><br>III. A씨와 B씨의 이야기</h1>", unsafe_allow_html=True)
-
 import pandas as pd
 
 boseong_df = pd.DataFrame({
@@ -1562,4 +1559,22 @@ st.markdown(
 # 출처
 st.caption("출처: 보건복지부 『의료개혁 1차 실행방안』, 『의료개혁 2차 실행방안』")
 
+st.markdown(
+    """
+    <div style='text-align: center; font-size: 22px; line-height: 1.8; font-weight: 500; margin-top: 40px;'>
+        정신건강증진시설의 지역격차는 분명히 존재합니다.<br>
+        지방은 수도권에 비해 접근 가능한 시설의 수가 현저하게 적으며,<br>
+        시설까지 이동하는 데의 거리 및 시간도 상당합니다.<br>
+        그러나, 사회 전반적인 정책적 차원에서 대응이 제대로 이뤄지지 않는 상황입니다.<br>
+        매년 정신병원의 수는 증가하였습니다.<br>
+        그러나, 아무도 지방의 시설 현황에는 주목하지 않으며,<br>
+        적절한 대응을 위해 노력하지 않습니다.<br>
+        ‘정신건강’이라는 의료분야의 소외와, 구조적인 지역격차 문제가 혼합되어<br>
+        악순환을 만들고 있습니다.<br><br>
+        프로젝트를 마무리하며, 이에 대한 한국 대중의 관심과<br>
+        정부의 적절한 대응을 촉구합니다.
+    </div>
+    """, 
+    unsafe_allow_html=True
+)
 
