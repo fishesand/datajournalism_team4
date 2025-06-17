@@ -118,503 +118,121 @@ boseong_df = pd.DataFrame({
 })
 
 # 1단계: 인물 소개
-col1, col2 = st.columns([1, 1])
+col1, col2, col3 = st.columns([1.5,1,1])
 with col2:
-    st.markdown("<h2 style='text-align: center; margin-top: 40px;'> <br><br><br>강남구에 사는 A씨가 있습니다.</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align: center; margin-top: 40px;'><br><br></h2>", unsafe_allow_html=True)
+    st. image("data/A씨.png",width=240)
 
-with col1:
-    col1, col2, col3 = st.columns([1, 1, 1])
-    with col2:
-        st.image("data/A씨.png", width=240)
+col1, col2, col3 = st.columns([1,1,1])
+with col2:
+    st.markdown("<h2 style='text-align: center; margin-top: 40px;'><br>강남구에 사는 A씨가 있습니다.<br><br></h2>", unsafe_allow_html=True)
 
 
 # 2단계: 전체 강남구 지도
-col1, col2 = st.columns([1, 1])
-with col1:
-    m = folium.Map(location=[37.4979, 127.0276], zoom_start=13, tiles=None,
-                   zoom_control=False, dragging=False, scrollWheelZoom=False)
-
-    m.get_root().html.add_child(folium.Element("""
-        <style>.leaflet-container {background-color: #007f00 !important;}</style>
-    """))
-    
-    with open("data/gangnam_only.geojson", encoding="utf-8") as f:
-        gangnam_geo = json.load(f)
-
-    folium.GeoJson(gangnam_geo, style_function=lambda x: {
-        'fillColor': 'none', 'color': 'black', 'weight': 3, 'fillOpacity': 0
-    }).add_to(m)
-
-    for _, row in gangnam_df.iterrows():
-        folium.CircleMarker(
-            location=[row['위도'], row['경도']],
-            radius=5, color='red', fill=True, fill_color='red', fill_opacity=0.9
-        ).add_to(m)
-
-    st_folium(m, width=1200, height=700)
+col1, col2, col3 = st.columns([1,1,1])
 with col2:
-    st.markdown("<h2 style='text-align: center; margin-top: 40px;'><br><br><br><br><br>강남구에는 정신병원이 102곳, 정신재활센터는 1곳 있습니다.</h2>", unsafe_allow_html=True)
+    st. image("data/1.png",width=1000)
+
+col1, col2, col3 = st.columns([1,1,1])
+with col2:
+    st.markdown("<h2 style='text-align: center; margin-top: 40px;'>강남구에는 정신병원이 102곳,<br>정신재활센터는 1곳 있습니다.<br><br></h2>", unsafe_allow_html=True)
 
 
 # 3단계: 선릉로 강조 지도
-col1, col2 = st.columns([1, 1])
-with col1:
-    m = folium.Map(location=[37.5045, 127.0497], zoom_start=14, tiles=None,
-                   zoom_control=False, dragging=False, scrollWheelZoom=False)
-
-    m.get_root().html.add_child(folium.Element("""
-        <style>.leaflet-container {background-color: #007f00 !important;}</style>
-    """))
-
-    # 선릉로 라인
-    points = list(zip(seolleung_df['위도'], seolleung_df['경도']))
-    folium.PolyLine(points, color='orange', weight=8, opacity=1).add_to(m)
-
-    # 병원 마커
-    for _, row in seolleung_hospitals.iterrows():
-        folium.CircleMarker(
-            location=[row['위도'], row['경도']],
-            radius=7,
-            color='red',
-            weight=2,
-            fill=True,
-            fill_color = 'red',
-            fill_opacity=0.9
-        ).add_to(m)
-
-    st_folium(m, width=1200, height=700)
+col1, col2, col3 = st.columns([1,1,1])
 with col2:
-    st.markdown("<h2 style='text-align: center; margin-top: 40px;'><br><br><br><br><br>A씨가 거주하는 선릉로에만 정신병원이 12곳 있습니다.</h2>", unsafe_allow_html=True)
+    st. image("data/2.png",width=1000)
 
-
-col1, col2 = st.columns([1, 1])
-with col1:
-    # 지도 설정
-    m = folium.Map(location=[37.4979, 127.0276], zoom_start=13, tiles=None,
-                   zoom_control=False, dragging=False, scrollWheelZoom=False)
-
-    m.get_root().html.add_child(folium.Element("""
-        <style>.leaflet-container {background-color: #007f00 !important;}</style>
-    """))
-
-    # GeoJSON 로드
-    with open("data/gangnam_only.geojson", encoding="utf-8") as f:
-        gangnam_geo = json.load(f)
-
-    # 스타일 함수 정의: 역삼2동만 노란색, 나머지는 투명
-    def style_function(feature):
-        adm_nm = feature['properties'].get('adm_nm', '')
-        if adm_nm == "서울특별시 강남구 역삼2동":
-            return {
-                'fillColor': '#ffd700',
-                'color': 'black',
-                'weight': 3,
-                'fillOpacity': 0.8
-            }
-        else:
-            return {
-                'fillColor': 'none',
-                'color': 'black',
-                'weight': 3,
-                'fillOpacity': 0
-            }
-
-    # GeoJSON 지도 추가
-    folium.GeoJson(
-        gangnam_geo,
-        name="강남구 행정동",
-        style_function=style_function
-    ).add_to(m)
-
-    # 병원 위치에 CircleMarker 추가
-    for _, row in gangnam_df.iterrows():
-        folium.CircleMarker(
-            location=[row['위도'], row['경도']],
-            radius=5,
-            color='red',
-            fill=True,
-            fill_color='red',
-            fill_opacity=0.9
-        ).add_to(m)
-
-    # 지도 렌더링
-    st_folium(m, width=1200, height=700)
+col1, col2, col3 = st.columns([1,1,1])
 with col2:
-     st.markdown("<h2 style='text-align: center; margin-top: 40px;'><br><br><br><br><br>A씨의 거주지로부터 정신병원까지 가는 데는 얼마나 걸릴까요?</h2>", unsafe_allow_html=True)
+    st.markdown("<h2 style='text-align: center; margin-top: 40px;'>A씨가 거주하는 선릉로에만 <br>정신병원이 12곳 있습니다.<br><br></h2>", unsafe_allow_html=True)
 
-col1, col2 = st.columns([1, 1])
-with col1:
-    path = [
-        [37.5005851, 127.0444115],
-        [37.502807, 127.044328],
-        [37.503531, 127.0470524],
-        [37.5049872, 127.0491562]
-    ]
+#4단계
+col1, col2, col3 = st.columns([1,1,1])
+with col2:
+    st. image("data/3.png",width=1000)
 
-    m = folium.Map(location=[37.5025, 127.0465], zoom_start=16, tiles=None,
-                   zoom_control=False, dragging=False, scrollWheelZoom=False)
-
-    m.get_root().html.add_child(folium.Element("""
-        <style>.leaflet-container {background-color: #007f00 !important;}</style>
-    """))
-
-    with open("data/gangnam_only.geojson", encoding="utf-8") as f:
-        gangnam_geo = json.load(f)
-
-    def style_function(feature):
-        adm_nm = feature['properties'].get('adm_nm', '')
-        if adm_nm == "서울특별시 강남구 역삼2동":
-            return {
-                'fillColor': '#ffd700',
-                'color': 'black',
-                'weight': 3,
-                'fillOpacity': 0.8
-            }
-        else:
-            return {
-                'fillColor': 'none',
-                'color': 'black',
-                'weight': 3,
-                'fillOpacity': 0
-            }
-
-    folium.GeoJson(
-        gangnam_geo,
-        name="강남구 행정동",
-        style_function=style_function
-    ).add_to(m)
-
-    for _, row in gangnam_df.iterrows():
-        folium.CircleMarker(
-            location=[row['위도'], row['경도']],
-            radius=5,
-            color='red',
-            fill=True,
-            fill_color='red',
-            fill_opacity=0.9
-        ).add_to(m)
-
-    folium.CircleMarker(
-        location=[37.5005851, 127.0444115],
-        radius=7,
-        color='blue',
-        fill=True,
-        fill_color='blue',
-        fill_opacity=0.9
-    ).add_to(m)
-
-    # ✅ 경로 전체를 한 번에 고정적으로 표시
-    folium.PolyLine(
-        path,
-        color='lightblue',
-        weight=5,
-        opacity=0.9
-    ).add_to(m)
-
-    folium.Circle(
-        location=[37.5049600, 127.0481000],
-        radius=300,
-        color='lightblue',
-        fill=True,
-        fill_color='lightblue',
-        fill_opacity=0.3
-    ).add_to(m)
-
-    st_folium(m, width=1200, height=700)
-
+col1, col2, col3 = st.columns([1,1,1])
 with col2:
     st.markdown("""
-        <h2 style='text-align: center; margin-top: 40px;'><br><br><br><br>
-            집 근처, 정신병원들이 모여있는 반경까지 이동하는 데<br> 걸어서 12분이 채 걸리지 않습니다.<br>
-            많은 병원들이 분포되어 있기 때문에, 선택지의 폭도 넓습니다.
+        <h2 style='text-align: center; margin-top: 40px;'>
+            A씨의 집에서 정신병원까지 가기 위해서는 얼마나 걸릴까요?<br><br><br>
         </h2>
     """, unsafe_allow_html=True)
 
-st.markdown("<div style='height: 100px;'></div>", unsafe_allow_html=True)
-
-col1, col2 = st.columns([1, 1])
-
+##
+col1, col2, col3 = st.columns([1,1,1])
 with col2:
-    st.markdown("<h2 style='text-align: center; margin-top: 40px;'><br><br><br>전라남도 보성군에 사는 B씨가 있습니다.</h2>", unsafe_allow_html=True)
+    st. image("data/4.png",width=1000)
 
-with col1:
-    col1, col2, col3 = st.columns([1, 1, 1])
-    with col2:
-        st.image("data/A씨.png", width=240)
-
-col1, col2 = st.columns([1, 1])
-with col1:
-    # 지도 초기화
-    m = folium.Map(location=[34.79, 127.21], zoom_start=10, tiles=None,
-                   zoom_control=False, dragging=False, scrollWheelZoom=False)
-
-    m.get_root().html.add_child(folium.Element("""
-        <style>.leaflet-container {background-color: #006400 !important;}</style>
-    """))
-
-    # 전라남도 GeoJSON 불러오기
-    with open("data/hangjeongdong_전라남도.geojson", encoding="utf-8") as f:
-        jeonnam_geo = json.load(f)
-
-    # 보성군 읍면을 강조하는 style 함수
-    def style_function(feature):
-        adm_nm = feature['properties'].get('adm_nm', '')
-        if adm_nm.startswith("전라남도 보성군"):
-            return {
-                'fillColor': 'yellow',
-                'color': 'black',
-                'weight': 2,
-                'fillOpacity': 0.8
-            }
-        else:
-            return {
-                'fillColor': 'none',
-                'color': 'black',
-                'weight': 1,
-                'fillOpacity': 0
-            }
-
-    # 지도에 행정경계 추가
-    folium.GeoJson(
-        jeonnam_geo,
-        name="전라남도 행정경계",
-        style_function=style_function
-    ).add_to(m)
-
-    # 병원 데이터 (보성군 내 2곳)
-    boseong_df = pd.DataFrame({
-        '기관명': ['벌교삼호병원', '보성제일병원'],
-        '위도': [34.8337591, 34.763154],
-        '경도': [127.3459238, 127.073384]
-    })
-
-    # 병원 마커 추가
-    for _, row in boseong_df.iterrows():
-        folium.CircleMarker(
-            location=[row['위도'], row['경도']],
-            radius=7,
-            color='red',
-            fill=True,
-            fill_color='red',
-            fill_opacity=0.9,
-            tooltip=row['기관명']
-        ).add_to(m)
-
-    # 지도 표시
-    st_folium(m, width=1200, height=700)
-with col2:
-     st.markdown("<h2 style='text-align: center; margin-top: 40px;'><br><br><br><br><br>보성군에는 정신병원이 단 2곳뿐입니다.</h2>", unsafe_allow_html=True)
-
-col1, col2 = st.columns([1, 1])
-with col1:
-    # 지도 초기화
-    m = folium.Map(location=[34.79, 127.21], zoom_start=11, tiles=None,
-                   zoom_control=False, dragging=False, scrollWheelZoom=False)
-
-    m.get_root().html.add_child(folium.Element("""
-        <style>.leaflet-container {background-color: #006400 !important;}</style>
-    """))
-
-    # GeoJSON 불러오기
-    with open("data/hangjeongdong_전라남도.geojson", encoding="utf-8") as f:
-        jeonnam_geo = json.load(f)
-
-    # 보성군 강조 스타일
-    def style_function(feature):
-        adm_nm = feature['properties'].get('adm_nm', '')
-        if adm_nm.startswith("전라남도 보성군"):
-            return {
-                'fillColor': 'yellow',
-                'color': 'black',
-                'weight': 2,
-                'fillOpacity': 0.8
-            }
-        else:
-            return {
-                'fillColor': 'none',
-                'color': 'black',
-                'weight': 1,
-                'fillOpacity': 0
-            }
-
-    folium.GeoJson(
-        jeonnam_geo,
-        name="전라남도 행정경계",
-        style_function=style_function
-    ).add_to(m)
-
-    # 병원 데이터
-    boseong_df = pd.DataFrame({
-        '기관명': ['벌교삼호병원', '보성제일병원'],
-        '위도': [34.8337591, 34.763154],
-        '경도': [127.3459238, 127.073384]
-    })
-
-    # 병원 마커 추가 (빨간 점)
-    for _, row in boseong_df.iterrows():
-        folium.CircleMarker(
-            location=[row['위도'], row['경도']],
-            radius=7,
-            color='red',
-            fill=True,
-            fill_color='red',
-            fill_opacity=0.9,
-            tooltip=row['기관명']
-        ).add_to(m)
-
-    # 병원 두 개의 중간 지점 계산 → B씨 집 위치로 설정
-    mid_lat = (34.8337591 + 34.763154) / 2
-    mid_lon = (127.3459238 + 127.073384) / 2
-    home_location = [mid_lat, mid_lon]
-
-    # 파란 점: B씨의 집
-    folium.CircleMarker(
-        location=home_location,
-        radius=7,
-        color='blue',
-        fill=True,
-        fill_color='blue',
-        fill_opacity=0.9,
-        tooltip="B씨의 집"
-    ).add_to(m)
-
-    # 파란 선: 집 → 병원 한 곳 (보성제일병원으로 연결)
-    target_hospital = [34.763154, 127.073384]
-
-    folium.PolyLine(
-        [home_location, target_hospital],
-        color='lightblue',
-        weight=5,
-        opacity=0.9
-    ).add_to(m)
-
-    # 회색 원: 병원 도착 반경
-    folium.Circle(
-        location=target_hospital,
-        radius=300,
-        color='lightblue',
-        fill=True,
-        fill_color='lightblue',
-        fill_opacity=0.3
-    ).add_to(m)
-
-    # 지도 렌더링
-    st_folium(m, width=1200, height=700)
+col1, col2, col3 = st.columns([1,1,1])
 with col2:
     st.markdown("""
-    <h2 style='text-align: center; margin-top: 40px;'><br><br><br><br>
+        <h2 style='text-align: center; margin-top: 40px;'>
+            A씨는 집 근처 정신병원들이 모여있는 반경까지 이동하는 데 걸어서 12분이 채 걸리지 않습니다.<br>
+            많은 병원들이 분포되어 있기 때문에, <br>선택지의 폭도 넓습니다.<br><br><br>
+        </h2>
+    """, unsafe_allow_html=True)
+
+#5단계
+col1, col2, col3 = st.columns([1.5,1,1])
+with col2:
+    st. image("data/A씨.png",width=240)
+
+col1, col2, col3 = st.columns([1,1,1])
+with col2:
+    st.markdown("<h2 style='text-align: center; margin-top: 40px;'><br>한편, 전라남도 보성군에 사는 B씨가 있습니다.<br><br></h2>", unsafe_allow_html=True)
+
+##
+
+col1, col2, col3 = st.columns([1,1,1])
+with col2:
+    st. image("data/5.png",width=1000)
+
+col1, col2, col3 = st.columns([1,1,1])
+with col2:
+     st.markdown("<h2 style='text-align: center; margin-top: 40px;'><br>보성군에는 정신병원이 단 2곳뿐입니다.<br><br></h2>", unsafe_allow_html=True)
+
+##
+col1, col2, col3 = st.columns([1,1,1])
+with col2:
+    st. image("data/6.png",width=1000)
+
+col1, col2, col3 = st.columns([1,1,1])
+with col2:
+    st.markdown("""
+    <h2 style='text-align: center; margin-top: 40px;'><br>
         B씨가 거주하는 지역에도 병원이 있긴 하지만,<br>
         같은 보성군 안에 있는 병원까지도<br>
         <strong>자동차로는 약 30분,</strong><br>
-        <strong>버스로는 무려 1시간 40분이 걸립니다.</strong>
+        <strong>버스로는 무려 1시간 40분이 걸립니다.</strong><br><br>
     </h2>
     """, unsafe_allow_html=True)
 
-col1, col2 = st.columns([1, 1])
-with col1:
-    # 지도 초기화
-    m = folium.Map(location=[34.85, 127.3], zoom_start=10, tiles=None,
-                   zoom_control=False, dragging=False, scrollWheelZoom=False)
+##
+col1, col2, col3 = st.columns([1,1,1])
+with col2:
+    st. image("data/7.png",width=1000)
 
-    m.get_root().html.add_child(folium.Element("""
-        <style>.leaflet-container {background-color: #006400 !important;}</style>
-    """))
-
-    # 1. 순천시만 노란색으로 표시
-    with open("data/hangjeongdong_전라남도.geojson", encoding="utf-8") as f:
-        jeonnam_geo = json.load(f)
-
-    def style_function(feature):
-        adm_nm = feature["properties"].get("adm_nm", "")
-        if adm_nm.startswith("전라남도 순천시"):
-            return {
-                'fillColor': 'yellow',
-                'color': 'black',
-                'weight': 2,
-                'fillOpacity': 0.8
-            }
-        else:
-            return {
-                'fillColor': 'none',
-                'color': 'black',
-                'weight': 1,
-                'fillOpacity': 0
-            }
-
-    folium.GeoJson(
-        jeonnam_geo,
-        name="전라남도 경계",
-        style_function=style_function
-    ).add_to(m)
-
-    # 2. B씨의 집 (보성군 중심)
-    home_location = [(34.8337591 + 34.763154) / 2, (127.3459238 + 127.073384) / 2]
-
-    folium.CircleMarker(
-        location=home_location,
-        radius=7,
-        color='blue',
-        fill=True,
-        fill_color='blue',
-        fill_opacity=0.9,
-        tooltip="B씨의 집"
-    ).add_to(m)
-
-    # 3. 순천 병원 표시
-    with open("data/suncheon_hospitals.json", encoding="utf-8") as f:
-        suncheon_geo = json.load(f)
-
-    suncheon_coords = []
-    for feature in suncheon_geo["features"]:
-        coords = feature["geometry"]["coordinates"]
-        name = feature["properties"]["기관명"]
-        suncheon_coords.append((coords[1], coords[0]))  # 위도, 경도
-        folium.CircleMarker(
-            location=[coords[1], coords[0]],
-            radius=6,
-            color='red',
-            fill=True,
-            fill_color='red',
-            fill_opacity=0.9,
-            tooltip=name
-        ).add_to(m)
-
-    # 4. 순천 중심 계산 + 회색 원
-    suncheon_center = [
-        sum(lat for lat, _ in suncheon_coords) / len(suncheon_coords),
-        sum(lon for _, lon in suncheon_coords) / len(suncheon_coords)
-    ]
-
-    folium.Circle(
-        location=suncheon_center,
-        radius=5000,
-        color='gray',
-        fill=True,
-        fill_color='gray',
-        fill_opacity=0.3,
-        tooltip="순천시 병원 밀집지역"
-    ).add_to(m)
-
-    # 5. 파란 선: B씨 집 → 순천 중심
-    folium.PolyLine(
-        [home_location, suncheon_center],
-        color='lightblue',
-        weight=5,
-        opacity=0.9
-    ).add_to(m)
-
-    st_folium(m, width=1200, height=700)
+col1, col2, col3 = st.columns([1,1,1])
 with col2:
      st.markdown("""
-   <h2 style='text-align: center; margin-top: 40px;'><br><br><br><br>
+   <h2 style='text-align: center; margin-top: 40px;'><br>
         보성군 내 병원 접근이 어려운 B씨는<br>
         결국 순천시까지 나가야 할지도 모릅니다.<br>
-        차로 약 1시간, 버스로는 2시간 넘게 걸리는 거리입니다.
+        차로 약 1시간, 버스로는 2시간 넘게 걸리는 거리입니다.<br><br>
     </h2>
     """, unsafe_allow_html=True)
 
-
-
+st.markdown("""
+<div style="background-color: #e3f2fd; padding: 20px; border-left: 6px solid #1976d2; border-radius: 8px; margin-bottom: 25px; font-size: 20px; max-width: 100%; text-align: center;">
+    이러한 문제는 단지 A씨와 B씨 개인의 문제가 아닙니다. <br>
+    현재 우리 사회에서는 정신건강증진시설에 지역 간 격차가 존재하며, 이는 많은 이들의 삶에 영향을 미치고 있습니다. <br>
+    이에 따라 정신건강증진시설의 개념과 관련 통계를 살펴보고, <br>
+    지역 격차가 실제로 어떻게 나타나는지 지도를 통해 확인한 뒤, <br>
+    이를 해소하기 위한 보건복지부의 의료 개혁 방향에 대해 논의하고자 합니다.<br>
+</div>
+""", unsafe_allow_html=True)
 
 
 # 소제목 출력
