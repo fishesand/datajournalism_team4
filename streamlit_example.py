@@ -25,10 +25,10 @@ fig, ax = plt.subplots(figsize=(8, 3))
 
 # 3. 텍스트 추가
 ax.text(0.5, 0.6, '정신건강', fontproperties=font_prop,
-        fontsize=48, color='#FF6F00', ha='center', va='center')
+        fontsize=36, color='#FF6F00', ha='center', va='center')
 
 ax.text(0.5, 0.3, '수도권만의 권리인가요?', fontproperties=font_prop,
-        fontsize=28, color='black', ha='center', va='center')
+        fontsize=20, color='black', ha='center', va='center')
 
 # 4. 축/테두리 제거
 ax.axis('off')
