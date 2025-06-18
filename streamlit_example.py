@@ -15,6 +15,7 @@ from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 from PIL import Image
 from io import BytesIO
 import base64
+import time
 
 # 폰트 설정
 font_path = "data/강원교육튼튼.ttf"
@@ -87,7 +88,7 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 
-# HTML 렌더링은 줄이거나 검증된 구조만 사용
+# HTML 렌더링
 st.markdown("""
 <div class="gangwon"; style="color: #1e1e1e; padding: 10px 5vw; text-align: center;">
 
@@ -139,9 +140,6 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-import matplotlib.pyplot as plt
-import time
-
 # 데이터 불러오기
 gangnam_df = pd.read_excel("data/gangnam_juso.xlsx").dropna(subset=['위도', '경도'])
 seolleung_df = pd.read_excel("data/seoulleung_juso.xlsx").dropna(subset=['위도', '경도'])
@@ -171,9 +169,6 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 # 2단계: 전체 강남구 지도
-import base64
-
-# 이미지 파일 base64 인코딩
 with open("data/1.png", "rb") as image_file:
     encoded_img = base64.b64encode(image_file.read()).decode()
 
@@ -462,7 +457,6 @@ buf.seek(0)
 encoded_graph = base64.b64encode(buf.read()).decode()
 
 # HTML로 그래프 + 글 정렬
-
 left_col, right_col = st.columns([1, 1])
 
 with left_col:
@@ -494,9 +488,6 @@ with right_col:
     </div>
     """, unsafe_allow_html=True)
 
-
-
-# 이미지 → base64 변환 함수
 # 병원/사람 시각화 함수
 def image_to_base64(img, width):
     buffered = BytesIO()
@@ -620,21 +611,6 @@ st.markdown("""
 
 </div>
 """, unsafe_allow_html=True)
-
-import pandas as pd
-import matplotlib.pyplot as plt
-import matplotlib.font_manager as fm
-import folium
-from streamlit_folium import st_folium
-import json
-import pandas as pd
-import math
-import os
-from branca.element import Template, MacroElement
-import matplotlib.pyplot as plt
-import matplotlib.font_manager as fm
-from io import BytesIO
-
 
 # II. 정신건강증진시설의 지역격차 지도
 st.markdown("""
