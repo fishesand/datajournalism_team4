@@ -18,8 +18,6 @@ from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 font_path = "data/강원교육튼튼.ttf"
 font_prop = font_manager.FontProperties(fname=font_path)
 
-
-
 # 이미지 경로
 image_files = [
     "data/image1.png",
@@ -120,9 +118,6 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-
-
-
 st.markdown("""
 <!-- 공백과 세로선 영역 -->
 <div style="position: relative; height: 80px; margin: 60px 0;">
@@ -173,9 +168,6 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-
-
-
 # 2단계: 전체 강남구 지도
 import base64
 
@@ -195,10 +187,6 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-
-# 3단계: 선릉로 강조 지도
-import base64
-
 # 이미지 파일 base64 인코딩
 with open("data/2.png", "rb") as image_file:
     encoded_img = base64.b64encode(image_file.read()).decode()
@@ -216,10 +204,6 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-
-#4단계
-import base64
-
 # 이미지 파일 base64 인코딩
 with open("data/3.png", "rb") as image_file:
     encoded_img = base64.b64encode(image_file.read()).decode()
@@ -236,9 +220,6 @@ st.markdown(f"""
     </div>
 </div>
 """, unsafe_allow_html=True)
-
-##
-import base64
 
 # 이미지 파일 base64 인코딩
 with open("data/4.png", "rb") as image_file:
@@ -277,9 +258,6 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-#5단계
-import base64
-
 # 이미지 파일 base64 인코딩
 with open("data/A씨.png", "rb") as image_file:
     encoded_img = base64.b64encode(image_file.read()).decode()
@@ -296,10 +274,6 @@ st.markdown(f"""
     </div>
 </div>
 """, unsafe_allow_html=True)
-
-
-##
-import base64
 
 # 이미지 파일 base64 인코딩
 with open("data/5.png", "rb") as image_file:
@@ -318,9 +292,6 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-##
-import base64
-
 # 이미지 base64 인코딩
 with open("data/6.png", "rb") as image_file:
     encoded_img = base64.b64encode(image_file.read()).decode()
@@ -338,10 +309,6 @@ st.markdown(f"""
     </div>
 </div>
 """, unsafe_allow_html=True)
-
-
-##
-import base64
 
 # 이미지 base64 인코딩
 with open("data/7.png", "rb") as image_file:
@@ -379,9 +346,10 @@ st.markdown("""
   현재 우리 사회에서는 <strong style="color: #FF5722;">정신건강증진시설에 지역 간 격차</strong>가 존재하며,<br>
   이는 많은 이들의 삶에 영향을 미치고 있습니다.<br><br>
 
-  이에 따라 <strong style="color: black;">정신건강증진시설의 개념과 관련 통계</strong>를 살펴보고,<br>
-  <strong style="color: black;">지역 격차</strong>가 실제로 어떻게 나타나는지 지도를 통해 확인한 뒤,<br>
-  <strong style="color: #FF5722;">보건복지부의 의료 개혁 방향</strong>에 대해 논의하고자 합니다.
+  <div style="font-size: clamp(20px, 2.0vw, 20px); line-height: 1.9;">
+  이에 따라 정신건강증진시설의 개념과 관련 통계를 살펴보고,<br>
+  지역 격차가 실제로 어떻게 나타나는지 지도를 통해 확인한 뒤,<br>
+  보건복지부의 의료 개혁 방향에 대해 논의하고자 합니다.
 </div>
 
   <div style="font-size: clamp(45px, 5.5vw, 65px); color: #FF5722; font-weight: bold; line-height: 1; margin-top: 1em; text-align: center;">
@@ -411,55 +379,39 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-
-
-
-
-
 #정신건강증진시설 개념
 st.markdown("""
 <h2 style="text-align: center; margin-top: 60px; margin-bottom: 40px; font-weight: bold; font-size: clamp(28px, 4vw, 40px); color: #E64A19;">
-    <span style="color: black;">I. </span>정신건강증진시설<span style="color: black;">이란?</span>
+    <span style="color: black;"></span>정신건강증진시설<span style="color: black;">이란?</span>
 </h2>
 
 <div style="background-color: #f0f0f0; padding: 20px; border-left: 6px solid #555555; border-radius: 8px; margin-bottom: 25px; font-size: clamp(16px, 2vw, 22px); line-height: 1.6; color: #333333;">
     「정신건강증진 및 정신질환자 복지서비스 지원에 관한 법률」 제3조 제4호에 따르면,  
-    <strong style="color: black;">‘정신건강증진시설’이란 정신의료기관, 정신요양시설 및 정신재활시설</strong>을 말합니다.  
-    이들 시설을 중심으로 <strong style="color: black;">국가와 지방자치단체는 정신건강의 예방부터 조기발견, 치료, 재활, 사회복귀까지 전 과정을 포괄하는 서비스를 계획 및 시행</strong>하고 있습니다.
+    <strong style="color: #FF5722;">‘정신건강증진시설’</strong>이란 <strong style="color: black;">정신의료기관, 정신요양시설 및 정신재활시설</strong>을 말합니다.  
+    이들 시설을 중심으로 국가와 지방자치단체는 정신건강의 예방부터 조기발견, 치료, 재활, 사회복귀까지 전 과정을 포괄하는 서비스를 계획 및 시행하고 있습니다.
 </div>
 
 <div style="padding: 25px; border-radius: 12px; line-height: 1.8; font-size: clamp(18px, 2.2vw, 26px); color: #3e3e3e;">
     <ul style="padding-left: 1.2em; margin: 0;">
-        <li><strong style="color: #E64A19;">정신건강복지센터:</strong> 지역주민 및 정신장애인과 그 가족에게 포괄적인 정신건강 서비스를 제공합니다.</li>
+        <li><strong style="color: #E64A19;">정신의료기관:</strong> 정신건강과 관련된 진료 및 치료를 진행합니다. 정신병원, 의료기관 중 의원, 병원급 의료기관에 설치된 정신건강의학과를 포괄합니다.</li>
+        <li><strong style="color: #E64A19;">정신재활시설:</strong> 정신질환자의 사회복귀를 위한 생활지원, 직업재활, 주거제공 등을 수행합니다.</li>
+        <li><strong style="color: #E64A19;">정신건강복지센터:</strong> 지역주민 및 정신장애인과 가족에게 포괄적인 정신건강 서비스를 제공합니다.</li>
         <li><strong style="color: #E64A19;">아동·청소년 정신건강복지센터:</strong> 조기 발견, 상담·치료를 통해 아동·청소년의 건강한 성장을 지원합니다.</li>
         <li><strong style="color: #E64A19;">노인정신건강복지센터:</strong> 노인 대상 정신건강 서비스 제공으로 건강한 노년을 지원합니다.</li>
         <li><strong style="color: #E64A19;">자살예방센터:</strong> 자살 고위험군 및 유가족에 대한 지원과 생명존중 문화 확산을 위한 서비스를 제공합니다.</li>
         <li><strong style="color: #E64A19;">중독관리통합지원센터:</strong> 알코올, 약물, 도박 등 중독자 조기발견부터 치료·재활까지 통합적 지원을 합니다.</li>
         <li><strong style="color: #E64A19;">트라우마센터:</strong> 재난이나 사고로 인한 심리적 충격에 대응해 심리 안정과 사회 적응을 돕습니다.</li>
-        <li><strong style="color: #E64A19;">정신재활시설:</strong> 정신질환자의 사회복귀를 위한 생활지원, 직업재활, 주거제공 등을 수행합니다.</li>
         <li><strong style="color: #E64A19;">정신요양시설:</strong> 보호가 필요한 만성 정신질환자의 요양·보호를 통해 삶의 질 향상을 지원합니다.</li>
     </ul>
 </div>
 
 <div style="background-color: #f0f0f0; padding: 20px; border-left: 6px solid #555555; border-radius: 8px; margin-top: 30px; font-size: clamp(16px, 2vw, 22px); line-height: 1.7; color: #333333;">
-    본 프로젝트는 전체 정신건강증진시설 중에서 <strong style="color: black;">가장 일반적인 대상층을 가진 정신병원과 정신재활시설</strong>에 주목하여 분석을 진행하였습니다.  
-    이는 노인복지시설이나 트라우마센터처럼 특정 계층을 대상으로 한 시설보다,  
-    <strong style="color: black;">보다 폭넓은 인구에게 직접적인 영향을 미치는 기반 시설</strong>로 판단했기 때문입니다.
+    본 프로젝트는 전체 정신건강증진시설 중에서 가장 일반적인 대상층을 가진 <strong style="color: #FF5722;">정신병원과 정신재활시설</strong>에 주목하여 분석을 진행하였습니다.  
+    이는 노인복지시설이나 트라우마센터처럼 특정 계층을 대상으로 한 시설에 비해, 보다 폭넓은 인구에게 직접적인 영향을 미치는 시설이라 판단했기 때문입니다.
 </div>
 """, unsafe_allow_html=True)
 
-
-
-
-
-
-import matplotlib.font_manager as fm
-import pandas as pd
-import matplotlib.pyplot as plt
-import streamlit as st
-from matplotlib import font_manager
 from PIL import Image
-import base64
 from io import BytesIO
 
 # 폰트 설정
@@ -490,7 +442,7 @@ merged_df = merged_df[merged_df['시도'] != '전국']
 merged_df['인구/의료기관'] = merged_df['population'] / merged_df['총의료기관수']
 
 # 좌우 레이아웃
-st.markdown("<h2 style='text-align: center; margin-top: 40px;'>시도별 의료기관 1곳이 담당하는 인구 수</h2>", unsafe_allow_html=True)
+st.markdown("<h2 style='text-align: center; margin-top: 40px;'>정신건강 의료기관 1곳당 인구 수, 지역별로 얼마나 다를까요?</h2>", unsafe_allow_html=True)
 
 import matplotlib.pyplot as plt
 import base64
@@ -527,6 +479,7 @@ with left_col:
         """,
         unsafe_allow_html=True
     )
+    st.caption("출처: 국가통계포털 (통계청)")
 
 
 with right_col:
@@ -536,10 +489,9 @@ with right_col:
     </div>
 
     <div style="font-size: clamp(15px, 2.0vw, 18px); line-height: 1.8; margin: 20px 0; color: #333333; text-align: left;">
-        - 본 그래프는 2023년 기준으로, <span style="font-size: 1.15em; font-weight: bold;">각 시도별 정신건강의학과 의료기관 한 곳이 평균적으로 담당하는 인구 수</span>를 나타낸 것입니다.<br>
-        - 막대의 높이가 클수록 해당 지역의 의료기관 한 곳이 감당해야 하는 인구 수가 많다는 것을 의미하며, 이는 곧 의료 접근성이 낮고 정신건강 관련 인프라가 부족하다는 사실을 시사합니다.<br>
-        - 서울특별시의 경우, 의료기관 한 곳당 약 14,000명을 담당하는 반면, 경상북도는 한 곳당 약 37,000명을 담당하고 있어, <span style="font-size: 1.15em; font-weight: bold;">지역 간 약 2.5배에 달하는 격차</span>가 존재합니다.<br>
-        - 전반적으로 수도권과 광역시에 비해, 충청도, 전라도, 경상도 등 비수도권 지역일수록 인구 대비 의료기관 수가 적은 경향을 보입니다. <span style="font-size: 1.15em; font-weight: bold;">이러한 현상은 정신건강 분야에서의 지역 불균형 문제를 드러내며, 보다 균형 잡힌 정책적 개입이 요구된다고 할 수 있습니다.</span>
+        - 본 그래프는 2023년 기준으로, 각 시도별 정신건강의학과 의료기관 한 곳이 평균적으로 담당하는 인구 수를 나타낸 것입니다.<br>
+        - <span style='background-color: #ffe0cc; color: #333333; font-weight: bold;'>막대의 높이가 클수록 해당 지역의 의료기관 한 곳이 감당해야 하는 인구 수가 많다는 것을 의미하며, 이는 곧 의료 접근성이 낮고 정신건강 관련 인프라가 부족하다는 사실을 시사합니다.</span><br>
+        - 전반적으로 수도권과 광역시에 비해, <strong>충청도, 전라도, 경상도 등 비수도권 지역일수록 인구 대비 의료기관 수가 적은 경향</strong>을 보입니다. 이러한 현상은 정신건강 분야에서의 지역 불균형 문제를 드러내며, 보다 균형 잡힌 정책적 개입이 요구된다고 할 수 있습니다.
     </div>
 
     <div style="text-align: center; font-size: clamp(45px, 5.5vw, 65px); color: #E64A19; font-weight: bold; line-height: 1; margin-bottom: 30px;">
@@ -570,7 +522,7 @@ hospital_img = Image.open("data/hospital.png")
 person_img = Image.open("data/person.png")
 
 # 제목
-st.markdown("<h2 style='text-align: center; margin-top: 40px;'><br><br>서울과 경상북도 비교<br></h2>", unsafe_allow_html=True)
+# st.markdown("<h2 style='text-align: center; margin-top: 40px;'><br><br>서울과 경상북도 비교<br></h2>", unsafe_allow_html=True)
 
 # 좌우 분할
 left_col, right_col = st.columns([1, 1])
@@ -590,8 +542,8 @@ with right_col:
     <div style="font-size: clamp(15px, 2.0vw, 18px); line-height: 1.8; margin: 20px 0; color: #333333; text-align: left;">
         - 대표적으로 서울과 경상북도를 시각화하여 비교해보면 다음과 같습니다.<br>
         - 서울은 한 개의 병원 당 약 14,437명을 담당하고 있으나, 경상북도의 병원은 약 36,998명을 담당하고 있습니다.<br>
-        - <span style="font-size: 1.15em; font-weight: bold;">경북의 의료기관 1곳이 서울보다 평균 2.5배 더 많은 인구를 감당</span>하고 있는 셈입니다.<br>
-        - 앞서 살펴본 그래프와 같이 이러한 수치는 <span style="font-size: 1.15em; font-weight: bold;">두 지역 간 의료 인프라의 밀도 차이</span>를 드러내며, 정신건강 분야에서의 지역 불균형 문제를 보다 명확히 보여주는 사례로 해석할 수 있습니다.
+        - <span style='background-color: #ffe0cc; color: #333333; font-weight: bold;'>경북의 의료기관 1곳이 서울보다 평균 2.5배 더 많은 인구를 감당</span>하고 있는 셈입니다.<br>
+        - 앞서 살펴본 그래프와 같이 이러한 수치는 <strong>두 지역 간 의료 인프라의 밀도 차이</strong>를 드러내며, 정신건강 분야에서의 지역 불균형 문제를 보다 명확히 보여주는 사례로 해석할 수 있습니다.
     </div>
 
     <div style="text-align: center; font-size: clamp(45px, 5.5vw, 65px); color: #E64A19; font-weight: bold; line-height: 1; margin-bottom: 30px;">
@@ -601,7 +553,7 @@ with right_col:
 
 
 # 제목
-st.markdown("<h2 style='text-align: center; margin-top: 80px;'><br>2018~2023 전국 정신건강증진 시설 수 변화<br></h2>", unsafe_allow_html=True)
+st.markdown("<h2 style='text-align: center; margin-top: 80px;'><br>2018~2023, 전국 정신건강증진 시설의 수는 어떻게 변화하였을까요?<br></h2>", unsafe_allow_html=True)
 
 # 좌우 분할
 left_col, right_col = st.columns([1, 1])
@@ -633,6 +585,7 @@ with left_col:
     )
     ax.grid(True)
     st.pyplot(fig)
+    st.caption("출처: 국가통계포털 (통계청)")
 
 # 오른쪽: 설명 줄글
 with right_col:
@@ -642,11 +595,10 @@ with right_col:
     </div>
 
     <div style="font-size: clamp(15px, 2.0vw, 18px); line-height: 1.8; margin: 20px 0; color: #333333; text-align: left;">
-        - 본 그래프는 2018년부터 2023년까지 정신건강 관련 의료기관과 정신재활시설 수의 변화를 보여줍니다.<br>
-        - 의료기관은 꾸준히 증가하고 있으며, 재활시설도 일정 수준 유지되고 있음을 확인할 수 있습니다.<br>
-        - 그러나 앞서 살펴본 지역별 의료기관 당 인구수 분포를 함께 고려하면, 이러한 인프라의 양적 확대가 곧 지역 간 격차 해소로 이어지지는 않는다는 사실을 알 수 있습니다.<br>
-        - <span style="font-size: 1.15em; font-weight: bold;">의료기관이나 재활시설이 늘어나는 추세에도 불구하고, 특정 지역에서는 여전히 의료 접근성이 낮고 과도한 부담이 집중</span>되고 있습니다.<br>
-        - 이는 단순한 시설 수의 증가만으로는 지역 불균형 문제를 해결할 수 없으며, <span style="font-size: 1.15em; font-weight: bold;">인프라의 ‘분포’와 ‘배치’ 또한 정책적으로 고려되어야 함</span>을 시사합니다.
+        - 본 그래프는 2018년부터 2023년까지 정신건강 관련 의료기관과 정신재활시설 수의 변화를 보여줍니다. 의료기관은 꾸준히 증가하고 있으며, 재활시설도 일정 수준 유지되고 있음을 확인할 수 있습니다.<br>
+        - 그러나 앞서 살펴본 지역별 의료기관 당 인구수 분포를 함께 고려하면, <span style='background-color: #ffe0cc; color: #333333; font-weight: bold;'>이러한 인프라의 양적 확대가 곧 지역 간 격차 해소로 이어지지는 않는다</span>는 사실을 알 수 있습니다.<br>
+        - 의료기관이나 재활시설이 늘어나는 추세에도 불구하고, 특정 지역에서는 여전히 의료 접근성이 낮고 과도한 부담이 집중되고 있습니다.<br>
+        - 이는 단순한 시설 수의 증가만으로는 지역 불균형 문제를 해결할 수 없으며, <span style='background-color: #ffe0cc; color: #333333; font-weight: bold;'>인프라의 지리적 분포와 배치 또한 정책적으로 고려되어야 함</span>을 시사합니다.
     </div>
 
     <div style="text-align: center; font-size: clamp(45px, 5.5vw, 65px); color: #E64A19; font-weight: bold; line-height: 1; margin-bottom: 30px;">
@@ -674,16 +626,9 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-
-
-
 import pandas as pd
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
-import streamlit as st
-import os
-
-import streamlit as st
 import folium
 from streamlit_folium import st_folium
 import json
@@ -699,7 +644,7 @@ from io import BytesIO
 # II. 정신건강증진시설의 지역격차 지도
 st.markdown("""
 <h1 style='text-align: center; font-size: clamp(28px, 4vw, 42px); margin-top: 80px;'>
-    II. <span style='color: #E64A19;'>정신건강증진시설</span>의 <span style='color: #E64A19;'>지역격차 지도</span>
+    <span style='color: #E64A19;'>정신건강증진시설의 지역격차</span>를 지도로 시각화해보았습니다.</span>
 </h1>
 """, unsafe_allow_html=True)
 
@@ -708,10 +653,11 @@ st.markdown("""
 <div style="height: 50px;"></div>
 """, unsafe_allow_html=True)
 
-
 st.markdown("""
-<div style="margin-top: 30px; font-size: clamp(15px, 2vw, 18px); line-height: 1.7; color: #333333;">
-   그렇다면 전국의 정신건강증진시설은 어떻게 분포되어있을까요? 인구수가 유사한 지역 4곳(강남구, 김해시, 강원도, 전라남도)을 지도로 시각화해보았습니다.
+<div style="background-color: #f0f0f0; padding: 20px; border-left: 6px solid #555555; border-radius: 8px; margin-bottom: 25px; font-size: clamp(15px, 2.0vw, 18px); line-height: 1.8; color: #333333; text-align: center;">
+    서울시, 강원도, 경상남도, 전라남도에서 인구 수가 비슷한 4곳을 선정하여 각 지역의 정신병원과 정신재활시설을 지도상으로 시각화하였습니다.<br>
+    대상 지역은 (서울특별시 강남구), (강원도 김해시), (전라남도 순천시, 담양군, 곡성군, 구례군, 고흥군, 보성군, 화순군), (강원도 원주시, 횡성군, 홍천군, 평창군, 영월군)입니다.<br>
+    <span style='background-color: #ffe0cc; color: #333333; font-weight: bold;'>각 지역은 인구 수가 55만명 내외로 유사하지만, 수도권에서 벗어날수록 지역의 면적은 늘어나며, 역설적으로 정신건강증진시설의 개수는 감소한다는 점을 파악할 수 있습니다.</span>
 </div>
 """, unsafe_allow_html=True)
 
@@ -946,8 +892,6 @@ def render_map(selection, col):
             
             **지역별 정신병원 및 정신재활센터 수:** 11개/1개
             """)
-
-            
 
     elif '강원도' in selection:
      with col:
@@ -1294,6 +1238,7 @@ def render_map(selection, col):
                         
             **지역별 정신병원 및 정신재활센터 수:** 102개/1개
             """)
+st.caption("출처: 보건복지부 국립정신건강센터")
 
 st.markdown("""
 <div style="text-align: center; font-size: clamp(45px, 5.5vw, 65px); color: #E64A19; font-weight: bold; line-height: 1; margin-top: 30px;">
@@ -1338,7 +1283,7 @@ st.markdown("""
 st.markdown(
     """
     <h1 style='text-align: center; font-size: clamp(28px, 4vw, 42px); margin-top: 60px;'>
-        IV. 보건복지부 <span style='color: #E64A19;'>의료개혁 실행방안</span> 텍스트 분석
+        보건복지부 의료개혁안에서는 적절한 대응방안을 마련하고 있을까요?
     </h1>
     """,
     unsafe_allow_html=True
@@ -1348,12 +1293,13 @@ st.markdown("""
 <div style="height: 50px;"></div>
 """, unsafe_allow_html=True)
 
-
 st.markdown("""
-<div style="margin-top: 30px; font-size: clamp(15px, 2vw, 18px); line-height: 1.7; color: #333333;">
-  앞선 논의들을 바탕으로, 현재의 의료 정책 방향을 점검하고자 보건복지부에서 발행한 의료 개혁 1차, 2차 자료집의 텍스트 분석을 진행했습니다.
+<div style="background-color: #f0f0f0; padding: 20px; border-left: 6px solid #555555; border-radius: 8px; margin-bottom: 25px; font-size: clamp(15px, 2.0vw, 18px); line-height: 1.8; color: #333333; text-align: center;">
+    앞선 논의들을 바탕으로, 현재의 의료 정책 방향을 점검하고자 보건복지부에서 발행한 의료 개혁 1차(2024-08-30), 2차(2025-03-29) 실행방안 자료집의 텍스트 분석을 진행했습니다.</br>
+    <span style='background-color: #ffe0cc; color: #333333; font-weight: bold;'>특히, 지역격차와 관련해서 의료개혁이 어떠한 쟁점을 다루고 있는지 살펴보았습니다.</span>
 </div>
 """, unsafe_allow_html=True)
+
 
 #공백
 st.markdown("""
@@ -1362,7 +1308,7 @@ st.markdown("""
 
 
 st.markdown("""
-<h2 style='text-align: center; margin-top: 40px;'>의료개혁 1차 · 2차 실행방안: 지역 격차 대응 비교</h2>
+<h2 style='text-align: center; margin-top: 40px;'>[의료개혁 1차 · 2차 실행방안: 지역 격차 대응방안 비교]</h2>
             """, unsafe_allow_html=True)
 #공백
 st.markdown("""
@@ -1375,23 +1321,9 @@ col1, col2 = st.columns(2)
 # ------------ 의료개혁 1차 ------------
 with col1:
     import streamlit as st
+    st.header("의료개혁 1차 실행방안")
 
-    st.markdown(
-    """
-    <style>
-    .responsive-title {
-        color: #E64A19;
-        font-size: 3.5vw; /* 뷰포트 너비의 5% */
-        font-weight: bold;
-        margin: 20px 0;
-    }
-    </style>
-    <div class="responsive-title">의료개혁 1차 실행방안</div>
-    """,
-    unsafe_allow_html=True
-    )
-
-    st.markdown("### 핵심 내용 요약")
+    st.markdown("### 핵심 내용")
     st.markdown("""
 - **지역완결 의료체계 구축**
   - 국립대병원, 지방의료원, 지역 종합병원 중심 기능 강화
@@ -1399,7 +1331,7 @@ with col1:
   - 수도권·비수도권 5:5 배정, 지역 친화적 배치 방식
 - **지역필수의사제 도입**
   - 일정 기간 지역 근무 시 수당, 주거 지원, 해외 연수 등 인센티브
-- **지역의료발전기금 신설**, ‘지역의료지원법’ 제정 추진
+- **지역의료발전기금 신설, ‘지역의료지원법’ 제정 추진**
 - **의료권 기준 개편**
   - 행정구역이 아닌 진료권 기반 체계화
 """)
@@ -1417,7 +1349,7 @@ with col1:
 with col2:
     st.header("의료개혁 2차 실행방안")
 
-    st.markdown("### 핵심 내용 요약")
+    st.markdown("### 핵심 내용")
     st.markdown("""
 - **포괄 2차 종합병원** 집중 지원 (3년간 2조 원 투자)
 - **지방의료원 인프라 현대화**, 진료 포괄성 강화
@@ -1438,67 +1370,36 @@ with col2:
         """)
 
 st.markdown("---")
-st.caption("출처: 보건복지부 『의료개혁 1차 실행방안』, 『의료개혁 2차 실행방안』")
 
+st.markdown("""
+<div style="background-color: #f0f0f0; padding: 20px; border-left: 6px solid #555555; border-radius: 8px; margin-bottom: 25px; font-size: clamp(15px, 2.0vw, 18px); line-height: 1.8; color: #333333; text-align: center;">
+    <strong>1차 실행방안과 2차 실행방안에 특별히 주목해야 할 점이 있나요?</strong></br></br>
+    <span style='color: #E64A19; font-weight: bold;'>1. 1차 실행방안: 지역완결 의료체계</span></br>
+    의료개혁 1차 실행방안에서는 지역완결 의료체계 확립방안을 논의하기 시작했습니다.</br>
+    지역완결 의료체계란, 주민들이 거주 지역 내에서 모든 의료 서비스를 완결적으로 이용할 수 있도록 하는 것을 목적으로 하는 의료 시스템입니다.</br>
+    지역 내 의료 협력 네트워크를 강화하여, 환자가 다른 지역으로 이송되는 경우를 줄이고, 환자가 맞춤형 서비스를 받을 수 있도록 보장합니다.</br>
+    <span style='background-color: #ffe0cc; color: #333333; font-weight: bold;'>정부가 지역완결 의료체계에 정신의료기관까지 고려하게 된다면, 지역 내 정신의료기관의 연결과 접근성 강화에 한 발짝 다가갈 수 있을 것입니다.</span></br>
+    그러나, 현재로서는 지역완결 의료체계 내에 정신건강에 대한 언급은 없습니다.</br></br>
+    <span style='color: #E64A19; font-weight: bold;'>2. 2차 실행방안: 지역수가</span></br>
+    의료개혁 2차 실행방안에서는 지역수가에 대해 논의하고 있습니다.</br>
+    지역수가란 지역별 의료 환경에 따라 차등 적용되는 진료비를 의미합니다.</br>
+    의료 접근성이 낮은 지역에 더 높은 수가를 적용하면 의료기관의 지방 유치를 유도할 수 있어, 의료의 자원 불균형 문제를 해소할 수 있습니다.</br>
+    현재 분만 분야에는 이미 지역 수가가 적용되고 있습니다. 분만실을 갖추고 있으며, 산부인과 전문의가 상근하는 기관에는 분만 건당 55만원 가량의 수가가 부여됩니다.</br>
+    <span style='background-color: #ffe0cc; color: #333333; font-weight: bold;'>이와 유사하게 정신건강 분야에도 수가가 적용된다면 지방으로의 정신건강 인프라 확대를 기대할 수 있을 것입니다.</span></br>
+</div>
+""", unsafe_allow_html=True)
 
-st.header("1차 → 2차: 차이점")
-            
-           
+st.markdown("""
+<div style="background-color: #f0f0f0; padding: 20px; border-left: 6px solid #555555; border-radius: 8px; margin-bottom: 25px; font-size: clamp(15px, 2.0vw, 18px); line-height: 1.8; color: #333333; text-align: center;">
+    <strong>1차 실행방안과 2차 실행방안에 '정신건강'이 특별히 명시된 지점이 있나요?</strong></br></br>
+    1차 실행방안에는 '정신건강'이라는 키워드는 1번 등장합니다. 이마저 다른 키워드인 '장애인'과 함께 등장합니다.</br>
+    <span style='background-color: #ffe0cc; color: #333333; font-weight: bold;'>정신건강에 독립적으로 다뤄질 만큼의 지위를 부여하지 않습니다.</span></br>
+    2차 실행방안에는 정신건강에 대한 언급이 없습니다.</br>
+    '정신건강'에 대한 고려 자체가 부족하며, 실행방안 속 '지역격차'와 '정신건강'이 연결되어 다룬 지점이 없다는 점을 알 수 있습니다.</br>
+</div>
+""", unsafe_allow_html=True)
 
-
-col1, col2 = st.columns(2)
-
-# 왼쪽: 1차 실행방안
-with col1:
-    st.subheader("1차 실행방안")
-
-    st.markdown("""
-**주요 특징**
-- 국립대병원, 지방의료원 등 **기본 인프라 확충**
-- 지역 전공의 배정 및 **계약형 지역필수의사제** 도입
-- **의료지원법 제정**, 진료권 기반 재편 등 **정책 방향 제시**
-
-**의의**
-- 지역 필수의료에 대한 **정치적 선언**
-- 첫 출발로서의 **의미 있는 재정 투자 계획**
-
-**한계**
-- 의료기관의 **역할 분화·기능 정립 부족**
-- ‘**구조 개편**’보다는 ‘**지원**’에 머무름
-""")
-
-# 오른쪽: 2차 실행방안
-with col2:
-    st.subheader("2차 실행방안")
-
-    st.markdown("""
-**주요 특징**
-- **포괄 2차 종합병원** 지정 및 24시간 진료 역량 강화
-- **지역수가 도입**: 의료취약지에 수가 가산
-- **진료협력 네트워크 구축** (암, 심뇌, 분만, 중환자 등)
-- **지자체 중심 지역의료혁신 시범사업** 운영
-
-**의의**
-- **‘돈’이 아닌 ‘구조’** 중심의 지역 격차 해소 방식
-- 지역 내 **자율 설계 + 성과 기반 보상체계**
-
-**1차와 달라진 개선점**
-- 1차의 큰 그림을 **실행 가능한 세부 시스템으로 구체화**
-- 병원 간 역할 분담 → **대형병원 쏠림 완화**
-""")
-    
-st.markdown("---")
-st.subheader("한계")
-
-st.markdown(
-    """
-    정신 건강과 관련된 지역 간 의료 격차에 대한 논의는 여전히 충분히 다뤄지지 않고 있습니다.  
-    이는 향후 정신건강 증진시설의 지역 간 불균형 문제를 해결하기 위한 구체적인 정책 마련이 필요함을 시사합니다.
-    """
-)
-
-# 출처
-st.caption("출처: 보건복지부 『의료개혁 1차 실행방안』, 『의료개혁 2차 실행방안』")
+st.caption("출처: 『의료개혁 1차 실행방안』(보건복지부, 2024-08-30), 『의료개혁 2차 실행방안』(보건복지부, 2025-03-19), '맞춤형 지역 수가' 도입···의대생 실습 프로그램 확대'(행정안전부, 2024-03-15)")
 
 st.markdown(
     """
@@ -1507,11 +1408,7 @@ st.markdown(
         지방은 수도권에 비해 접근 가능한 시설의 수가 현저하게 적으며,<br>
         시설까지 이동하는 데의 거리 및 시간도 상당합니다.<br>
         그러나, 사회 전반적인 정책적 차원에서 대응이 제대로 이뤄지지 않는 상황입니다.<br>
-        매년 정신병원의 수는 증가하였습니다.<br>
-        그러나, 아무도 지방의 시설 현황에는 주목하지 않으며,<br>
-        적절한 대응을 위해 노력하지 않습니다.<br>
-        ‘정신건강’이라는 의료분야의 소외와, 구조적인 지역격차 문제가 혼합되어<br>
-        악순환을 만들고 있습니다.<br><br>
+        ‘정신건강’이라는 의료분야의 소외와, 구조적인 지역격차 문제가 혼합되어 악순환을 만들고 있습니다.<br><br>
         프로젝트를 마무리하며, 이에 대한 한국 대중의 관심과<br>
         정부의 적절한 대응을 촉구합니다.
     </div>
