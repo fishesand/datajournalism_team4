@@ -225,8 +225,7 @@ st.markdown(f"""
         <img src="data:image/png;base64,{encoded_img}" style="max-width: 800px; width: 80%;" />
         <div style="margin-top: 30px; font-size: clamp(16px, 2vw, 24px);
  line-height: 1.6;">
-            A씨가 거주하는 선릉로에만 <br>
-            정신병원이 12곳 있습니다.<br><br>
+            A씨가 거주하는 선릉로에만 정신병원이 12곳 있습니다.<br><br>
         </div>
     </div>
 </div>
@@ -247,7 +246,7 @@ st.markdown(f"""
         <img src="data:image/png;base64,{encoded_img}" style="max-width: 800px; width: 80%;" />
         <div style="margin-top: 30px; font-size: clamp(16px, 2vw, 24px);
  line-height: 1.6;">
-            A씨의 집에서 정신병원까지 가기 위해서는 얼마나 걸릴까요?<br><br><br>
+            A씨의 집에서 정신병원까지 가기 위해서는 시간이 얼마나 걸릴까요?<br><br><br>
         </div>
     </div>
 </div>
@@ -267,10 +266,8 @@ st.markdown(f"""
         <img src="data:image/png;base64,{encoded_img}" style="max-width: 900px; width: 90%;" />
         <div style="margin-top: 30px; font-size: clamp(16px, 2vw, 24px);
  line-height: 1.6;">
-            A씨는 집 근처 정신병원들이 모여있는 반경까지 이동하는 데<br>
-            걸어서 12분이 채 걸리지 않습니다.<br>
-            많은 병원들이 분포되어 있기 때문에,<br>
-            선택지의 폭도 넓습니다.<br><br><br>
+            A씨는 집 근처 정신병원들이 모여있는 반경까지 이동하는 데 걸어서 12분이 채 걸리지 않습니다.<br>
+            많은 병원들이 분포되어 있기 때문에, 선택지의 폭도 넓습니다.<br><br><br>
         </div>
     </div>
 </div>
@@ -350,10 +347,8 @@ st.markdown(f"""
         <img src="data:image/png;base64,{encoded_img}" style="max-width: 800px; width: 80%;" />
         <div style="margin-top: 30px; font-size: clamp(16px, 2vw, 24px);
  line-height: 1.6;">
-            B씨가 거주하는 지역에도 병원이 있긴 하지만,<br>
-            같은 보성군 안에 있는 병원까지도<br>
-            <strong>자동차로는 약 30분,</strong><br>
-            <strong>버스로는 무려 1시간 40분이 걸립니다.</strong><br><br>
+            B씨가 거주하는 지역에도 병원이 있긴 하지만, 같은 보성군 안에 있는 병원까지도<br>
+            자동차로는 약 30분, 버스로는 무려 1시간 40분이 걸립니다.<br><br>
         </div>
     </div>
 </div>
@@ -374,8 +369,7 @@ st.markdown(f"""
         <img src="data:image/png;base64,{encoded_img}" style="max-width: 900px; width: 90%;" />
         <div style="margin-top: 30px; font-size: clamp(16px, 2vw, 24px);
 ;">
-            보성군 내 병원 접근이 어려운 B씨는<br>
-            결국 순천시까지 나가야 할지도 모릅니다.<br>
+            보성군 내 병원 접근이 어려운 B씨는 결국 순천시까지 나가야 할지도 모릅니다.<br>
             차로 약 1시간, 버스로는 2시간 넘게 걸리는 거리입니다.<br><br>
         </div>
     </div>
