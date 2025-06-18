@@ -976,25 +976,7 @@ def plot_bar_chart(labels, hospital_counts, rehab_counts, title, font_prop):
 
 # --- Streamlit UI (Rest of your code remains largely the same) ---
 
-st.markdown("""
-<h1 style='text-align: center; font-size: clamp(28px, 4vw, 42px); margin-top: 80px;'>
-    <span style='color: #E64A19;'>정신건강증진시설의 지역격차</span>를 지도로 시각화해보았습니다.</span>
-</h1>
-""", unsafe_allow_html=True)
 
-st.markdown("""
-<div style="height: 50px;"></div>
-""", unsafe_allow_html=True)
-
-st.markdown("""
-<div style="background-color: #f0f0f0; padding: 20px; border-left: 6px solid #555555; border-radius: 8px; margin-bottom: 25px; font-size: clamp(15px, 2.0vw, 18px); line-height: 1.8; color: #333333; text-align: center;">
-    서울시, 강원도, 경상남도, 전라남도에서 인구 수가 비슷한 4곳을 선정하여 각 지역의 정신병원과 정신재활시설을 지도상으로 시각화하였습니다.<br>
-    대상 지역은 (서울특별시 강남구), (강원도 김해시), (전라남도 순천시, 담양군, 곡성군, 구례군, 고흥군, 보성군, 화순군), (강원도 원주시, 횡성군, 홍천군, 평창군, 영월군)입니다.<br>
-    <span style='background-color: #ffe0cc; color: #333333; font-weight: bold;'>각 지역은 인구 수가 55만명 내외로 유사하지만, 수도권에서 벗어날수록 지역의 면적은 늘어나며, 역설적으로 정신건강증진시설의 개수는 감소한다는 점을 파악할 수 있습니다.</span>
-</div>
-""", unsafe_allow_html=True)
-
-st.write("")
 
 # Initialize zoom state
 if "zoom_enabled" not in st.session_state:
