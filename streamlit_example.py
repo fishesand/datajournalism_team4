@@ -163,11 +163,11 @@ with open("data/A씨.png", "rb") as image_file:
 
 # HTML 코드 삽입
 st.markdown(f"""
-<div class="gangwon"; style="display: flex; justify-content: center; margin-top: 40px;">
+<div style="display: flex; justify-content: center; margin-top: 40px;">
     <div style="text-align: center;">
         <img src="data:image/png;base64,{encoded}" style="max-width: 200px; width: 80%;" />
         <div style="margin-top: 20px; font-size: clamp(16px, 2vw, 24px); line-height: 1.6;">
-            강남구에 사는 A씨가 있습니다.
+            <strong> 강남구에 사는 A씨가 있습니다. </strong>
         </div>
     </div>
 </div>
@@ -185,11 +185,11 @@ with open("data/1.png", "rb") as image_file:
 
 # HTML로 이미지 + 텍스트 중앙 정렬 표시
 st.markdown(f"""
-<div class="gangwon"; style="display: flex; justify-content: center; margin-top: 40px;">
+<div style="display: flex; justify-content: center; margin-top: 40px;">
     <div style="text-align: center;">
         <img src="data:image/png;base64,{encoded_img}" style="max-width: 800px; width: 80%;" />
         <div style="margin-top: 30px; font-size: clamp(16px, 2vw, 24px); line-height: 1.6;">
-            강남구에는 정신병원이 102곳, 정신재활센터는 1곳 있습니다.<br>
+            <strong> 강남구에는 정신병원이 102곳, 정신재활센터는 1곳 있습니다.</strong><br>
         </div>
     </div>
 </div>
@@ -205,12 +205,12 @@ with open("data/2.png", "rb") as image_file:
 
 # HTML로 이미지 + 텍스트 중앙 정렬 표시
 st.markdown(f"""
-<div class="gangwon"; style="display: flex; justify-content: center; margin-top: 40px;">
+<div style="display: flex; justify-content: center; margin-top: 40px;">
     <div style="text-align: center;">
         <img src="data:image/png;base64,{encoded_img}" style="max-width: 800px; width: 80%;" />
         <div style="margin-top: 30px; font-size: clamp(16px, 2vw, 24px);
  line-height: 1.6;">
-            A씨가 거주하는 선릉로에만 정신병원이 12곳 있습니다.<br><br>
+            <strong> A씨가 거주하는 선릉로에만 정신병원이 12곳 있습니다.</strong><br><br>
         </div>
     </div>
 </div>
@@ -226,12 +226,12 @@ with open("data/3.png", "rb") as image_file:
 
 # 이미지 + 텍스트 중앙 정렬
 st.markdown(f"""
-<div class="gangwon"; style="display: flex; justify-content: center; margin-top: 40px;">
+<div style="display: flex; justify-content: center; margin-top: 40px;">
     <div style="text-align: center;">
         <img src="data:image/png;base64,{encoded_img}" style="max-width: 800px; width: 80%;" />
         <div style="margin-top: 30px; font-size: clamp(16px, 2vw, 24px);
  line-height: 1.6;">
-            A씨의 집에서 정신병원까지 가기 위해서는 시간이 얼마나 걸릴까요?<br><br><br>
+            <strong>A씨의 집에서 정신병원까지 가기 위해서는 시간이 얼마나 걸릴까요?</strong><br><br><br>
         </div>
     </div>
 </div>
@@ -246,13 +246,13 @@ with open("data/4.png", "rb") as image_file:
 
 # 이미지와 텍스트를 HTML로 중앙 정렬
 st.markdown(f"""
-<div class="gangwon"; style="display: flex; justify-content: center; margin-top: 40px;">
+<div style="display: flex; justify-content: center; margin-top: 40px;">
     <div style="text-align: center;">
         <img src="data:image/png;base64,{encoded_img}" style="max-width: 900px; width: 90%;" />
         <div style="margin-top: 30px; font-size: clamp(16px, 2vw, 24px);
  line-height: 1.6;">
-            A씨는 집 근처 정신병원들이 모여있는 반경까지 이동하는 데 걸어서 12분이 채 걸리지 않습니다.<br>
-            많은 병원들이 분포되어 있기 때문에, 선택지의 폭도 넓습니다.<br><br><br>
+            <strong>A씨는 집 근처 정신병원들이 모여있는 반경까지 이동하는 데 걸어서 12분이 채 걸리지 않습니다.<br>
+            많은 병원들이 분포되어 있기 때문에, 선택지의 폭도 넓습니다.</strong><br><br><br>
         </div>
     </div>
 </div>
@@ -286,12 +286,12 @@ with open("data/A씨.png", "rb") as image_file:
 
 # 중앙 정렬된 이미지 + 텍스트 표시
 st.markdown(f"""
-<div class="gangwon"; style="display: flex; justify-content: center; margin-top: 40px;">
+<div style="display: flex; justify-content: center; margin-top: 40px;">
     <div style="text-align: center;">
         <img src="data:image/png;base64,{encoded_img}" style="max-width: 200px; width: 80%;" />
         <div style="margin-top: 30px; font-size: clamp(16px, 2vw, 24px);
 ; line-height: 1.6;">
-            한편, 전라남도 보성군에 사는 B씨가 있습니다.<br><br>
+            <strong>한편, 전라남도 보성군에 사는 B씨가 있습니다.</strong><br><br>
         </div>
     </div>
 </div>
@@ -307,12 +307,12 @@ with open("data/5.png", "rb") as image_file:
 
 # 이미지 + 텍스트 중앙 정렬 표시
 st.markdown(f"""
-<div class="gangwon"; style="display: flex; justify-content: center; margin-top: 40px;">
+<div style="display: flex; justify-content: center; margin-top: 40px;">
     <div style="text-align: center;">
         <img src="data:image/png;base64,{encoded_img}" style="max-width: 800px; width: 80%;" />
         <div style="margin-top: 30px; font-size: clamp(16px, 2vw, 24px);
 ; line-height: 1.6;">
-            보성군에는 정신병원이 단 2곳뿐입니다.<br><br>
+            <strong>보성군에는 정신병원이 단 2곳뿐입니다.</strong><br><br>
         </div>
     </div>
 </div>
@@ -327,13 +327,13 @@ with open("data/6.png", "rb") as image_file:
 
 # HTML로 이미지 + 텍스트 중앙 정렬
 st.markdown(f"""
-<div class="gangwon"; style="display: flex; justify-content: center; margin-top: 40px;">
+<div style="display: flex; justify-content: center; margin-top: 40px;">
     <div style="text-align: center;">
         <img src="data:image/png;base64,{encoded_img}" style="max-width: 800px; width: 80%;" />
         <div style="margin-top: 30px; font-size: clamp(16px, 2vw, 24px);
  line-height: 1.6;">
-            B씨가 거주하는 지역에도 병원이 있긴 하지만, 같은 보성군 안에 있는 병원까지도<br>
-            자동차로는 약 30분, 버스로는 무려 1시간 40분이 걸립니다.<br><br>
+            <strong>B씨가 거주하는 지역에도 병원이 있긴 하지만, 같은 보성군 안에 있는 병원까지도<br>
+            자동차로는 약 30분, 버스로는 무려 1시간 40분이 걸립니다.</strong><br><br>
         </div>
     </div>
 </div>
@@ -349,13 +349,13 @@ with open("data/7.png", "rb") as image_file:
 
 # HTML로 이미지 + 텍스트 중앙 정렬
 st.markdown(f"""
-<div class="gangwon"; style="display: flex; justify-content: center; margin-top: 40px;">
+<div style="display: flex; justify-content: center; margin-top: 40px;">
     <div style="text-align: center;">
         <img src="data:image/png;base64,{encoded_img}" style="max-width: 900px; width: 90%;" />
         <div style="margin-top: 30px; font-size: clamp(16px, 2vw, 24px);
-;">
+;"><strong>
             보성군 내 병원 접근이 어려운 B씨는 결국 순천시까지 나가야 할지도 모릅니다.<br>
-            차로 약 1시간, 버스로는 2시간 넘게 걸리는 거리입니다.<br><br>
+            차로 약 1시간, 버스로는 2시간 넘게 걸리는 거리입니다.</strong><br><br>
         </div>
     </div>
 </div>
