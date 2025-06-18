@@ -18,23 +18,7 @@ from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 font_path = "data/강원교육튼튼.ttf"
 font_prop = font_manager.FontProperties(fname=font_path)
 
-# 배경색 설정
-st.markdown(
-    """
-    <style>
-    /* 전체 앱 배경 */
-    .stApp {
-        background-color: #dddcdc;
-    }
 
-    /* 주요 콘텐츠 영역도 동일하게 적용 (예: 사이드바 제외) */
-    .main {
-        background-color: #dddcdc;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
 
 # 이미지 경로
 image_files = [
@@ -135,6 +119,7 @@ st.markdown("""
 
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
@@ -427,6 +412,10 @@ st.markdown("""
 
 
 
+
+
+
+
 #정신건강증진시설 개념
 st.markdown("""
 <h2 style="text-align: center; margin-top: 60px; margin-bottom: 40px; font-weight: bold; font-size: clamp(28px, 4vw, 40px); color: #E64A19;">
@@ -684,6 +673,8 @@ st.markdown("""
 
 </div>
 """, unsafe_allow_html=True)
+
+
 
 
 import pandas as pd
