@@ -703,6 +703,7 @@ st.markdown("""
 </h1>
 """, unsafe_allow_html=True)
 
+#공백
 st.markdown("""
 <div style="height: 50px;"></div>
 """, unsafe_allow_html=True)
@@ -1354,16 +1355,42 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
+#공백
+st.markdown("""
+<div style="height: 50px;"></div>
+""", unsafe_allow_html=True)
+
 
 st.markdown("""
 <h2 style='text-align: center; margin-top: 40px;'>의료개혁 1차 · 2차 실행방안: 지역 격차 대응 비교</h2>
             """, unsafe_allow_html=True)
+#공백
+st.markdown("""
+<div style="height: 40px;"></div>
+""", unsafe_allow_html=True)
+
 
 col1, col2 = st.columns(2)
 
 # ------------ 의료개혁 1차 ------------
 with col1:
-    st.header("의료개혁 1차 실행방안")
+    import streamlit as st
+
+    st.markdown(
+    """
+    <style>
+    .responsive-title {
+        color: #E64A19;
+        font-size: 3.5vw; /* 뷰포트 너비의 5% */
+        font-weight: bold;
+        margin: 20px 0;
+    }
+    </style>
+    <div class="responsive-title">의료개혁 1차 실행방안</div>
+    """,
+    unsafe_allow_html=True
+    )
+
     st.markdown("### 핵심 내용 요약")
     st.markdown("""
 - **지역완결 의료체계 구축**
