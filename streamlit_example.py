@@ -266,19 +266,18 @@ with open("data/A씨.png", "rb") as image_file:
 with open("data/A씨.png", "rb") as image_file:
     encoded_img = base64.b64encode(image_file.read()).decode()
 
-# 반응형 이미지 + 텍스트
+
+# HTML 코드 삽입
 st.markdown(f"""
 <div style="display: flex; justify-content: center; margin-top: 40px;">
-    <div style="text-align: center; max-width: 600px; width: 90%;">
-        <img src="data:image/png;base64,{encoded_img}" 
-             style="width: 100%; height: auto; max-width: 300px; object-fit: contain; margin: auto;" />
-        <div style="margin-top: 30px; font-size: clamp(14px, 2vw, 22px); line-height: 1.6;">
-            <strong>한편, 전라남도 보성군에 사는 B씨가 있습니다.</strong><br><br>
+    <div style="text-align: center;">
+        <img src="data:image/png;base64,{encoded}" style="max-width: 200px; width: 80%;" />
+        <div style="margin-top: 20px; font-size: clamp(16px, 2vw, 24px); line-height: 1.6;">
+            <strong> 한편, 전라남도 보성군에 사는 B씨가 있습니다.</strong>
         </div>
     </div>
 </div>
 """, unsafe_allow_html=True)
-
 
 # 이미지 파일 base64 인코딩
 with open("data/5.png", "rb") as image_file:
@@ -917,9 +916,11 @@ def display_region_info(selection, col, font_prop):
         if '전라남도' in selection:
             st.markdown("""
             **대상 지역:** 전라남도 순천시, 담양군, 곡성군, 구례군, 고흥군, 보성군, 화순군
+                        
             **지역 총면적:** 5,432.27 km²
+                        
             **지역 총인구:** 554,371명
-
+                        
             **지역별 정신병원 및 정신재활센터 수:**
             """)
             labels = ['고흥군', '곡성군', '담양군', '보성군', '순천시', '화순군']
@@ -930,27 +931,33 @@ def display_region_info(selection, col, font_prop):
         elif '강남구' in selection:
             st.markdown("""
             **대상 지역:** 서울특별시 강남구
+                        
             **지역 총면적:** 39.55km²
+                        
             **지역 총인구:** 556,822명
-
+                        
             **지역별 정신병원 및 정신재활센터 수:** 102개/1개
             """)
 
         elif '김해시' in selection:
             st.markdown("""
             **대상 지역:** 경상남도 김해시
+                        
             **지역 총면적:** 463.3 km²
+                        
             **지역 총인구:** 532,792명
-
+                        
             **지역별 정신병원 및 정신재활센터 수:** 11개/1개
             """)
 
         elif '강원도' in selection:
             st.markdown("""
             **대상 지역:** 강원도 원주시, 횡성군, 홍천군, 평창군, 영월군
+                        
             **지역 총면적:** 6272.74 km²
+                        
             **지역 총인구:** 550028명
-
+                        
             **지역별 정신병원 및 정신재활센터 수:**
             """)
             labels = ['원주시', '횡성군', '홍천군', '평창군', '영월군']
