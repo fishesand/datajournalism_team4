@@ -9,10 +9,12 @@ import os
 from branca.element import Template, MacroElement
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
-from io import BytesIO
 from matplotlib import font_manager
 import matplotlib.image as mpimg
 from matplotlib.offsetbox import OffsetImage, AnnotationBbox
+from PIL import Image
+from io import BytesIO
+import base64
 
 # 폰트 설정
 font_path = "data/강원교육튼튼.ttf"
@@ -379,7 +381,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-#정신건강증진시설 개념
+# 정신건강증진시설 개념
 st.markdown("""
 <h2 style="text-align: center; margin-top: 60px; margin-bottom: 40px; font-weight: bold; font-size: clamp(28px, 4vw, 40px); color: #E64A19;">
     <span style="color: black;"></span>정신건강증진시설<span style="color: black;">이란?</span>
@@ -411,9 +413,6 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-from PIL import Image
-from io import BytesIO
-
 # 폰트 설정
 font_path = "data/NanumGothic.ttf"
 font_prop = font_manager.FontProperties(fname=font_path)
@@ -443,10 +442,6 @@ merged_df['인구/의료기관'] = merged_df['population'] / merged_df['총의�
 
 # 좌우 레이아웃
 st.markdown("<h2 style='text-align: center; margin-top: 40px;'>정신건강 의료기관 1곳당 인구 수, 지역별로 얼마나 다를까요?</h2>", unsafe_allow_html=True)
-
-import matplotlib.pyplot as plt
-import base64
-from io import BytesIO
 
 # 그래프 생성
 sorted_df = merged_df.sort_values(by='인구/의료기관', ascending=True)
