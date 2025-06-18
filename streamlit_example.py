@@ -105,13 +105,13 @@ div {{
 
 # HTML 렌더링은 줄이거나 검증된 구조만 사용
 st.markdown("""
-<div style="color: #1e1e1e; sans-serif; padding: 10px 5vw; text-align: center;">
+<div style="color: #1e1e1e; font-family: 'Segoe UI', sans-serif; padding: 10px 5vw; text-align: center;">
 
-  <div style="font-size: clamp(18px, 2vw, 28px); font-weight: bold; color: #FF5722; margin-bottom: 1vw;">
+  <div style="font-size: clamp(20px, 3vw, 36px); font-weight: bold; margin-bottom: 1vw;">
     우리나라 국민의 1/3은
   </div>
 
-  <div style="font-size: clamp(18px, 2vw, 28px); margin-bottom: 2vw;">
+  <div style="font-size: clamp(20px, 3vw, 36px); margin-bottom: 2vw;">
     ‘중간 수준 이상의 우울감’을 경험하고 있습니다.
   </div>
 
@@ -120,17 +120,17 @@ st.markdown("""
     (서울대 보건대학원 BK21 건강재난 통합대응을 위한 교육연구단, 2025-05-07)
   </div>
 
-  <div style="font-size: clamp(16px, 1.6vw, 24px); margin-bottom: 1.5vw;">
-    <strong style="color: #FF5722;">그럼에도</strong>, 우리 사회에서 <strong>정신건강</strong>은 늘 뒷전입니다.
+  <div style="font-size: clamp(20px, 3vw, 36px); margin-bottom: 1.5vw;">
+    그럼에도, 우리 사회에서 정신건강은 늘 뒷전입니다.
   </div>
 
-  <div style="font-size: clamp(16px, 1.6vw, 24px); margin-bottom: 2vw;">
-    <strong style="color: #FF5722;">지방, 농어촌 지역</strong>의 정신건강은 더더욱 방치되어 있습니다.
+  <div style="font-size: clamp(20px, 3vw, 36px); margin-bottom: 2vw;">
+    지방, 농어촌 지역의 정신건강은 더더욱 방치되어 있습니다.
   </div>
 
   <div style="font-size: clamp(22px, 2.5vw, 36px); font-weight: bold; color: #FF5722;">
-    본 프로젝트의 목표는<br>
-    <span style="color: #1e1e1e;">정신건강증진시설의 지역 격차</span>를 시각화하는 것입니다.
+    본 프로젝트의 목표는
+    정신건강증진시설의 지역 격차 시각화하는 것입니다.
   </div>
 
 </div>
@@ -204,8 +204,7 @@ st.markdown(f"""
     <div style="text-align: center;">
         <img src="data:image/png;base64,{encoded_img}" style="max-width: 800px; width: 80%;" />
         <div style="margin-top: 30px; font-size: clamp(16px, 2vw, 24px); line-height: 1.6;">
-            강남구에는 정신병원이 102곳,<br>
-            정신재활센터는 1곳 있습니다.<br><br>
+            강남구에는 정신병원이 102곳, 정신재활센터는 1곳 있습니다.<br>
         </div>
     </div>
 </div>
