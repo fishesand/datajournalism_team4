@@ -10,18 +10,33 @@ from branca.element import Template, MacroElement
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 from io import BytesIO
-
-# 간단한 Streamlit 마크다운 제목으로 먼저 확인
-import matplotlib.pyplot as plt
 from matplotlib import font_manager
 import matplotlib.image as mpimg
 from matplotlib.offsetbox import OffsetImage, AnnotationBbox
 
-# 1. 폰트 설정
+# 폰트 설정
 font_path = "data/강원교육튼튼.ttf"
 font_prop = font_manager.FontProperties(fname=font_path)
 
-# 2. 이미지 경로
+# 배경색 설정
+st.markdown(
+    """
+    <style>
+    /* 전체 앱 배경 */
+    .stApp {
+        background-color: #dddcdc;
+    }
+
+    /* 주요 콘텐츠 영역도 동일하게 적용 (예: 사이드바 제외) */
+    .main {
+        background-color: #dddcdc;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+# 이미지 경로
 image_files = [
     "data/image1.png",
     "data/image2.png",
@@ -29,7 +44,7 @@ image_files = [
     "data/image4.png"
 ]
 
-# 3. 이미지 배치 정보 (x, y, scale, alpha)
+# 이미지 배치 정보 (x, y, scale, alpha)
 image_settings = [
     (0.01, 0.6, 0.25, 0.1),
     (0.9, 0.6, 0.25, 0.1),
@@ -37,7 +52,7 @@ image_settings = [
     (0.9999, 0.2, 0.22, 0.1),
 ]
 
-# 4. 그래프 생성
+# 그래프 생성
 fig, ax = plt.subplots(figsize=(8, 4))
 ax.set_xlim(0, 1)
 ax.set_ylim(0, 1)
@@ -65,19 +80,34 @@ ax.text(0.5, 0.3, '수도권만의 권리인가요?', fontproperties=font_prop,
 ax.axis('off')
 
 # 8. 출력
-import streamlit as st
 st.pyplot(fig)
 
+import base64
 
-# 1. 폰트 설정
+# ttf 파일 base64 인코딩
+with open("data/강원교육튼튼.ttf", "rb") as f:
+    font_data = f.read()
+    encoded_font = base64.b64encode(font_data).decode()
 
+# HTML 마크다운으로 스타일 적용
+st.markdown(f"""
+<style>
+@font-face {{
+    font-family: 'GangwonEduPower';
+    src: url(data:font/ttf;base64,{encoded_font}) format('truetype');
+}}
 
+div {{
+    font-family: 'GangwonEduPower', sans-serif;
+}}
+</style>
+""", unsafe_allow_html=True)
 
 # HTML 렌더링은 줄이거나 검증된 구조만 사용
 st.markdown("""
-<div style="color: #1e1e1e; font-family: 'Segoe UI', sans-serif; padding: 10px 5vw; text-align: center;">
+<div style="color: #1e1e1e; sans-serif; padding: 10px 5vw; text-align: center;">
 
-  <div style="font-size: clamp(20px, 3vw, 36px); font-weight: bold; color: #FF5722; margin-bottom: 1vw;">
+  <div style="font-size: clamp(18px, 2vw, 28px); font-weight: bold; color: #FF5722; margin-bottom: 1vw;">
     우리나라 국민의 1/3은
   </div>
 
@@ -127,23 +157,13 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-
-import streamlit as st
-import json
-import pandas as pd
-import folium
-from streamlit_folium import st_folium
 import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
 import time
-
 
 # 데이터 불러오기
 gangnam_df = pd.read_excel("data/gangnam_juso.xlsx").dropna(subset=['위도', '경도'])
 seolleung_df = pd.read_excel("data/seoulleung_juso.xlsx").dropna(subset=['위도', '경도'])
 seolleung_hospitals = gangnam_df[gangnam_df['주소'].str.contains("선릉로", na=False)]
-
-import pandas as pd
 
 boseong_df = pd.DataFrame({
     '기관명': ['벌교삼호병원', '보성제일병원'],
@@ -151,9 +171,6 @@ boseong_df = pd.DataFrame({
     '위도': [34.8337591, 34.763154],
     '경도': [127.3459238, 127.073384]
 })
-
-# 1단계: 인물 소개
-import base64
 
 # 이미지 파일 불러와서 base64 인코딩
 with open("data/A씨.png", "rb") as image_file:
