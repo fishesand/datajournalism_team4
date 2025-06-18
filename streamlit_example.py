@@ -1315,15 +1315,14 @@ st.markdown("""
 <div style="height: 40px;"></div>
 """, unsafe_allow_html=True)
 
+import streamlit as st
 
-col1, col2 = st.columns(2)
+# 3개의 열로 나누고, 가운데 두 개만 사용
+col_spacer1, col1, col2, col_spacer2 = st.columns([1, 3, 3, 1])
 
 # ------------ 의료개혁 1차 ------------
 with col1:
-    import streamlit as st
     st.header("의료개혁 1차 실행방안")
-
-    st.markdown("### 핵심 내용")
     st.markdown("""
 - **지역완결 의료체계 구축**
   - 국립대병원, 지방의료원, 지역 종합병원 중심 기능 강화
@@ -1348,8 +1347,6 @@ with col1:
 # ------------ 의료개혁 2차 ------------
 with col2:
     st.header("의료개혁 2차 실행방안")
-
-    st.markdown("### 핵심 내용")
     st.markdown("""
 - **포괄 2차 종합병원** 집중 지원 (3년간 2조 원 투자)
 - **지방의료원 인프라 현대화**, 진료 포괄성 강화
@@ -1400,6 +1397,26 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.caption("출처: 『의료개혁 1차 실행방안』(보건복지부, 2024-08-30), 『의료개혁 2차 실행방안』(보건복지부, 2025-03-19), '맞춤형 지역 수가' 도입···의대생 실습 프로그램 확대'(행정안전부, 2024-03-15)")
+
+st.markdown("""
+<!-- 공백과 세로선 영역 -->
+<div style="position: relative; height: 80px; margin: 60px 0;">
+
+  <!-- 세로선: 가운데 정렬 -->
+  <div style="
+    position: absolute;
+    left: 50%;
+    top: 10px;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 150px;
+    background-color: #FF5722;
+    opacity: 0.7;
+  "></div>
+
+</div>
+""", unsafe_allow_html=True)
+
 
 st.markdown(
     """
