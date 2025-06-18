@@ -17,6 +17,7 @@ from io import BytesIO
 import base64
 import time
 
+
 # 폰트 설정
 font_path = "data/강원교육튼튼.ttf"
 font_prop = font_manager.FontProperties(fname=font_path)
@@ -90,36 +91,37 @@ st.markdown(f"""
 
 # HTML 렌더링
 st.markdown("""
-<div class="gangwon"; style="color: #1e1e1e; padding: 10px 5vw; text-align: center;">
+<div class="gangwon" style="color: #1e1e1e; padding: 10px 5vw; text-align: center;">
 
-  <div style="font-size: clamp(20px, 3vw, 36px); font-weight: bold; margin-bottom: 1vw;">
+  <div style="font-size: clamp(16px, 2.5vw, 28px); font-weight: bold; margin-bottom: 1vw;">
     우리나라 국민의 1/3은
   </div>
 
-  <div style="font-size: clamp(20px, 3vw, 36px); margin-bottom: 2vw;">
+  <div style="font-size: clamp(16px, 2.5vw, 28px); margin-bottom: 2vw;">
     ‘중간 수준 이상의 우울감’을 경험하고 있습니다.
   </div>
 
-  <div style="font-size: clamp(12px, 1vw, 16px); color: #888888; margin-bottom: 2vw;">
+  <div style="font-size: clamp(11px, 1vw, 14px); color: #888888; margin-bottom: 2vw; font-family: 'Nanum Gothic', sans-serif;">
     출처: ‘정신건강 증진과 위기 대비를 위한 일반인 조사’<br>
     (서울대 보건대학원 BK21 건강재난 통합대응을 위한 교육연구단, 2025-05-07)
   </div>
 
-  <div style="font-size: clamp(20px, 3vw, 36px); margin-bottom: 1.5vw;">
+  <div style="font-size: clamp(16px, 2.5vw, 28px); margin-bottom: 1.5vw;">
     그럼에도, 우리 사회에서 정신건강은 늘 뒷전입니다.
   </div>
 
-  <div style="font-size: clamp(20px, 3vw, 36px); margin-bottom: 2vw;">
+  <div style="font-size: clamp(16px, 2.5vw, 28px); margin-bottom: 2vw;">
     지방, 농어촌 지역의 정신건강은 더더욱 방치되어 있습니다.
   </div>
 
-  <div style="font-size: clamp(22px, 2.5vw, 36px); font-weight: bold; color: #FF5722;">
-    본 프로젝트의 목표는
-    정신건강증진시설의 지역 격차 시각화하는 것입니다.
+  <div style="font-size: clamp(18px, 2vw, 30px); font-weight: bold; color: #FF5722;">
+    본 프로젝트의 목표는<br>
+    정신건강증진시설의 지역 격차를 시각화하는 것입니다.
   </div>
 
 </div>
 """, unsafe_allow_html=True)
+
 
 st.markdown("""
 <!-- 공백과 세로선 영역 -->
@@ -260,17 +262,23 @@ with open("data/A씨.png", "rb") as image_file:
     encoded_img = base64.b64encode(image_file.read()).decode()
 
 # 중앙 정렬된 이미지 + 텍스트 표시
+# 이미지 파일 base64 인코딩
+with open("data/A씨.png", "rb") as image_file:
+    encoded_img = base64.b64encode(image_file.read()).decode()
+
+# 반응형 이미지 + 텍스트
 st.markdown(f"""
 <div style="display: flex; justify-content: center; margin-top: 40px;">
-    <div style="text-align: center;">
-        <img src="data:image/png;base64,{encoded_img}" style="max-width: 200px; width: 80%;" />
-        <div style="margin-top: 30px; font-size: clamp(16px, 2vw, 24px);
-; line-height: 1.6;">
+    <div style="text-align: center; max-width: 600px; width: 90%;">
+        <img src="data:image/png;base64,{encoded_img}" 
+             style="width: 100%; height: auto; max-width: 300px; object-fit: contain; margin: auto;" />
+        <div style="margin-top: 30px; font-size: clamp(14px, 2vw, 22px); line-height: 1.6;">
             <strong>한편, 전라남도 보성군에 사는 B씨가 있습니다.</strong><br><br>
         </div>
     </div>
 </div>
 """, unsafe_allow_html=True)
+
 
 # 이미지 파일 base64 인코딩
 with open("data/5.png", "rb") as image_file:
@@ -435,6 +443,10 @@ merged_df = pd.merge(facility_df, population_df, on='시도')
 merged_df = merged_df[merged_df['시도'] != '전국']
 merged_df['인구/의료기관'] = merged_df['population'] / merged_df['총의료기관수']
 
+st.markdown("""
+<div style="height: 50px;"></div>
+""", unsafe_allow_html=True)
+
 # 좌우 레이아웃
 st.markdown("<h2 style='text-align: center; margin-top: 40px;'>정신건강 의료기관 1곳당 인구 수, 지역별로 얼마나 다를까요?</h2>", unsafe_allow_html=True)
 
@@ -507,6 +519,10 @@ def render_region(title, num_hospitals, people_per_hospital, people_count_text):
 hospital_img = Image.open("data/hospital.png")
 person_img = Image.open("data/person.png")
 
+st.markdown("""
+<div style="height: 50px;"></div>
+""", unsafe_allow_html=True)
+
 # 제목
 # st.markdown("<h2 style='text-align: center; margin-top: 40px;'><br><br>서울과 경상북도 비교<br></h2>", unsafe_allow_html=True)
 
@@ -537,6 +553,10 @@ with right_col:
     </div>
     """, unsafe_allow_html=True)
 
+#공백
+st.markdown("""
+<div style="height: 50px;"></div>
+""", unsafe_allow_html=True)
 
 # 제목
 st.markdown("<h2 style='text-align: center; margin-top: 80px;'><br>2018~2023, 전국 정신건강증진 시설의 수는 어떻게 변화하였을까요?<br></h2>", unsafe_allow_html=True)
@@ -546,7 +566,7 @@ left_col, right_col = st.columns([1, 1])
 
 # 왼쪽: 선그래프
 with left_col:
-    st.markdown("<div style='margin-top: 150px;'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='margin-top: 130px;'></div>", unsafe_allow_html=True)
 
     df_year = pd.read_excel("data/2018_2023_정신건강시설.xlsx")
     df_cleaned = df_year.iloc[1:4].copy()
@@ -1064,11 +1084,12 @@ st.markdown("""
 st.markdown(
     """
     <h1 style='text-align: center; font-size: clamp(28px, 4vw, 42px); margin-top: 60px;'>
-        보건복지부 의료개혁안에서는 적절한 대응방안을 마련하고 있을까요?
+        보건복지부 의료개혁안에서는<br>적절한 대응방안을 마련하고 있을까요?
     </h1>
     """,
     unsafe_allow_html=True
 )
+
 
 st.markdown("""
 <div style="height: 50px;"></div>
@@ -1089,8 +1110,16 @@ st.markdown("""
 
 
 st.markdown("""
-<h2 style='text-align: center; margin-top: 40px;'>[의료개혁 1차 · 2차 실행방안: 지역 격차 대응방안 비교]</h2>
-            """, unsafe_allow_html=True)
+<h2 style='
+    text-align: center;
+    margin-top: 40px;
+    font-size: clamp(18px, 2.5vw, 28px);
+    color: #555555;'>
+    [의료개혁 1차 · 2차 실행방안: 지역 격차 대응방안 비교]
+</h2>
+""", unsafe_allow_html=True)
+
+
 #공백
 st.markdown("""
 <div style="height: 40px;"></div>
@@ -1101,22 +1130,62 @@ import streamlit as st
 # 3개의 열로 나누고, 가운데 두 개만 사용
 col_spacer1, col1, col2, col_spacer2 = st.columns([1, 3, 3, 1])
 
-# ------------ 의료개혁 1차 ------------
-with col1:
-    st.header("의료개혁 1차 실행방안")
-    st.markdown("""
-- **지역완결 의료체계 구축**
-  - 국립대병원, 지방의료원, 지역 종합병원 중심 기능 강화
-- **지역 전공의 배정 확대**
-  - 수도권·비수도권 5:5 배정, 지역 친화적 배치 방식
-- **지역필수의사제 도입**
-  - 일정 기간 지역 근무 시 수당, 주거 지원, 해외 연수 등 인센티브
-- **지역의료발전기금 신설, ‘지역의료지원법’ 제정 추진**
-- **의료권 기준 개편**
-  - 행정구역이 아닌 진료권 기반 체계화
-""")
+import streamlit as st
 
-    with st.expander("원문 발췌 보기"):
+# 카드 스타일 정의 (공통 스타일만 유지)
+st.markdown("""
+<style>
+.card {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+.card ul {
+    padding-left: 20px;
+    line-height: 1.7;
+    font-size: 16px;
+}
+</style>
+""", unsafe_allow_html=True)
+
+# ----------- 두 개의 열을 생성 -----------
+col1, col2 = st.columns(2)
+
+with col1:
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
+    st.subheader("의료개혁 1차 실행방안")
+    st.markdown("""
+<ul>
+<li><b>지역완결 의료체계 구축</b><br>국립대병원, 지방의료원, 지역 종합병원 중심 기능 강화</li>
+<li><b>지역 전공의 배정 확대</b><br>수도권·비수도권 5:5 배정, 지역 친화적 배치 방식</li>
+<li><b>지역필수의사제 도입</b><br>일정 기간 지역 근무 시 수당, 주거 지원, 해외 연수 등 인센티브</li>
+<li><b>지역의료발전기금 신설, ‘지역의료지원법’ 제정 추진</b></li>
+<li><b>의료권 기준 개편</b><br>행정구역이 아닌 진료권 기반 체계화</li>
+</ul>
+""", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
+
+with col2:
+    st.markdown("<div class='card'>", unsafe_allow_html=True)
+    st.subheader("의료개혁 2차 실행방안")
+    st.markdown("""
+<ul>
+<li><b>포괄 2차 종합병원</b> 집중 지원 (3년간 2조 원 투자)</li>
+<li><b>지방의료원 인프라 현대화</b>, 진료 포괄성 강화</li>
+<li><b>‘지역수가’ 도입</b>: 의료취약지에 수가 가산</li>
+<li><b>일차의료 혁신 시범사업</b>: 주치의 중심 예방·관리 체계</li>
+<li><b>지역 진료협력 네트워크 확대</b><br>암, 심뇌, 분만, 중환자 등 분야별 협력 시스템 구축</li>
+<li><b>지자체 자율 지역의료혁신 시범사업</b> 추진</li>
+</ul>
+""", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
+
+# ------------ 원문 발췌 보기 ------------
+exp1, exp2 = st.columns(2)
+
+with exp1:
+    with st.expander("1차 실행방안 원문 발췌 보기"):
         st.markdown("""
 - “지역완결 의료체계 구축: 국립대병원 등 권역 책임의료기관 육성 및 기능 강화, 지방의료원 역량 강화, 지역 종합병원 집중 지원”  
 - “의료협력 네트워크 구축 (의뢰·회송 시스템, EMR 정보 공유 등)”  
@@ -1125,20 +1194,8 @@ with col1:
 - “병상 수급 및 진료권 체계화 (행정구역보다 실제 진료권 기준으로 재편)”
         """)
 
-# ------------ 의료개혁 2차 ------------
-with col2:
-    st.header("의료개혁 2차 실행방안")
-    st.markdown("""
-- **포괄 2차 종합병원** 집중 지원 (3년간 2조 원 투자)
-- **지방의료원 인프라 현대화**, 진료 포괄성 강화
-- **‘지역수가’ 도입**: 의료취약지에 수가 가산
-- **일차의료 혁신 시범사업**: 주치의 중심 예방·관리 체계
-- **지역 진료협력 네트워크 확대**
-  - 암, 심뇌, 분만, 중환자 등 분야별 협력 시스템 구축
-- **지자체 자율 지역의료혁신 시범사업** 추진
-""")
-
-    with st.expander("원문 발췌 보기"):
+with exp2:
+    with st.expander("2차 실행방안 원문 발췌 보기"):
         st.markdown("""
 - “포괄 2차 종합병원 지원사업: 상급종합병원과 협력하여 지역 내 의료수요 대부분 대응 가능토록 집중 지원”  
 - “지역수가 본격 적용: 의료수요·공급 취약지역에 추가 가산 적용”  
@@ -1147,7 +1204,11 @@ with col2:
 - “‘지역의료지도’ 활용 및 지자체 중심 지역문제 해결형 시범사업 추진”
         """)
 
+# 구분선
 st.markdown("---")
+
+
+
 
 st.markdown("""
 <div style="background-color: #f0f0f0; padding: 20px; border-left: 6px solid #555555; border-radius: 8px; margin-bottom: 25px; font-size: clamp(15px, 2.0vw, 18px); line-height: 1.8; color: #333333; text-align: center;">
@@ -1199,18 +1260,22 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-st.markdown(
-    """
-    <div style='text-align: center; font-size: 22px; line-height: 1.8; font-weight: 500; margin-top: 40px;'>
-        정신건강증진시설의 지역격차는 분명히 존재합니다.<br>
-        지방은 수도권에 비해 접근 가능한 시설의 수가 현저하게 적으며,<br>
-        시설까지 이동하는 데의 거리 및 시간도 상당합니다.<br>
-        그러나, 사회 전반적인 정책적 차원에서 대응이 제대로 이뤄지지 않는 상황입니다.<br>
-        ‘정신건강’이라는 의료분야의 소외와, 구조적인 지역격차 문제가 혼합되어 악순환을 만들고 있습니다.<br><br>
-        프로젝트를 마무리하며, 이에 대한 한국 대중의 관심과<br>
-        정부의 적절한 대응을 촉구합니다.
-    </div>
-    """, 
-    unsafe_allow_html=True
-)
+st.markdown("""
+<div style="text-align: center; font-size: clamp(45px, 5.5vw, 65px); color: #E64A19; font-weight: bold; line-height: 1; margin-top: 30px;">
+    ”
+</div>
+
+<div style="margin-top: 10px; margin-bottom: 10px; font-size: clamp(15px, 2vw, 18px); line-height: 1.8; color: #333333; text-align: center;">
+    지도에서 볼 수 있듯이,<br>
+    수도권의 중심지인 강남구에는 정신의료기관과 정신재활시설이 밀집해 있는 반면,<br>
+    일부 지방 지역 3곳에는 이들 시설이 현저히 부족한 실정입니다.<br>
+    이는 지역 간 정신보건 서비스 접근성에 뚜렷한 불균형이 존재함을 시사하며,<br>
+    정신건강 격차 해소를 위한 정책적 개입이 요구되는 지점입니다.
+</div>
+
+<div style="text-align: center; font-size: clamp(45px, 5.5vw, 65px); color: #E64A19; font-weight: bold; line-height: 1; margin-bottom: 30px;">
+    ”
+</div>
+""", unsafe_allow_html=True)
+
 
