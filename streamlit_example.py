@@ -679,9 +679,7 @@ options = {
     }
 }
 
-
-
-# ✅ 지도 렌더링 함수
+# 지도 렌더링 함수
 def render_map(selection, col):
     config = options[selection]
     geojson_path = config['geojson']
@@ -816,7 +814,7 @@ def render_map(selection, col):
     font_path = os.path.abspath('data/NanumGothic.ttf')
     font_prop = fm.FontProperties(fname=font_path)
 
-    # ✅ 전라남도 설명 및 그래프 표시
+    # 전라남도 설명 및 그래프 표시
     if '전라남도' in selection:
         with col:
             st.markdown("""
@@ -853,7 +851,7 @@ def render_map(selection, col):
             **지역별 정신병원 및 정신재활센터 수:** 102개/1개
             """)
 
-        # ✅ 김해시 설명 및 그래프 표시
+        # 김해시 설명 및 그래프 표시
     elif '김해시' in selection:
         with col:
             st.markdown("""
@@ -890,7 +888,7 @@ def render_map(selection, col):
         ax.legend(prop=font_prop)
         st.pyplot(fig)
 
-# ✅ 범례 HTML
+# 범례 HTML
 legend_html = """
 {% macro html(this, kwargs) %}
 <div style='
