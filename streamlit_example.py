@@ -517,10 +517,18 @@ encoded_graph = base64.b64encode(buf.read()).decode()
 
 # HTML로 그래프 + 글 정렬
 
-left_col, right_col = st.columns([1, 2])
+left_col, right_col = st.columns([1, 1])
 
 with left_col:
-    st.image(buf, use_column_width=True)
+    st.markdown(
+        f"""
+        <div style="display: flex; justify-content: center; margin-top: 130px;">  
+            <img src="data:image/png;base64,{encoded_graph}" style="max-width: 1000px; height: auto;" />
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
 
 with right_col:
     st.markdown("""
