@@ -523,7 +523,7 @@ with left_col:
     st.markdown(
         f"""
         <div style="display: flex; justify-content: center; margin-top: 130px;">  
-            <img src="data:image/png;base64,{encoded_graph}" style="max-width: 1000px; height: auto;" />
+            <img src="data:image/png;base64,{encoded_graph}" style="max-width: 100%; height: auto;" />
         </div>
         """,
         unsafe_allow_html=True
