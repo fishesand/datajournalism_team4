@@ -391,7 +391,7 @@ st.markdown("""
     이들 시설을 중심으로 국가와 지방자치단체는 정신건강의 예방부터 조기발견, 치료, 재활, 사회복귀까지 전 과정을 포괄하는 서비스를 계획 및 시행하고 있습니다.
 </div>
 
-<div style="padding: 25px; border-radius: 12px; line-height: 1.8; font-size: clamp(18px, 2.2vw, 26px); color: #3e3e3e;">
+<div style="padding: 25px; border-radius: 12px; line-height: 1.8; font-size: clamp(15px, 2.0vw, 18px); color: #3e3e3e;">
     <ul style="padding-left: 1.2em; margin: 0;">
         <li><strong style="color: #E64A19;">정신의료기관:</strong> 정신건강과 관련된 진료 및 치료를 진행합니다. 정신병원, 의료기관 중 의원, 병원급 의료기관에 설치된 정신건강의학과를 포괄합니다.</li>
         <li><strong style="color: #E64A19;">정신재활시설:</strong> 정신질환자의 사회복귀를 위한 생활지원, 직업재활, 주거제공 등을 수행합니다.</li>
