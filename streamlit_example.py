@@ -89,7 +89,6 @@ with open("data/강원교육튼튼.ttf", "rb") as f:
     font_data = f.read()
     encoded_font = base64.b64encode(font_data).decode()
 
-# HTML 마크다운으로 스타일 적용
 st.markdown(f"""
 <style>
 @font-face {{
@@ -97,15 +96,16 @@ st.markdown(f"""
     src: url(data:font/ttf;base64,{encoded_font}) format('truetype');
 }}
 
-div {{
+.gangwon {{
     font-family: 'GangwonEduPower', sans-serif;
 }}
 </style>
 """, unsafe_allow_html=True)
 
+
 # HTML 렌더링은 줄이거나 검증된 구조만 사용
 st.markdown("""
-<div style="color: #1e1e1e; font-family: 'Segoe UI', sans-serif; padding: 10px 5vw; text-align: center;">
+<div class="gangwon"; style="color: #1e1e1e; padding: 10px 5vw; text-align: center;">
 
   <div style="font-size: clamp(20px, 3vw, 36px); font-weight: bold; margin-bottom: 1vw;">
     우리나라 국민의 1/3은
@@ -178,7 +178,7 @@ with open("data/A씨.png", "rb") as image_file:
 
 # HTML 코드 삽입
 st.markdown(f"""
-<div style="display: flex; justify-content: center; margin-top: 40px;">
+<div class="gangwon"; style="display: flex; justify-content: center; margin-top: 40px;">
     <div style="text-align: center;">
         <img src="data:image/png;base64,{encoded}" style="max-width: 200px; width: 80%;" />
         <div style="margin-top: 20px; font-size: clamp(16px, 2vw, 24px); line-height: 1.6;">
@@ -200,7 +200,7 @@ with open("data/1.png", "rb") as image_file:
 
 # HTML로 이미지 + 텍스트 중앙 정렬 표시
 st.markdown(f"""
-<div style="display: flex; justify-content: center; margin-top: 40px;">
+<div class="gangwon"; style="display: flex; justify-content: center; margin-top: 40px;">
     <div style="text-align: center;">
         <img src="data:image/png;base64,{encoded_img}" style="max-width: 800px; width: 80%;" />
         <div style="margin-top: 30px; font-size: clamp(16px, 2vw, 24px); line-height: 1.6;">
@@ -220,7 +220,7 @@ with open("data/2.png", "rb") as image_file:
 
 # HTML로 이미지 + 텍스트 중앙 정렬 표시
 st.markdown(f"""
-<div style="display: flex; justify-content: center; margin-top: 40px;">
+<div class="gangwon"; style="display: flex; justify-content: center; margin-top: 40px;">
     <div style="text-align: center;">
         <img src="data:image/png;base64,{encoded_img}" style="max-width: 800px; width: 80%;" />
         <div style="margin-top: 30px; font-size: clamp(16px, 2vw, 24px);
@@ -241,7 +241,7 @@ with open("data/3.png", "rb") as image_file:
 
 # 이미지 + 텍스트 중앙 정렬
 st.markdown(f"""
-<div style="display: flex; justify-content: center; margin-top: 40px;">
+<div class="gangwon"; style="display: flex; justify-content: center; margin-top: 40px;">
     <div style="text-align: center;">
         <img src="data:image/png;base64,{encoded_img}" style="max-width: 800px; width: 80%;" />
         <div style="margin-top: 30px; font-size: clamp(16px, 2vw, 24px);
@@ -261,7 +261,7 @@ with open("data/4.png", "rb") as image_file:
 
 # 이미지와 텍스트를 HTML로 중앙 정렬
 st.markdown(f"""
-<div style="display: flex; justify-content: center; margin-top: 40px;">
+<div class="gangwon"; style="display: flex; justify-content: center; margin-top: 40px;">
     <div style="text-align: center;">
         <img src="data:image/png;base64,{encoded_img}" style="max-width: 900px; width: 90%;" />
         <div style="margin-top: 30px; font-size: clamp(16px, 2vw, 24px);
@@ -301,7 +301,7 @@ with open("data/A씨.png", "rb") as image_file:
 
 # 중앙 정렬된 이미지 + 텍스트 표시
 st.markdown(f"""
-<div style="display: flex; justify-content: center; margin-top: 40px;">
+<div class="gangwon"; style="display: flex; justify-content: center; margin-top: 40px;">
     <div style="text-align: center;">
         <img src="data:image/png;base64,{encoded_img}" style="max-width: 200px; width: 80%;" />
         <div style="margin-top: 30px; font-size: clamp(16px, 2vw, 24px);
@@ -322,7 +322,7 @@ with open("data/5.png", "rb") as image_file:
 
 # 이미지 + 텍스트 중앙 정렬 표시
 st.markdown(f"""
-<div style="display: flex; justify-content: center; margin-top: 40px;">
+<div class="gangwon"; style="display: flex; justify-content: center; margin-top: 40px;">
     <div style="text-align: center;">
         <img src="data:image/png;base64,{encoded_img}" style="max-width: 800px; width: 80%;" />
         <div style="margin-top: 30px; font-size: clamp(16px, 2vw, 24px);
@@ -342,7 +342,7 @@ with open("data/6.png", "rb") as image_file:
 
 # HTML로 이미지 + 텍스트 중앙 정렬
 st.markdown(f"""
-<div style="display: flex; justify-content: center; margin-top: 40px;">
+<div class="gangwon"; style="display: flex; justify-content: center; margin-top: 40px;">
     <div style="text-align: center;">
         <img src="data:image/png;base64,{encoded_img}" style="max-width: 800px; width: 80%;" />
         <div style="margin-top: 30px; font-size: clamp(16px, 2vw, 24px);
@@ -364,7 +364,7 @@ with open("data/7.png", "rb") as image_file:
 
 # HTML로 이미지 + 텍스트 중앙 정렬
 st.markdown(f"""
-<div style="display: flex; justify-content: center; margin-top: 40px;">
+<div class="gangwon"; style="display: flex; justify-content: center; margin-top: 40px;">
     <div style="text-align: center;">
         <img src="data:image/png;base64,{encoded_img}" style="max-width: 900px; width: 90%;" />
         <div style="margin-top: 30px; font-size: clamp(16px, 2vw, 24px);
