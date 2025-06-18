@@ -609,7 +609,8 @@ left_col, right_col = st.columns([1, 1])
 
 # 왼쪽: 선그래프
 with left_col:
-    
+    st.markdown("<div style='margin-top: 150px;'></div>", unsafe_allow_html=True)
+
     df_year = pd.read_excel("data/2018_2023_정신건강시설.xlsx")
     df_cleaned = df_year.iloc[1:4].copy()
     df_cleaned.columns = ['종류', 2018, 2019, 2020, 2021, 2022, 2023]
@@ -696,14 +697,19 @@ from io import BytesIO
 
 # II. 정신건강증진시설의 지역격차 지도
 st.markdown("""
-<h1 style='text-align: center; font-size: 40px; margin-top: 80px;'>
-    II. 정신건강증진시설의 지역격차 지도
+<h1 style='text-align: center; font-size: clamp(28px, 4vw, 42px); margin-top: 80px;'>
+    II. <span style='color: #E64A19;'>정신건강증진시설</span>의 <span style='color: #E64A19;'>지역격차 지도</span>
 </h1>
 """, unsafe_allow_html=True)
 
 st.markdown("""
-<div style="background-color: #e3f2fd; padding: 20px; border-left: 6px solid #1976d2; border-radius: 8px; margin-top: 30px; font-size: 16px; line-height: 1.7;">
-   그렇다면 전국의 정신건강증진시설은 어떻게 분포되어있을까요? 인구수가 유사한 지역 4곳(강남구, 김해시, 강원도, 전라남도)을 지도로 시각화해보았습니다. 
+<div style="height: 50px;"></div>
+""", unsafe_allow_html=True)
+
+
+st.markdown("""
+<div style="margin-top: 30px; font-size: clamp(15px, 2vw, 18px); line-height: 1.7; color: #333333;">
+   그렇다면 전국의 정신건강증진시설은 어떻게 분포되어있을까요? 인구수가 유사한 지역 4곳(강남구, 김해시, 강원도, 전라남도)을 지도로 시각화해보았습니다.
 </div>
 """, unsafe_allow_html=True)
 
@@ -994,7 +1000,7 @@ col1, col2 = st.columns(2)
 
 # 왼쪽 지도 선택
 with col1:
-    selected_left = st.selectbox("🗺️ 왼쪽 지도 지역 선택", list(options.keys()), key='left_map')
+    selected_left = st.selectbox("왼쪽 지도 지역 선택", list(options.keys()), key='left_map')
     render_map(selected_left, col1)
 
 # 오른쪽 지도 선택 - 왼쪽과 다른 옵션만 제공
@@ -1006,7 +1012,7 @@ with col2:
         st.session_state.selected_right = right_options[0] if right_options else None
 
     if right_options:
-        selected_right = st.selectbox("🗺️ 오른쪽 지도 지역 선택", right_options, index=right_options.index(st.session_state.selected_right), key='right_map')
+        selected_right = st.selectbox("오른쪽 지도 지역 선택", right_options, index=right_options.index(st.session_state.selected_right), key='right_map')
         render_map(selected_right, col2)
     else:
         st.warning("⚠️ 왼쪽과 다른 지역을 선택해 주세요.")
@@ -1286,28 +1292,67 @@ def render_map(selection, col):
                         
             **지역별 정신병원 및 정신재활센터 수:** 102개/1개
             """)
-st.markdown("""
-<div style="background-color: #e3f2fd; padding: 20px; border-left: 6px solid #1976d2; border-radius: 8px; margin-top: 30px; font-size: 16px; line-height: 1.7;">
-지도에서 볼 수 있듯이, 수도권의 중심지인 강남구에는 정신의료기관과 정신재활시설이 밀집해 있는 반면, 일부 지방 지역 3곳에는 이들 시설이 현저히 부족한 실정입니다. 이는 지역 간 정신보건 서비스 접근성에 뚜렷한 불균형이 존재함을 시사하며, 정신건강 격차 해소를 위한 정책적 개입이 요구되는 지점입니다.
 
+st.markdown("""
+<div style="text-align: center; font-size: clamp(45px, 5.5vw, 65px); color: #E64A19; font-weight: bold; line-height: 1; margin-top: 30px;">
+    ”
+</div>
+
+<div style="margin-top: 10px; margin-bottom: 10px; font-size: clamp(15px, 2vw, 18px); line-height: 1.8; color: #333333; text-align: center;">
+지도에서 볼 수 있듯이,<br>
+수도권의 중심지인 강남구에는 정신의료기관과 정신재활시설이 밀집해 있는 반면,<br>
+일부 지방 지역 3곳에는 이들 시설이 현저히 부족한 실정입니다.<br>
+이는 지역 간 정신보건 서비스 접근성에 뚜렷한 불균형이 존재함을 시사하며,<br>
+정신건강 격차 해소를 위한 정책적 개입이 요구되는 지점입니다.<br>
+</div>
+
+<div style="text-align: center; font-size: clamp(45px, 5.5vw, 65px); color: #E64A19; font-weight: bold; line-height: 1; margin-bottom: 30px;">
+    ”
 </div>
 """, unsafe_allow_html=True)
 
+
+st.markdown("""
+<!-- 공백과 세로선 영역 -->
+<div style="position: relative; height: 80px; margin: 60px 0;">
+
+  <!-- 세로선: 가운데 정렬 -->
+  <div style="
+    position: absolute;
+    left: 50%;
+    top: 10px;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 150px;
+    background-color: #FF5722;
+    opacity: 0.7;
+  "></div>
+
+</div>
+""", unsafe_allow_html=True)
 
      
 #제목
 st.markdown(
     """
-    <h1 style='text-align: center; font-size: 40px; margin-top: 60px;'>IV. 보건복지부 의료개혁 실행방안 텍스트 분석</h1>
+    <h1 style='text-align: center; font-size: clamp(28px, 4vw, 42px); margin-top: 60px;'>
+        IV. 보건복지부 <span style='color: #E64A19;'>의료개혁 실행방안</span> 텍스트 분석
+    </h1>
     """,
     unsafe_allow_html=True
 )
 
 st.markdown("""
-<div style="background-color: #e3f2fd; padding: 20px; border-left: 6px solid #1976d2; border-radius: 8px; margin-top: 30px; font-size: 16px; line-height: 1.7;">
-  앞선 논의들을 바탕으로, 현재의 의료 정책 방향을 점검하고자 보건복지부에서 발행한 의료 개혁 1차, 2차 자료집의 텍스트 분석을 진행했습니다. 
+<div style="height: 50px;"></div>
+""", unsafe_allow_html=True)
+
+
+st.markdown("""
+<div style="margin-top: 30px; font-size: clamp(15px, 2vw, 18px); line-height: 1.7; color: #333333;">
+  앞선 논의들을 바탕으로, 현재의 의료 정책 방향을 점검하고자 보건복지부에서 발행한 의료 개혁 1차, 2차 자료집의 텍스트 분석을 진행했습니다.
 </div>
 """, unsafe_allow_html=True)
+
 
 st.markdown("""
 <h2 style='text-align: center; margin-top: 40px;'>의료개혁 1차 · 2차 실행방안: 지역 격차 대응 비교</h2>
