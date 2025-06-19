@@ -16,7 +16,8 @@ from PIL import Image
 from io import BytesIO
 import base64
 import time
-
+from folium.elements import MacroElement
+from jinja2 import Template
 
 # 폰트 설정
 font_path = "data/강원교육튼튼.ttf"
@@ -651,18 +652,6 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-import streamlit as st
-import folium
-import json
-import pandas as pd
-import math
-from folium.elements import MacroElement
-from jinja2 import Template
-import matplotlib.pyplot as plt
-import matplotlib.font_manager as fm
-import os
-from streamlit_folium import st_folium
-
 st.warning("""
 **⚠️ 오류 알림:** 강남구 지도의 정보(텍스트, 차트 등)가 너무 밑에 떠있는 오류가 발생하면,
 선택지 기능을 이용해서 강남구를 다른 지역으로 바꾼 후 다시 강남구를 선택해주세요.
@@ -735,7 +724,7 @@ options = {
     }
 }
 
-# ✅ 범례 HTML and MacroElement (DEFINED GLOBALLY AND CORRECTLY PLACED)
+# 범례 HTML and MacroElement (DEFINED GLOBALLY AND CORRECTLY PLACED)
 legend_html = """
 {% macro html(this, kwargs) %}
 <div style="
@@ -980,10 +969,7 @@ def plot_bar_chart(labels, hospital_counts, rehab_counts, title, font_prop):
     ax.legend(prop=font_prop)
     st.pyplot(fig)
 
-
-# --- Streamlit UI (Rest of your code remains largely the same) ---
-
-
+# --- Streamlit UI ---
 
 # Initialize zoom state
 if "zoom_enabled" not in st.session_state:
