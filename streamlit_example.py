@@ -1249,22 +1249,20 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-st.markdown("""
-<div style="text-align: center; font-size: clamp(45px, 5.5vw, 65px); color: #E64A19; font-weight: bold; line-height: 1; margin-top: 30px;">
-    ”
-</div>
+st.markdown(
+    """
+    <div style='text-align: center; font-size: 22px; line-height: 1.8; font-weight: 500; margin-top: 40px;'>
+        정신건강증진시설의 지역격차는 분명히 존재합니다.<br>
+        지방은 수도권에 비해 접근 가능한 시설의 수가 현저하게 적으며,<br>
+        시설까지 이동하는 데의 거리 및 시간도 상당합니다.<br>
+        그러나, 사회 전반적인 정책적 차원에서 대응이 제대로 이뤄지지 않는 상황입니다.<br>
+        ‘정신건강’이라는 의료분야의 소외와, 구조적인 지역격차 문제가 혼합되어 악순환을 만들고 있습니다.<br><br>
+        프로젝트를 마무리하며, 이에 대한 한국 대중의 관심과<br>
+        정부의 적절한 대응을 촉구합니다.
+    </div>
+    """, 
+    unsafe_allow_html=True
+)
 
-<div style="margin-top: 10px; margin-bottom: 10px; font-size: clamp(15px, 2vw, 18px); line-height: 1.8; color: #333333; text-align: center;">
-    지도에서 볼 수 있듯이,<br>
-    수도권의 중심지인 강남구에는 정신의료기관과 정신재활시설이 밀집해 있는 반면,<br>
-    일부 지방 지역 3곳에는 이들 시설이 현저히 부족한 실정입니다.<br>
-    이는 지역 간 정신보건 서비스 접근성에 뚜렷한 불균형이 존재함을 시사하며,<br>
-    정신건강 격차 해소를 위한 정책적 개입이 요구되는 지점입니다.
-</div>
-
-<div style="text-align: center; font-size: clamp(45px, 5.5vw, 65px); color: #E64A19; font-weight: bold; line-height: 1; margin-bottom: 30px;">
-    ”
-</div>
-""", unsafe_allow_html=True)
 
 
