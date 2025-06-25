@@ -23,7 +23,7 @@ from jinja2 import Template
 font_path = "data/강원교육튼튼.ttf"
 font_prop = font_manager.FontProperties(fname=font_path)
 
-# 이미지 경로
+# 이미지
 image_files = [
     "data/image1.png",
     "data/image2.png",
@@ -31,7 +31,6 @@ image_files = [
     "data/image4.png"
 ]
 
-# 이미지 배치 정보 (x, y, scale, alpha)
 image_settings = [
     (0.01, 0.6, 0.25, 0.1),
     (0.9, 0.6, 0.25, 0.1),
@@ -39,7 +38,7 @@ image_settings = [
     (0.9999, 0.2, 0.22, 0.1),
 ]
 
-# 그래프 생성
+# 그래프
 fig, ax = plt.subplots(figsize=(8, 4))
 ax.set_xlim(0, 1)
 ax.set_ylim(0, 1)
@@ -54,24 +53,17 @@ for path, (x, y, zoom, alpha) in zip(image_files, image_settings):
                         zorder=0)
     ax.add_artist(ab)
 
-# 제목 텍스트 (배경 흰색 박스)
+# 제목
 ax.text(0.5, 0.6, '정신건강', fontproperties=font_prop,
         fontsize=50, color= '#FF5722', ha='center', va='center', zorder=3,
         bbox=dict(facecolor='white', alpha=0.7, edgecolor='none', boxstyle='round'))
 
-# 부제목 텍스트
+# 부제목
 ax.text(0.5, 0.3, '수도권만의 권리인가요?', fontproperties=font_prop,
         fontsize=30, color='black', ha='center', va='center', zorder=3)
-
-# 7. 축 제거
 ax.axis('off')
-
-# 8. 출력
 st.pyplot(fig)
 
-import base64
-
-# ttf 파일 base64 인코딩
 with open("data/강원교육튼튼.ttf", "rb") as f:
     font_data = f.read()
     encoded_font = base64.b64encode(font_data).decode()
@@ -89,8 +81,6 @@ st.markdown(f"""
 </style>
 """, unsafe_allow_html=True)
 
-
-# HTML 렌더링
 st.markdown("""
 <div class="gangwon" style="color: #1e1e1e; padding: 10px 5vw; text-align: center;">
 
@@ -143,7 +133,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# 데이터 불러오기
+# 데이터
 gangnam_df = pd.read_excel("data/gangnam_juso.xlsx").dropna(subset=['위도', '경도'])
 seolleung_df = pd.read_excel("data/seoulleung_juso.xlsx").dropna(subset=['위도', '경도'])
 seolleung_hospitals = gangnam_df[gangnam_df['주소'].str.contains("선릉로", na=False)]
@@ -155,11 +145,9 @@ boseong_df = pd.DataFrame({
     '경도': [127.3459238, 127.073384]
 })
 
-# 이미지 파일 불러와서 base64 인코딩
 with open("data/A씨.png", "rb") as image_file:
     encoded = base64.b64encode(image_file.read()).decode()
 
-# HTML 코드 삽입
 st.markdown(f"""
 <div style="display: flex; justify-content: center; margin-top: 40px;">
     <div style="text-align: center;">
@@ -171,11 +159,10 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# 2단계: 전체 강남구 지도
+# 강남구
 with open("data/1.png", "rb") as image_file:
     encoded_img = base64.b64encode(image_file.read()).decode()
 
-# HTML로 이미지 + 텍스트 중앙 정렬 표시
 st.markdown(f"""
 <div style="display: flex; justify-content: center; margin-top: 40px;">
     <div style="text-align: center;">
@@ -187,11 +174,9 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# 이미지 파일 base64 인코딩
 with open("data/2.png", "rb") as image_file:
     encoded_img = base64.b64encode(image_file.read()).decode()
 
-# HTML로 이미지 + 텍스트 중앙 정렬 표시
 st.markdown(f"""
 <div style="display: flex; justify-content: center; margin-top: 40px;">
     <div style="text-align: center;">
@@ -204,11 +189,9 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# 이미지 파일 base64 인코딩
 with open("data/3.png", "rb") as image_file:
     encoded_img = base64.b64encode(image_file.read()).decode()
 
-# 이미지 + 텍스트 중앙 정렬
 st.markdown(f"""
 <div style="display: flex; justify-content: center; margin-top: 40px;">
     <div style="text-align: center;">
@@ -221,11 +204,9 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# 이미지 파일 base64 인코딩
 with open("data/4.png", "rb") as image_file:
     encoded_img = base64.b64encode(image_file.read()).decode()
 
-# 이미지와 텍스트를 HTML로 중앙 정렬
 st.markdown(f"""
 <div style="display: flex; justify-content: center; margin-top: 40px;">
     <div style="text-align: center;">
@@ -258,17 +239,10 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# 이미지 파일 base64 인코딩
 with open("data/A씨.png", "rb") as image_file:
     encoded_img = base64.b64encode(image_file.read()).decode()
 
-# 중앙 정렬된 이미지 + 텍스트 표시
-# 이미지 파일 base64 인코딩
-with open("data/A씨.png", "rb") as image_file:
-    encoded_img = base64.b64encode(image_file.read()).decode()
-
-
-# HTML 코드 삽입
+# B씨
 st.markdown(f"""
 <div style="display: flex; justify-content: center; margin-top: 40px;">
     <div style="text-align: center;">
@@ -280,11 +254,9 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# 이미지 파일 base64 인코딩
 with open("data/5.png", "rb") as image_file:
     encoded_img = base64.b64encode(image_file.read()).decode()
 
-# 이미지 + 텍스트 중앙 정렬 표시
 st.markdown(f"""
 <div style="display: flex; justify-content: center; margin-top: 40px;">
     <div style="text-align: center;">
@@ -297,11 +269,9 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# 이미지 base64 인코딩
 with open("data/6.png", "rb") as image_file:
     encoded_img = base64.b64encode(image_file.read()).decode()
 
-# HTML로 이미지 + 텍스트 중앙 정렬
 st.markdown(f"""
 <div style="display: flex; justify-content: center; margin-top: 40px;">
     <div style="text-align: center;">
@@ -315,11 +285,9 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-# 이미지 base64 인코딩
 with open("data/7.png", "rb") as image_file:
     encoded_img = base64.b64encode(image_file.read()).decode()
 
-# HTML로 이미지 + 텍스트 중앙 정렬
 st.markdown(f"""
 <div style="display: flex; justify-content: center; margin-top: 40px;">
     <div style="text-align: center;">
@@ -416,11 +384,11 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# 폰트 설정
+# 폰트
 font_path = "data/NanumGothic.ttf"
 font_prop = font_manager.FontProperties(fname=font_path)
 
-# 데이터 로드 및 전처리
+# 데이터
 facility_df = pd.read_excel("data/facility.xlsx")
 population_df = pd.read_excel("data/population.xlsx")
 
@@ -447,10 +415,9 @@ st.markdown("""
 <div style="height: 50px;"></div>
 """, unsafe_allow_html=True)
 
-# 좌우 레이아웃
 st.markdown("<h2 style='text-align: center; margin-top: 40px;'>정신건강 의료기관 1곳당 인구 수, 지역별로 얼마나 다를까요?</h2>", unsafe_allow_html=True)
 
-# 그래프 생성
+# 바 그래프 & 사람 아이콘으로 표시
 sorted_df = merged_df.sort_values(by='인구/의료기관', ascending=True)
 fig, ax = plt.subplots(figsize=(7, 4))
 x = sorted_df['시도']
@@ -462,13 +429,11 @@ ax.set_ylabel("인구 / 의료기관 수", fontproperties=font_prop, fontsize=8)
 ax.set_xlabel("시도", fontproperties=font_prop, fontsize=8)
 fig.tight_layout()
 
-# base64로 변환
 buf = BytesIO()
 fig.savefig(buf, format="png", bbox_inches="tight")
 buf.seek(0)
 encoded_graph = base64.b64encode(buf.read()).decode()
 
-# HTML로 그래프 + 글 정렬
 left_col, right_col = st.columns([1, 1])
 
 with left_col:
@@ -481,7 +446,6 @@ with left_col:
         unsafe_allow_html=True
     )
     st.caption("출처: 국가통계포털 (통계청)")
-
 
 with right_col:
     st.markdown("""
@@ -500,7 +464,6 @@ with right_col:
     </div>
     """, unsafe_allow_html=True)
 
-# 병원/사람 시각화 함수
 def image_to_base64(img, width):
     buffered = BytesIO()
     img.save(buffered, format="PNG")
@@ -515,7 +478,6 @@ def render_region(title, num_hospitals, people_per_hospital, people_count_text):
     st.markdown(f"<div style='text-align: center; margin-top:5px;'>{person_html}</div>", unsafe_allow_html=True)
     st.markdown(f"<p style='text-align: center; font-size:24px; margin-top:5px;'>{people_count_text}</p>", unsafe_allow_html=True)
 
-# 병원/사람 이미지 불러오기
 hospital_img = Image.open("data/hospital.png")
 person_img = Image.open("data/person.png")
 
@@ -523,18 +485,12 @@ st.markdown("""
 <div style="height: 50px;"></div>
 """, unsafe_allow_html=True)
 
-# 제목
-# st.markdown("<h2 style='text-align: center; margin-top: 40px;'><br><br>서울과 경상북도 비교<br></h2>", unsafe_allow_html=True)
-
-# 좌우 분할
 left_col, right_col = st.columns([1, 1])
 
-# 왼쪽: 이미지 시각화
 with left_col:
     render_region("서울", num_hospitals=1, people_per_hospital=2, people_count_text="14,437명")
     render_region("경상북도", num_hospitals=1, people_per_hospital=5, people_count_text="36,998명 (약 2.5배)")
 
-# 오른쪽: 설명 줄글
 with right_col:
     st.markdown("""
     <div style="text-align: center; font-size: clamp(45px, 5.5vw, 65px); color: #E64A19; font-weight: bold; line-height: 1; margin-top: 30px;">
@@ -553,18 +509,15 @@ with right_col:
     </div>
     """, unsafe_allow_html=True)
 
-#공백
 st.markdown("""
 <div style="height: 50px;"></div>
 """, unsafe_allow_html=True)
 
-# 제목
 st.markdown("<h2 style='text-align: center; margin-top: 80px;'><br>2018~2023, 전국 정신건강증진 시설의 수는 어떻게 변화하였을까요?<br></h2>", unsafe_allow_html=True)
 
-# 좌우 분할
 left_col, right_col = st.columns([1, 1])
 
-# 왼쪽: 선그래프
+# 선그래프
 with left_col:
     st.markdown("<div style='margin-top: 130px;'></div>", unsafe_allow_html=True)
 
@@ -593,7 +546,6 @@ with left_col:
     st.pyplot(fig)
     st.caption("출처: 국가통계포털 (통계청)")
 
-# 오른쪽: 설명 줄글
 with right_col:
     st.markdown("""
     <div style="text-align: center; font-size: clamp(45px, 5.5vw, 65px); color: #E64A19; font-weight: bold; line-height: 1; margin-top: 30px;">
@@ -611,7 +563,6 @@ with right_col:
         ”
     </div>
     """, unsafe_allow_html=True)
-
 
 st.markdown("""
 <!-- 공백과 세로선 영역 -->
@@ -632,14 +583,13 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# II. 정신건강증진시설의 지역격차 지도
+# 정신건강증진시설의 지역격차 지도
 st.markdown("""
 <h1 style='text-align: center; font-size: clamp(28px, 4vw, 42px); margin-top: 80px;'>
     <span style='color: #E64A19;'>정신건강증진시설의 지역격차</span>를 지도로 시각화해보았습니다.</span>
 </h1>
 """, unsafe_allow_html=True)
 
-#공백
 st.markdown("""
 <div style="height: 50px;"></div>
 """, unsafe_allow_html=True)
@@ -656,7 +606,7 @@ st.warning("""
 **⚠️ 오류 알림:** 강남구 지도의 정보(텍스트, 차트 등)가 너무 밑에 떠있는 오류가 발생하면,
 선택지 기능을 이용해서 강남구를 다른 지역으로 바꾼 후 다시 강남구를 선택해주세요.
 불편을 드려 죄송합니다.
-""", icon="⚠️") # Added an icon for better visibility
+""", icon="⚠️") 
 
 try:
     font_path = os.path.abspath('data/NanumGothic.ttf')
@@ -669,7 +619,6 @@ except Exception as e:
     st.error(f"Error loading font: {e}. Falling back to default font.")
     font_prop = fm.FontProperties(family='sans-serif')
 
-# Manual area information (in km²) for zoom calculation
 manual_area_map = {
     '서울특별시 (강남구)': 39.55,
     '경상남도 (김해시)': 463.3,
@@ -677,9 +626,6 @@ manual_area_map = {
     '강원도 (원주시, 횡성군, 홍천군, 평창군, 영월군)': 5997
 }
 
-# --- HARDCODED REHABILITATION FACILITY DATA ---
-# Define the rehabilitation facilities directly as dictionaries or lists
-# We'll convert these to DataFrames on the fly later.
 hardcoded_rehab_data = {
     '강남구': [
         {'위도': 37.4855441, '경도': 127.0758442, '주소': '서울특별시 강남구 광평로 185'}
@@ -695,36 +641,33 @@ hardcoded_rehab_data = {
     ]
 }
 
-
-# Map configuration options
 options = {
     '서울특별시 (강남구)': {
         'geojson': 'data/hangjeongdong_강남구.geojson',
         'excel_hospital': 'data/gangnam_juso.xlsx',
-        'rehab_key': '강남구', # Key to look up in hardcoded_rehab_data
+        'rehab_key': '강남구',
         'target_regions': ['강남구']
     },
     '경상남도 (김해시)': {
         'geojson': 'data/hangjeongdong_경상남도.geojson',
         'excel_hospital': 'data/gimhae_juso.xlsx',
-        'rehab_key': '김해시', # Key to look up in hardcoded_rehab_data
+        'rehab_key': '김해시', 
         'target_regions': ['김해시']
     },
     '전라남도 (순천시, 담양군, 곡성군, 구례군, 고흥군, 보성군, 화순군)': {
         'geojson': 'data/hangjeongdong_전라남도.geojson',
         'excel_hospital': 'data/jeonnam_juso.xlsx',
-        'rehab_key': '전라남도', # Key to look up in hardcoded_rehab_data
+        'rehab_key': '전라남도', 
         'target_regions': ['순천시', '담양군', '곡성군', '구례군', '고흥군', '보성군', '화순군']
     },
     '강원도 (원주시, 횡성군, 홍천군, 평창군, 영월군)': {
         'geojson': 'data/hangjeongdong_강원도.geojson',
         'excel_hospital': 'data/gangwon_juso.xlsx',
-        'rehab_key': '강원도', # Key to look up in hardcoded_rehab_data
+        'rehab_key': '강원도', 
         'target_regions': ['원주시', '횡성군', '홍천군', '평창군', '영월군']
     }
 }
 
-# 범례 HTML and MacroElement (DEFINED GLOBALLY AND CORRECTLY PLACED)
 legend_html = """
 {% macro html(this, kwargs) %}
 <div style="
@@ -747,9 +690,6 @@ legend_html = """
 """
 legend = MacroElement()
 legend._template = Template(legend_html)
-
-
-# --- Helper Functions ---
 
 def zoom_from_manual_area(area_km2):
     """Calculates zoom level based on area, with adjustments for smaller areas."""
@@ -775,15 +715,13 @@ def load_geojson_data(path):
         st.error(f"Error: Could not decode JSON from {path}. Is it a valid GeoJSON file?")
         return {"type": "FeatureCollection", "features": []}
 
-
 @st.cache_data
 def load_excel_data(path):
     """Loads and caches Excel data, handling potential file not found errors."""
     try:
         return pd.read_excel(path)
     except FileNotFoundError:
-        # st.warning(f"Warning: Excel file not found at {path}. Skipping this data source.")
-        return pd.DataFrame() # Return empty DataFrame on error
+        return pd.DataFrame() 
     except Exception as e:
         st.error(f"Error loading Excel file {path}: {e}")
         return pd.DataFrame()
@@ -798,27 +736,24 @@ def add_markers_to_map(m, df, icon_color, icon_name):
                 icon=folium.Icon(color=icon_color, icon=icon_name)
             ).add_to(m)
 
-# --- Map Rendering Function ---
-
 def render_map(selection, col):
     """Renders a Folium map for the selected region."""
     config = options[selection]
     geojson_path = config['geojson']
     excel_hospital_path = config['excel_hospital']
-    rehab_key = config['rehab_key'] # Get the key for hardcoded rehab data
+    rehab_key = config['rehab_key'] 
     target_regions = config['target_regions']
 
     geo_data = load_geojson_data(geojson_path)
 
-    # Filter GeoJSON features for the target regions
     features = [
-        f for f in geo_data.get('features', []) # Use .get for safety
+        f for f in geo_data.get('features', []) 
         if any(region in f['properties'].get('adm_nm', '') for region in target_regions)
         or f['properties'].get('sggnm') in target_regions
     ]
     target_geojson = {"type": "FeatureCollection", "features": features}
 
-    # Calculate center for the map
+    # 지도 중심 계산
     bounds = []
     for f in features:
         coords = f['geometry']['coordinates']
@@ -832,7 +767,7 @@ def render_map(selection, col):
 
     if not bounds:
         st.warning(f"No GeoJSON features found for {selection}. Cannot center map.")
-        center_lat, center_lon = 37.5665, 126.9780 # Default to Seoul if no bounds
+        center_lat, center_lon = 37.5665, 126.9780 
         min_lat, max_lat, min_lon, max_lon = center_lat - 0.1, center_lat + 0.1, center_lon - 0.1, center_lon + 0.1
     else:
         lats = [pt[1] for pt in bounds]
@@ -842,11 +777,11 @@ def render_map(selection, col):
         center_lat = (min_lat + max_lat) / 2
         center_lon = (min_lon + max_lon) / 2
 
-    # Calculate zoom based on manual area
+    # 면적에 따라 줌
     area_km2 = manual_area_map.get(selection, 500)
     zoom_start = zoom_from_manual_area(area_km2)
 
-    # Create the Folium map
+    # Folium map 만들기
     m = folium.Map(
         location=[center_lat, center_lon],
         zoom_start=zoom_start,
@@ -857,32 +792,30 @@ def render_map(selection, col):
         control_scale=True
     )
 
-    # Add the legend MacroElement directly to the map
+    # legend 추가하기
     m.add_child(legend)
 
-    # Add base GeoJSON layer
+    # GeoJSON 넣기
     folium.GeoJson(
-        geo_data, # Use the original geo_data for the base layer outline
+        geo_data,
         style_function=lambda _: {'fillOpacity': 0, 'color': '#444444', 'weight': 1}
     ).add_to(m)
 
-    # Add target region GeoJSON layer
     folium.GeoJson(
         target_geojson,
         style_function=lambda _: {'fillOpacity': 0, 'color': 'white', 'weight': 3},
         tooltip=folium.GeoJsonTooltip(fields=['sidonm', 'sggnm'], aliases=['시도명:', '시군구명:'])
     ).add_to(m)
 
-    # Load and add mental hospital markers (still from Excel)
+    # 병원 넣기
     df_hospital = load_excel_data(excel_hospital_path)
-    if not df_hospital.empty: # Only add if data is present
+    if not df_hospital.empty: 
         add_markers_to_map(m, df_hospital, 'lightblue', 'plus-sign')
     else:
         st.warning(f"정신병원 데이터 ({excel_hospital_path})를 찾을 수 없거나 비어 있습니다.")
 
 
-    # --- Load and add rehabilitation facility markers from HARDCODED data ---
-    # Retrieve data using the rehab_key
+    # 정신재활시설 넣기
     rehab_facilities_list = hardcoded_rehab_data.get(rehab_key, [])
     if rehab_facilities_list:
         df_rehab = pd.DataFrame(rehab_facilities_list)
@@ -896,7 +829,6 @@ def render_map(selection, col):
     with col:
         st_folium(m, width=700, height=500, key=f"folium_map_{selection}")
 
-    # Display region specific information and graphs
     display_region_info(selection, col, font_prop)
 
 def display_region_info(selection, col, font_prop):
@@ -914,7 +846,7 @@ def display_region_info(selection, col, font_prop):
             """)
             labels = ['고흥군', '곡성군', '담양군', '보성군', '순천시', '화순군']
             hospital_counts = [1, 1, 3, 2, 12, 4]
-            rehab_counts = [0, 0, 0, 0, 1, 0] # These are now hardcoded in the info display
+            rehab_counts = [0, 0, 0, 0, 1, 0] 
             plot_bar_chart(labels, hospital_counts, rehab_counts, "전라남도 지역별 정신의료 인프라 분포", font_prop)
 
         elif '강남구' in selection:
@@ -951,7 +883,7 @@ def display_region_info(selection, col, font_prop):
             """)
             labels = ['원주시', '횡성군', '홍천군', '평창군', '영월군']
             hospital_counts = [13, 0, 1, 0, 1]
-            rehab_counts =  [1, 0, 0, 0, 0] # These are now hardcoded in the info display
+            rehab_counts =  [1, 0, 0, 0, 0] 
             plot_bar_chart(labels, hospital_counts, rehab_counts, "강원도 지역별 정신의료 인프라 분포", font_prop)
 
 def plot_bar_chart(labels, hospital_counts, rehab_counts, title, font_prop):
@@ -969,21 +901,17 @@ def plot_bar_chart(labels, hospital_counts, rehab_counts, title, font_prop):
     ax.legend(prop=font_prop)
     st.pyplot(fig)
 
-# --- Streamlit UI ---
-
-# Initialize zoom state
+# 줌 기능
 if "zoom_enabled" not in st.session_state:
     st.session_state.zoom_enabled = False
 
-# Main layout with two columns for maps
 col1, col2 = st.columns(2)
 
-# Left map selection
+# 선택 기능
 with col1:
     selected_left = st.selectbox("왼쪽 지도 지역 선택", list(options.keys()), key='left_map_select')
     render_map(selected_left, col1)
 
-# Right map selection - provide only options different from the left
 with col2:
     right_options = [opt for opt in options.keys() if opt != selected_left]
 
@@ -1001,7 +929,7 @@ with col2:
     else:
         st.warning("⚠️ 왼쪽과 다른 지역을 선택해 주세요.")
 
-# Zoom control button
+# 줌 버튼
 st.markdown("---")
 if not st.session_state.zoom_enabled:
     if st.button("🔍 확대 기능 켜기", key='zoom_on'):
@@ -1034,7 +962,6 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-
 st.markdown("""
 <!-- 공백과 세로선 영역 -->
 <div style="position: relative; height: 80px; margin: 60px 0;">
@@ -1054,8 +981,6 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-     
-#제목
 st.markdown(
     """
     <h1 style='text-align: center; font-size: clamp(28px, 4vw, 42px); margin-top: 60px;'>
@@ -1064,7 +989,6 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-
 
 st.markdown("""
 <div style="height: 50px;"></div>
@@ -1077,12 +1001,9 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-
-#공백
 st.markdown("""
 <div style="height: 50px;"></div>
 """, unsafe_allow_html=True)
-
 
 st.markdown("""
 <h2 style='
@@ -1094,20 +1015,12 @@ st.markdown("""
 </h2>
 """, unsafe_allow_html=True)
 
-
-#공백
 st.markdown("""
 <div style="height: 40px;"></div>
 """, unsafe_allow_html=True)
 
-import streamlit as st
-
-# 3개의 열로 나누고, 가운데 두 개만 사용
 col_spacer1, col1, col2, col_spacer2 = st.columns([1, 3, 3, 1])
 
-import streamlit as st
-
-# 카드 스타일 정의 (공통 스타일만 유지)
 st.markdown("""
 <style>
 .card {
@@ -1124,7 +1037,6 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# ----------- 두 개의 열을 생성 -----------
 col1, col2 = st.columns(2)
 
 with col1:
@@ -1156,7 +1068,6 @@ with col2:
 """, unsafe_allow_html=True)
     st.markdown("</div>", unsafe_allow_html=True)
 
-# ------------ 원문 발췌 보기 ------------
 exp1, exp2 = st.columns(2)
 
 with exp1:
@@ -1179,11 +1090,7 @@ with exp2:
 - “‘지역의료지도’ 활용 및 지자체 중심 지역문제 해결형 시범사업 추진”
         """)
 
-# 구분선
 st.markdown("---")
-
-
-
 
 st.markdown("""
 <div style="background-color: #f0f0f0; padding: 20px; border-left: 6px solid #555555; border-radius: 8px; margin-bottom: 25px; font-size: clamp(15px, 2.0vw, 18px); line-height: 1.8; color: #333333; text-align: center;">
@@ -1234,7 +1141,6 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-
 st.markdown(
     """
     <div style='text-align: center; font-size: 22px; line-height: 1.8; font-weight: 500; margin-top: 40px;'>
@@ -1249,6 +1155,3 @@ st.markdown(
     """, 
     unsafe_allow_html=True
 )
-
-
-
