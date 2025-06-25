@@ -584,6 +584,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # 정신건강증진시설의 지역격차 지도
+    # 생성형 AI의 도움을 받아, 범례가 가끔씩 잘못된 위치에 뜨는 문제를 최대한 해결하려 노력을 해보았는데, 문제가 정확히 어디에서 기인하는건지 모르겠습니다...
 st.markdown("""
 <h1 style='text-align: center; font-size: clamp(28px, 4vw, 42px); margin-top: 80px;'>
     <span style='color: #E64A19;'>정신건강증진시설의 지역격차</span>를 지도로 시각화해보았습니다.</span>
