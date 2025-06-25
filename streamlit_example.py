@@ -239,10 +239,10 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
+# 전라남도 보성군
 with open("data/A씨.png", "rb") as image_file:
     encoded_img = base64.b64encode(image_file.read()).decode()
 
-# B씨
 st.markdown(f"""
 <div style="display: flex; justify-content: center; margin-top: 40px;">
     <div style="text-align: center;">
